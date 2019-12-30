@@ -1,0 +1,10 @@
+name: lexbor
+version: 2.0.0
+
+authors:
+  - Konstantin Makarchev <kostya27@gmail.com>
+
+scripts:
+  postinstall: cd src/ext && make package
+
+license: MIT
