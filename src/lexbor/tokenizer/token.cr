@@ -270,6 +270,53 @@ struct Lexbor::Tokenizer::Token
     io << ')'
   end
 
+  def to_html(io)
+    case tag_id
+    when Lib::TagIdT::LXB_TAG__TEXT
+      io << processed_tag_text
+    when Lib::TagIdT::LXB_TAG__EM_COMMENT
+      if self.closed?
+        io << "-->"
+      else
+        io << "<!--"
+      end
+    else
+      if self.closed?
+        io << '<'
+        io << '/'
+        io.write(tag_name_slice)
+        io << '>'
+      else
+        io << '<'
+
+        io.write(tag_name_slice)
+
+        if any_attribute?
+          c = 0
+          each_processed_attribute do |k, v|
+            io << ' '
+            io << k
+            io << '='
+            io << '"'
+            io << v
+            io << '"'
+            c += 1
+          end
+        end
+
+        io << '/' if self_closed?
+        io << '>'
+      end
+    end
+    self
+  end
+
+  def to_html
+    String.build { |buf| to_html(buf) }
+  end
+
+  # =========== private methods ================
+
   # :nodoc:
   @[AlwaysInline]
   private def tkz

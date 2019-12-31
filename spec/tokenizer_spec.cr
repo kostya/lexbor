@@ -7,6 +7,7 @@ class CounterA < Lexbor::Tokenizer::State
   @attrs2 = Hash(String, String).new
   @c = 0
   @tag_name : String?
+  @html_token : String?
   @insp : String?
 
   def on_token(token)
@@ -20,6 +21,7 @@ class CounterA < Lexbor::Tokenizer::State
       end
 
       @insp = token.inspect
+      @html_token = token.to_html
 
       token.each_processed_attribute do |key, value|
         @attrs2[key] = value
@@ -98,6 +100,24 @@ def a_counter(str)
   CounterA.new.parse(str)
 end
 
+class ToHtml < Lexbor::Tokenizer::State
+  getter res
+
+  def initialize
+    @res = ""
+  end
+
+  def on_token(token)
+    unless token.tag_id == Lexbor::Lib::TagIdT::LXB_TAG__END_OF_FILE
+      @res += token.to_html + "|"
+    end
+  end
+end
+
+def tokenizer_to_html(html)
+  ToHtml.new.parse(html).@res
+end
+
 describe Lexbor::Tokenizer do
   context "Basic usage" do
     it "count" do
@@ -141,6 +161,11 @@ describe Lexbor::Tokenizer do
     it "inspect" do
       counter = a_counter("<div><span>test</span><a href=bla CLASS='ho&#81' what ho=>bla &amp; ho</a><br/></div>")
       counter.@insp.should eq "Lexbor::Tokenizer::Token(a, {\"href\" => \"bla\", \"class\" => \"ho&#81\", \"what\" => \"\", \"ho\" => \"\"})"
+    end
+
+    it "to_html" do
+      counter = a_counter("<div><span>test</span><a href=bla CLASS='ho&#81' what ho=>bla &amp; ho</a><br/></div>")
+      counter.@html_token.should eq "<a href=\"bla\" class=\"hoQ\" what=\"\" ho=\"\">"
     end
   end
 
@@ -233,5 +258,13 @@ describe Lexbor::Tokenizer do
         links.should eq ["a:b:c:/1", "d:e:f:/2"]
       end
     end
+  end
+
+  context "to_html" do
+    it { tokenizer_to_html("<body><a href='#'>bla</a></body>").should eq "<body>|<a href=\"#\">|bla|</a>|</body>|" }
+    it { tokenizer_to_html("<script><!--comm</script><span></span>").should eq "<script>|<!--comm|</script>|<span>|</span>|" }
+    it { tokenizer_to_html("<script> document.write('<a>ho</a>'); </script><span></span>").should eq "<script>| document.write('<a>ho</a>'); |</script>|<span>|</span>|" }
+    it { tokenizer_to_html("<style> .css res <a></a> </style><span></span>").should eq "<style>| .css res <a></a> |</style>|<span>|</span>|" }
+    it { tokenizer_to_html("<textarea> .css res <a></a> </textarea><span></span>").should eq "<textarea>| .css res <a></a> |</textarea>|<span>|</span>|" }
   end
 end

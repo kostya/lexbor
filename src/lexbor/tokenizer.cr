@@ -24,6 +24,8 @@ class Lexbor::Tokenizer
     end
   end
 
+  CLOSE_FLAG = Lexbor::Lib::HtmlTokenTypeT::LXB_HTML_TOKEN_TYPE_CLOSE | Lexbor::Lib::HtmlTokenTypeT::LXB_HTML_TOKEN_TYPE_CLOSE
+
   CALLBACK = ->(tkz : Lexbor::Lib::HtmlTokenizerT, token : Lexbor::Lib::HtmlTokenT, ctx : Void*) do
     tag_id = token.value.tag_id
 
@@ -37,6 +39,10 @@ class Lexbor::Tokenizer
         else
           token.value.tag_id = tag_id
         end
+      end
+
+      if (token.value.type_ & CLOSE_FLAG).to_i == 0
+        Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, true, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
       end
 
       tok.on_token(Token.new(tok, token))
@@ -65,6 +71,10 @@ class Lexbor::Tokenizer
         else
           token.value.tag_id = tag_id
         end
+      end
+
+      if (token.value.type_ & CLOSE_FLAG).to_i == 0
+        Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, true, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
       end
 
       tok.on_token(Token.new(tok, token))

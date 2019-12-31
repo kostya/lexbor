@@ -113,6 +113,7 @@ module Lexbor
     fun html_tokenizer_tag_heap = lxb_html_tokenizer_tag_heap_noi(tkz : HtmlTokenizerT) : TagHeapT
     fun html_token_tag_id_from_data = lxb_html_token_tag_id_from_data(heap : TagHeapT, token : HtmlTokenT) : TagIdT
     fun html_tokenizer_status_set = lxb_html_tokenizer_status_set_noi(tkz : HtmlTokenizerT, status : StatusT)
+    fun html_tokenizer_set_state_by_tag = lxb_html_tokenizer_set_state_by_tag(tkz : HtmlTokenizerT, scripting : Bool, tag_id : TagIdT, ns : NsIdT)
 
     struct HtmlParserChar
       state : HtmlParserCharStateF
