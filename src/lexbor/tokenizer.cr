@@ -42,7 +42,7 @@ class Lexbor::Tokenizer
       end
 
       if (token.value.type_ & CLOSE_FLAG).to_i == 0
-        Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, true, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
+        Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, false, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
       end
 
       tok.on_token(Token.new(tok, token))
@@ -74,7 +74,7 @@ class Lexbor::Tokenizer
       end
 
       if (token.value.type_ & CLOSE_FLAG).to_i == 0
-        Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, true, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
+        Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, false, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
       end
 
       tok.on_token(Token.new(tok, token))
