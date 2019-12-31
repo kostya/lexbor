@@ -1,4 +1,4 @@
-# Example: parse html into array of tokens with class TokensCollection,
+# Example: parse html into array of tokens with class Tokenizer::Collection,
 #   and extract links from this with iterators.
 
 require "../src/lexbor"
@@ -14,9 +14,8 @@ str = if filename = ARGV[0]?
         HTML
       end
 
-doc = Lexbor::SAX::TokensCollection.new
-parser = Lexbor::SAX.new(doc)
-parser.parse(str)
+doc = Lexbor::Tokenizer::Collection.new
+doc.parse(str)
 
 doc.root.right.nodes(:a).each do |token|
   href = token.attribute_by("href")

@@ -13,23 +13,21 @@ str = if filename = ARGV[0]?
         HTML
       end
 
-class Doc < Lexbor::SAX::Tokenizer
+class Doc < Lexbor::Tokenizer::State
   def on_token(token)
     p token
   end
 end
 
-doc = Doc.new
-parser = Lexbor::SAX.new(doc)
-parser.parse(str)
+Doc.new.parse(str, skip_whitespace_tokens: true)
 
 # Output:
-# Lexbor::SAX::Token(body)
-# Lexbor::SAX::Token(a, {"href" => "/link1"})
-# Lexbor::SAX::Token(-text, "Link1")
-# Lexbor::SAX::Token(/a)
-# Lexbor::SAX::Token(a, {"class" => "red", "href" => "/link2"})
-# Lexbor::SAX::Token(-text, "Link2")
-# Lexbor::SAX::Token(/a)
-# Lexbor::SAX::Token(/body)
-# Lexbor::SAX::Token(-end-of-file)
+# Lexbor::Tokenizer::Token(body)
+# Lexbor::Tokenizer::Token(a, {"href" => "/link1"})
+# Lexbor::Tokenizer::Token(#text, "Link1")
+# Lexbor::Tokenizer::Token(/a)
+# Lexbor::Tokenizer::Token(a, {"class" => "red", "href" => "/link2"})
+# Lexbor::Tokenizer::Token(#text, "Link2")
+# Lexbor::Tokenizer::Token(/a)
+# Lexbor::Tokenizer::Token(/body)
+# Lexbor::Tokenizer::Token(#end-of-file)

@@ -14,7 +14,7 @@ str = if filename = ARGV[0]?
         HTML
       end
 
-class Doc < Lexbor::SAX::Tokenizer
+class Doc < Lexbor::Tokenizer::State
   getter hrefs
 
   def initialize
@@ -30,9 +30,7 @@ class Doc < Lexbor::SAX::Tokenizer
   end
 end
 
-doc = Doc.new
-parser = Lexbor::SAX.new(doc)
-parser.parse(str)
+doc = Doc.new.parse(str)
 p doc.hrefs
 
 # Output:
