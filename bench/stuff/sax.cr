@@ -59,7 +59,7 @@ when 2
   puts "tokens collection"
   t = Time.now
   s = 0
-  N.times do
+  N.times do |n|
     doc = Lexbor::Tokenizer::Collection.new.parse(str)
     count = if COUNT
               x = 0
@@ -71,6 +71,7 @@ when 2
             else
               0
             end
+    p doc.tokens.size if n == 0
     s += count
     doc.free
   end
@@ -80,13 +81,14 @@ when 3
   puts "tokens collection, new iterator"
   t = Time.now
   s = 0
-  N.times do
+  N.times do |n|
     doc = Lexbor::Tokenizer::Collection.new.parse(str)
     count = if COUNT
               doc.root.right.nodes(:a).count { }
             else
               0
             end
+    p doc.tokens.size if n == 0
     s += count
     doc.free
   end
