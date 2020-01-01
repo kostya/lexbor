@@ -18,6 +18,7 @@ str = if filename = ARGV[0]?
 N     = (ARGV[1]? || 10).to_i
 TEST  = (ARGV[2]? || 0).to_i
 COUNT = (ARGV[3]? == "1")
+WS = ((ARGV[4]? || "1") == "1")
 
 class Doc < Lexbor::Tokenizer::State
   getter counter
@@ -60,7 +61,7 @@ when 2
   t = Time.now
   s = 0
   N.times do |n|
-    doc = Lexbor::Tokenizer::Collection.new.parse(str)
+    doc = Lexbor::Tokenizer::Collection.new.parse(str, WS)
     count = if COUNT
               x = 0
               0.upto(doc.tokens.size - 1) do |i|
@@ -82,7 +83,7 @@ when 3
   t = Time.now
   s = 0
   N.times do |n|
-    doc = Lexbor::Tokenizer::Collection.new.parse(str)
+    doc = Lexbor::Tokenizer::Collection.new.parse(str, WS)
     count = if COUNT
               doc.root.right.nodes(:a).count { true }
             else
