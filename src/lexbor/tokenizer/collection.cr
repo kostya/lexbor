@@ -7,8 +7,8 @@ class Lexbor::Tokenizer::Collection < Lexbor::Tokenizer::State
 
   @tkz : Lexbor::Lib::HtmlTokenizerT = Pointer(Void).null.as(Lexbor::Lib::HtmlTokenizerT)
 
-  def parse(str)
-    super(str, true)
+  def parse(str, ws = true)
+    super(str, ws)
   end
 
   def initialize
