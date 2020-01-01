@@ -84,7 +84,7 @@ when 3
   N.times do |n|
     doc = Lexbor::Tokenizer::Collection.new.parse(str)
     count = if COUNT
-              doc.root.right.nodes(:a).count { }
+              doc.root.right.nodes(:a).count { true }
             else
               0
             end
