@@ -4,7 +4,7 @@ struct Lexbor::Tokenizer::Token
   getter state : Lexbor::Tokenizer::State
 
   # :nodoc:
-  getter raw_token : Lexbor::Lib::HtmlTokenT
+  getter raw_token : Lexbor::Lib::HtmlToken
 
   def initialize(@state, @raw_token)
   end
@@ -19,7 +19,7 @@ struct Lexbor::Tokenizer::Token
 
   @[AlwaysInline]
   def tag_id
-    @raw_token.value.tag_id
+    @raw_token.tag_id
   end
 
   @[AlwaysInline]
@@ -31,12 +31,12 @@ struct Lexbor::Tokenizer::Token
 
   @[AlwaysInline]
   def self_closed?
-    (@raw_token.value.type_ & Lexbor::Lib::HtmlTokenTypeT::LXB_HTML_TOKEN_TYPE_CLOSE_SELF).to_i != 0
+    (@raw_token.type_ & Lexbor::Lib::HtmlTokenTypeT::LXB_HTML_TOKEN_TYPE_CLOSE_SELF).to_i != 0
   end
 
   @[AlwaysInline]
   def closed?
-    (@raw_token.value.type_ & Lexbor::Lib::HtmlTokenTypeT::LXB_HTML_TOKEN_TYPE_CLOSE).to_i != 0
+    (@raw_token.type_ & Lexbor::Lib::HtmlTokenTypeT::LXB_HTML_TOKEN_TYPE_CLOSE).to_i != 0
   end
 
   @[AlwaysInline]
@@ -54,8 +54,8 @@ struct Lexbor::Tokenizer::Token
 
   @[AlwaysInline]
   def tag_text_slice
-    begin_ = @raw_token.value.begin_
-    Slice.new(begin_, @raw_token.value.end_ - begin_)
+    begin_ = @raw_token.begin_
+    Slice.new(begin_, @raw_token.end_ - begin_)
   end
 
   @[AlwaysInline]
@@ -76,8 +76,8 @@ struct Lexbor::Tokenizer::Token
     pc.replace_null = true
 
     res = Lexbor::Lib.html_parser_char_process(pointerof(pc).as(Lexbor::Lib::HtmlParserCharT),
-      pointerof(str).as(Lexbor::Lib::StrT), @raw_token.value.in_begin,
-      @raw_token.value.begin_, @raw_token.value.end_)
+      pointerof(str).as(Lexbor::Lib::StrT), @raw_token.in_begin,
+      @raw_token.begin_, @raw_token.end_)
 
     unless res == Lexbor::Lib::StatusT::LXB_STATUS_OK
       raise Lexbor::LibError.new("Failed to make data from token: #{res}")
@@ -95,7 +95,7 @@ struct Lexbor::Tokenizer::Token
   @attributes : Hash(String, String)?
 
   private def each_raw_attribute
-    attr = @raw_token.value.attr_first
+    attr = @raw_token.attr_first
 
     while !attr.null?
       yield(attr)
@@ -119,7 +119,7 @@ struct Lexbor::Tokenizer::Token
 
   @[AlwaysInline]
   def any_attribute?
-    !@raw_token.value.attr_first.null?
+    !@raw_token.attr_first.null?
   end
 
   def each_sliced_attribute

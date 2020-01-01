@@ -45,7 +45,7 @@ class Lexbor::Tokenizer
         Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, false, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
       end
 
-      tok.on_token(Token.new(tok, token))
+      tok.on_token(Token.new(tok, token.value))
     end
 
     token
@@ -77,7 +77,7 @@ class Lexbor::Tokenizer
         Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, false, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
       end
 
-      tok.on_token(Token.new(tok, token))
+      tok.on_token(Token.new(tok, token.value))
     end
 
     token

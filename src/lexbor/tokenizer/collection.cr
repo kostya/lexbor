@@ -17,7 +17,7 @@ class Lexbor::Tokenizer::Collection < Lexbor::Tokenizer::State
   end
 
   def on_token(token)
-    @tokens << token.raw_token.value
+    @tokens << token.raw_token
   end
 
   def clear
@@ -38,7 +38,7 @@ class Lexbor::Tokenizer::Collection < Lexbor::Tokenizer::State
 
   @[AlwaysInline]
   def unsafe_token(i)
-    Lexbor::Tokenizer::Token.new(self, (@tokens.to_unsafe + i).as(Lexbor::Lib::HtmlTokenT))
+    Lexbor::Tokenizer::Token.new(self, (@tokens.to_unsafe + i).value)
   end
 
   @[AlwaysInline]

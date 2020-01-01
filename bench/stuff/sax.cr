@@ -18,7 +18,7 @@ str = if filename = ARGV[0]?
 N     = (ARGV[1]? || 10).to_i
 TEST  = (ARGV[2]? || 0).to_i
 COUNT = (ARGV[3]? == "1")
-WS = ((ARGV[4]? || "1") == "1")
+WS    = ((ARGV[4]? || "1") == "1")
 
 class Doc < Lexbor::Tokenizer::State
   getter counter
@@ -50,7 +50,7 @@ when 1
   t = Time.now
   s = 0
   N.times do
-    doc = Doc.new(COUNT).parse(str)
+    doc = Doc.new(COUNT).parse(str, WS)
     s += doc.counter
     doc.free
   end
