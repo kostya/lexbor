@@ -15,10 +15,17 @@ describe Lexbor do
     v.size.should be > 0
   end
 
-  it "decode_html_entities" do
-    Lexbor.decode_html_entities("").should eq ""
-    Lexbor.decode_html_entities(" ").should eq " "
-    Lexbor.decode_html_entities("Chris").should eq "Chris"
-    Lexbor.decode_html_entities("asdf &#61 &amp - &amp; bla -- &Auml; asdf").should eq "asdf = & - & bla -- Ä asdf"
+  context "decode_html_entities" do
+    it { Lexbor.decode_html_entities("").should eq "" }
+    it { Lexbor.decode_html_entities(" ").should eq " " }
+    it { Lexbor.decode_html_entities("Chris").should eq "Chris" }
+    it { Lexbor.decode_html_entities("-&nbsp;-").should eq "- -" }
+    it { Lexbor.decode_html_entities("&nbsp;-").should eq " -" }
+    it { Lexbor.decode_html_entities("&nbsp-").should eq " -" }
+    it { Lexbor.decode_html_entities("-&nbsp").should eq "- " }
+    it { Lexbor.decode_html_entities("-&nbsp;").should eq "- " }
+    it { Lexbor.decode_html_entities("&nbsp").should eq " " }
+    it { Lexbor.decode_html_entities("&nbsp;").should eq " " }
+    it { Lexbor.decode_html_entities("asdf &#61 &amp - &amp; bla -- &Auml; asdf").should eq "asdf = & - & bla -- Ä asdf" }
   end
 end

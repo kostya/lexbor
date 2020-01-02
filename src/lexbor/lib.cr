@@ -138,6 +138,9 @@ module Lexbor
     fun html_parser_char_ref_data = lxb_html_parser_char_ref_data(pc : HtmlParserCharT, str : StrT, data : UInt8*, end : UInt8*) : UInt8*
     fun html_tokenizer_mraw = lxb_html_tokenizer_mraw_noi(tkz : HtmlTokenizerT) : MRawT
     fun str_destroy = lexbor_str_destroy(str : StrT, mraw : MRawT, obj : Bool) : StrT
+    fun str_init = lexbor_str_init(str : StrT, mraw : MRawT, size : LibC::SizeT) : UInt8*
+    fun mraw_create = lexbor_mraw_create : MRawT
+    fun mraw_init = lexbor_mraw_init(mraw : MRawT, size : LibC::SizeT) : StatusT
 
     type HtmlTokenAttrTypeT = Int32
     type InNodeT = Void*
