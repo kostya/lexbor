@@ -12,7 +12,7 @@ class Lexbor::Tokenizer::Collection < Lexbor::Tokenizer::State
   end
 
   def initialize
-    @tokens = [] of Lexbor::Lib::HtmlToken # TODO: maybe better just store token, benchmark it
+    @tokens = [] of Lexbor::Lib::HtmlToken
     @last_id = 0
   end
 
@@ -21,7 +21,8 @@ class Lexbor::Tokenizer::Collection < Lexbor::Tokenizer::State
   end
 
   def clear
-    @tokens.clear
+    @tokens = [] of Lexbor::Lib::HtmlToken
+    @last_id = 0
   end
 
   def size
