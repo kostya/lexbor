@@ -84,6 +84,7 @@ module Lexbor::Utils::DetectEncoding
     h["unicode"] = Lexbor::LibEncoding::EncodingT::LXB_ENCODING_UTF_8
     h["utf"] = Lexbor::LibEncoding::EncodingT::LXB_ENCODING_UTF_8
     h["uft-8"] = Lexbor::LibEncoding::EncodingT::LXB_ENCODING_UTF_8
+    h["utf_8"] = Lexbor::LibEncoding::EncodingT::LXB_ENCODING_UTF_8
     h["uft8"] = Lexbor::LibEncoding::EncodingT::LXB_ENCODING_UTF_8
     h["ansi"] = Lexbor::LibEncoding::EncodingT::LXB_ENCODING_WINDOWS_1252
     h["koi8u"] = Lexbor::LibEncoding::EncodingT::LXB_ENCODING_KOI8_U
@@ -150,14 +151,15 @@ module Lexbor::Utils::DetectEncoding
     unfinded_encodings = [] of String
 
     if bom = Lexbor::Utils::DetectEncoding.detect_bom(slice)
-      slice = Slice.new(slice.to_unsafe + bom.shift, slice.bytesize - bom.shift)
+      slice = bom.shifted(slice)
       enc = bom.encoding
       enc_type = :bom
     end
 
     if from
       if from.is_a?(String)
-        if enc = Lexbor::Utils::DetectEncoding.assoc_encoding_with_additionals(from)
+        enc = Lexbor::Utils::DetectEncoding.assoc_encoding_with_additionals(from)
+        if enc
           enc_type = :from
         else
           unfinded_encodings << from

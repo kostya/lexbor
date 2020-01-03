@@ -1,5 +1,4 @@
 class Lexbor::EncodingConverter
-  BUFFER_SIZE       = 4 * 1024
   REPLACEMENT_BYTES = "\xEF\xBF\xBD"
 
   @to : LibEncoding::DataT
@@ -9,12 +8,13 @@ class Lexbor::EncodingConverter
   @replace_str : String?
   @outbuf : Pointer(UInt8)
   @codepoints_buffer : Pointer(LibEncoding::CodepointT)
+  @buffer_size : Int32
 
   @replace_chars : Pointer(UInt32)?
   @replace_chars_size = 1
   @replace_single_codepoint = 0xFFFD_u32
 
-  def self.new(from : LibEncoding::EncodingT | String, to : LibEncoding::EncodingT | String, replace_str : String? = nil)
+  def self.new(from : LibEncoding::EncodingT | String, to : LibEncoding::EncodingT | String, replace_str : String? = nil, buffer_size = 4 * 1024)
     from = if from.is_a?(String)
              LibEncoding.data_by_pre_name(from, from.bytesize)
            else
@@ -27,10 +27,10 @@ class Lexbor::EncodingConverter
            LibEncoding.data(to)
          end
 
-    new(from, to, replace_str)
+    new(from, to, replace_str, buffer_size)
   end
 
-  def initialize(@from : LibEncoding::DataT, @to : LibEncoding::DataT, @replace_str : String? = nil)
+  def initialize(@from : LibEncoding::DataT, @to : LibEncoding::DataT, @replace_str : String? = nil, @buffer_size = 4 * 1024)
     if @from.null?
       raise ArgumentError.new("Unknown from encoding")
     end
@@ -42,8 +42,8 @@ class Lexbor::EncodingConverter
     @encoder = Pointer(Void).malloc(LibEncoding.encode_t_sizeof).as(LibEncoding::EncodeT)
     @decoder = Pointer(Void).malloc(LibEncoding.decode_t_sizeof).as(LibEncoding::DecodeT)
 
-    @outbuf = Pointer(UInt8).malloc(BUFFER_SIZE)
-    @codepoints_buffer = Pointer(LibEncoding::CodepointT).malloc(BUFFER_SIZE)
+    @outbuf = Pointer(UInt8).malloc(@buffer_size)
+    @codepoints_buffer = Pointer(LibEncoding::CodepointT).malloc(@buffer_size)
 
     if replace_str = @replace_str
       case replace_str.bytesize
@@ -67,7 +67,7 @@ class Lexbor::EncodingConverter
   end
 
   private def initialize_convert
-    status = LibEncoding.decode_init(@decoder, @from, @codepoints_buffer, BUFFER_SIZE)
+    status = LibEncoding.decode_init(@decoder, @from, @codepoints_buffer, @buffer_size)
     if status != Lib::StatusT::LXB_STATUS_OK
       raise LibError.new("Failed to initialize encoder: #{status}")
     end
@@ -81,7 +81,7 @@ class Lexbor::EncodingConverter
       raise LibError.new("Failed to set replacement code point for decoder #{status}")
     end
 
-    status = LibEncoding.encode_init(@encoder, @to, @outbuf, BUFFER_SIZE)
+    status = LibEncoding.encode_init(@encoder, @to, @outbuf, @buffer_size)
     if status != Lib::StatusT::LXB_STATUS_OK
       raise LibError.new("Failed to initialize encoder #{status}")
     end
@@ -161,13 +161,13 @@ class Lexbor::EncodingConverter
   def convert(io : IO)
     initialize_convert if @finished
 
-    buf = uninitialized UInt8[EncodingConverter::BUFFER_SIZE]
-    slice = Slice.new(buf.to_unsafe, EncodingConverter::BUFFER_SIZE)
+    buf = Pointer(UInt8).malloc(@buffer_size)
+    slice = Slice.new(buf, @buffer_size)
 
     loop do
       size = io.read(slice)
       break if size == 0
-      convert_buffer(Slice.new(slice.to_unsafe, size)) { |out_slice| yield(out_slice) }
+      convert_buffer(Slice.new(buf, size)) { |out_slice| yield(out_slice) }
     end
 
     finish_decode! { |out_slice| yield(out_slice) }

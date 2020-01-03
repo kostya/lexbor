@@ -1,4 +1,4 @@
-# Example: extract links from html with sax parser
+# Example: extract links from html with Tokenizer parser
 #   this is faster and cheaper, when you not need to build full html document
 
 require "../src/lexbor"

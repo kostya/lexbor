@@ -1,4 +1,4 @@
-# Example: print html tokens using sax parser
+# Example: print html tokens using tokenizer
 
 require "../src/lexbor"
 
