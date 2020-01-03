@@ -1,12 +1,11 @@
-REV := 4c03bfc2a04763d803e6a23eb10605e864ad1f59
+REV := a4227646259d90c9787c05b9fd5d3283069710ec
 
 .PHONY: package
 package: ./lexbor-c/build/liblexbor_static.a
 
 ./lexbor-c:
-	# git clone https://github.com/lexbor/lexbor.git --depth 1 ./lexbor-c
 	git clone https://github.com/lexbor/lexbor.git ./lexbor-c
-	# cd lexbor-c && git reset --hard $(REV)
+	cd lexbor-c && git reset --hard $(REV)
 
 ./lexbor-c/build/liblexbor_static.a: ./lexbor-c
 	cd ./lexbor-c && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release && make lexbor_static -j2
