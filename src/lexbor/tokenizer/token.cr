@@ -41,7 +41,7 @@ struct Lexbor::Tokenizer::Token
 
   @[AlwaysInline]
   def tag_name_slice
-    buf = Lexbor::Lib.tag_name_by_id(heap, tag_id, out len)
+    buf = Lexbor::Lib.tag_name_by_id(tags, tag_id, out len)
     Slice.new(buf, len)
   end
 
@@ -325,7 +325,7 @@ struct Lexbor::Tokenizer::Token
 
   # :nodoc:
   @[AlwaysInline]
-  private def heap
-    @state.tokenizer.not_nil!.heap
+  private def tags
+    @state.tokenizer.not_nil!.tags
   end
 end

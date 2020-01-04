@@ -31,7 +31,7 @@ module Lexbor
     fun element_get_tag_id = lxb_dom_node_tag_id_noi(element : DomElementT) : Lexbor::Lib::TagIdT
     fun element_text_content = lxb_dom_node_text_content(element : DomElementT, len : LibC::SizeT*) : UInt8*
     fun element_text_content_set = lxb_dom_node_text_content_set(element : DomElementT, content : UInt8*, len : LibC::SizeT) : StatusT
-    fun element_qualified_name = lxb_dom_element_qualified_name_noi(element : DomElementT, len : LibC::SizeT*) : UInt8*
+    fun element_qualified_name = lxb_dom_element_qualified_name(element : DomElementT, len : LibC::SizeT*) : UInt8*
     fun element_local_name = lxb_dom_element_local_name_noi(element : DomElementT, len : LibC::SizeT*) : UInt8*
     fun node_is_void = lxb_html_node_is_void_noi(element : DomElementT) : Bool
 
@@ -82,6 +82,7 @@ module Lexbor
     end
 
     type StrT = Str*
+    type HashT = Void*
 
     struct HtmlToken
       begin_ : UInt8*
@@ -105,13 +106,10 @@ module Lexbor
     fun html_tokenizer_chunk = lxb_html_tokenizer_chunk(tkz : HtmlTokenizerT, data : UInt8*, size : LibC::SizeT) : StatusT
     fun html_tokenizer_end = lxb_html_tokenizer_end(tkz : HtmlTokenizerT) : StatusT
     fun html_tokenizer_destroy = lxb_html_tokenizer_destroy(tkz : HtmlTokenizerT) : HtmlTokenizerT
-    fun tag_heap_create = lxb_tag_heap_create : TagHeapT
-    fun tag_heap_init = lxb_tag_heap_init(heap : TagHeapT, size : LibC::SizeT) : StatusT
-    fun tag_heap_destroy = lxb_tag_heap_destroy(heap : TagHeapT) : TagHeapT
-    fun tag_name_by_id = lxb_tag_name_by_id_noi(heap : TagHeapT, tag_id : TagIdT, len : LibC::SizeT*) : UInt8*
-    fun html_tokenizer_tag_heap_set = lxb_html_tokenizer_tag_heap_set_noi(tkz : HtmlTokenizerT, heap : TagHeapT)
-    fun html_tokenizer_tag_heap = lxb_html_tokenizer_tag_heap_noi(tkz : HtmlTokenizerT) : TagHeapT
-    fun html_token_tag_id_from_data = lxb_html_token_tag_id_from_data(heap : TagHeapT, token : HtmlTokenT) : TagIdT
+    fun tag_name_by_id = lxb_tag_name_by_id_noi(hash : HashT, tag_id : TagIdT, len : LibC::SizeT*) : UInt8*
+    fun html_tokenizer_tags_make = lxb_html_tokenizer_tags_make(tkz : HtmlTokenizerT, table_size : LibC::SizeT) : StatusT
+    fun html_tokenizer_tags_destroy = lxb_html_tokenizer_tags_destroy(tkz : HtmlTokenizerT)
+    fun html_token_tag_id_from_data = lxb_html_token_tag_id_from_data(hash : HashT, token : HtmlTokenT, mraw : MRawT) : TagIdT
     fun html_tokenizer_status_set = lxb_html_tokenizer_status_set_noi(tkz : HtmlTokenizerT, status : StatusT)
     fun html_tokenizer_set_state_by_tag = lxb_html_tokenizer_set_state_by_tag(tkz : HtmlTokenizerT, scripting : Bool, tag_id : TagIdT, ns : NsIdT)
 
@@ -137,6 +135,7 @@ module Lexbor
     fun html_parser_char_process = lxb_html_parser_char_process(pc : HtmlParserCharT, str : StrT, in_mode : InModeT, data : UInt8*, end : UInt8*) : StatusT
     fun html_parser_char_ref_data = lxb_html_parser_char_ref_data(pc : HtmlParserCharT, str : StrT, data : UInt8*, end : UInt8*) : UInt8*
     fun html_tokenizer_mraw = lxb_html_tokenizer_mraw_noi(tkz : HtmlTokenizerT) : MRawT
+    fun html_tokenizer_tags = lxb_html_tokenizer_tags_noi(tkz : HtmlTokenizerT) : HashT
     fun str_destroy = lexbor_str_destroy(str : StrT, mraw : MRawT, obj : Bool) : StrT
     fun str_init = lexbor_str_init(str : StrT, mraw : MRawT, size : LibC::SizeT) : UInt8*
     fun mraw_create = lexbor_mraw_create : MRawT

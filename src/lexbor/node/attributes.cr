@@ -92,7 +92,7 @@ struct Lexbor::Node
 
   @[AlwaysInline]
   private def attribute_name(attr)
-    name = Lib.attribute_qualified_name(attr, out name_length)
+    name = Lib.attribute_local_name(attr, out name_length)
     Slice(UInt8).new(name, name_length)
   end
 

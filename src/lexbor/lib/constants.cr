@@ -1,7 +1,7 @@
 module Lexbor
   lib Lib
     # cat src/ext/lexbor-c/source/lexbor/tag/const.h | grep '    LXB_TAG' | ruby -e 'while s = gets; puts s.gsub(",", "").gsub("//", "#"); end;'
-    enum TagIdT : UInt32
+    enum TagIdT : LibC::SizeT
       LXB_TAG__UNDEF              = 0x0000
       LXB_TAG__END_OF_FILE        = 0x0001
       LXB_TAG__TEXT               = 0x0002

@@ -5,8 +5,6 @@ require "./token"
 class Lexbor::Tokenizer::Collection < Lexbor::Tokenizer::State
   getter tokens, last_id
 
-  @tkz : Lexbor::Lib::HtmlTokenizerT = Pointer(Void).null.as(Lexbor::Lib::HtmlTokenizerT)
-
   def parse(str, ws = true)
     super(str, ws)
   end
@@ -27,10 +25,6 @@ class Lexbor::Tokenizer::Collection < Lexbor::Tokenizer::State
 
   def size
     @tokens.size
-  end
-
-  def on_begin(tok)
-    @tkz = tok.tkz
   end
 
   def on_end

@@ -71,7 +71,7 @@ MISTAKES = {"uft8"  => Lexbor::LibEncoding::EncodingT::LXB_ENCODING_UTF_8,
             "uft-8" => Lexbor::LibEncoding::EncodingT::LXB_ENCODING_UTF_8,
             "utf"   => Lexbor::LibEncoding::EncodingT::LXB_ENCODING_UTF_8,
             # "urf-8"           => Lexbor::LibEncoding::EncodingT::LXB_ENCODING_UTF_8,
-            "windows 1251" => Lexbor::LibEncoding::EncodingT::LXB_ENCODING_WINDOWS_1251,
+            # "windows 1251" => Lexbor::LibEncoding::EncodingT::LXB_ENCODING_WINDOWS_1251,
             # "coi8-r"          => Lexbor::LibEncoding::EncodingT::LXB_ENCODING_KOI8_R,
             "koi8-ru"         => Lexbor::LibEncoding::EncodingT::LXB_ENCODING_KOI8_U,
             "windows-cp1251"  => Lexbor::LibEncoding::EncodingT::LXB_ENCODING_WINDOWS_1251,
@@ -83,6 +83,7 @@ MISTAKES = {"uft8"  => Lexbor::LibEncoding::EncodingT::LXB_ENCODING_UTF_8,
             "'UTF-8'"          => Lexbor::LibEncoding::EncodingT::LXB_ENCODING_UTF_8,
             "utf-8; dir=rtl"   => Lexbor::LibEncoding::EncodingT::LXB_ENCODING_UTF_8,
             "cp_1251; dir=rtl" => Lexbor::LibEncoding::EncodingT::LXB_ENCODING_WINDOWS_1251,
+            # "ru_RU.CP1251"     => Lexbor::LibEncoding::EncodingT::LXB_ENCODING_WINDOWS_1251,
 }
 
 NOTHING = {"aasdfadsfd" => nil, "charset=utf-8" => nil,
@@ -129,7 +130,7 @@ describe Lexbor::Utils::DetectEncoding do
     end
 
     MISTAKES.each do |k, v|
-      pending "MISTAKES should find '#{v}' for '#{k}'" do
+      it "MISTAKES should find '#{v}' for '#{k}'" do
         assoc_encoding(k).should eq v
       end
     end

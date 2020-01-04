@@ -30,10 +30,11 @@ class Lexbor::Tokenizer
     tag_id = token.value.tag_id
 
     unless ctx.null?
-      tok = ctx.as(Lexbor::Tokenizer::State)
+      state = ctx.as(Lexbor::Tokenizer::State)
 
       if tag_id == Lexbor::Lib::TagIdT::LXB_TAG__UNDEF
-        tag_id = Lexbor::Lib.html_token_tag_id_from_data(tok.tokenizer!.heap, token)
+        tokenizer = state.tokenizer!
+        tag_id = Lexbor::Lib.html_token_tag_id_from_data(tokenizer.tags, token, tokenizer.mraw)
         if tag_id == Lexbor::Lib::TagIdT::LXB_TAG__UNDEF
           return Pointer(Void).null.as(Lexbor::Lib::HtmlTokenT)
         else
@@ -45,7 +46,7 @@ class Lexbor::Tokenizer
         Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, false, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
       end
 
-      tok.on_token(Token.new(tok, token.value))
+      state.on_token(Token.new(state, token.value))
     end
 
     token
@@ -63,9 +64,10 @@ class Lexbor::Tokenizer
     end
 
     unless ctx.null?
-      tok = ctx.as(Lexbor::Tokenizer::State)
+      state = ctx.as(Lexbor::Tokenizer::State)
       if tag_id == Lexbor::Lib::TagIdT::LXB_TAG__UNDEF
-        tag_id = Lexbor::Lib.html_token_tag_id_from_data(tok.tokenizer!.heap, token)
+        tokenizer = state.tokenizer!
+        tag_id = Lexbor::Lib.html_token_tag_id_from_data(tokenizer.tags, token, tokenizer.mraw)
         if tag_id == Lexbor::Lib::TagIdT::LXB_TAG__UNDEF
           return Pointer(Void).null.as(Lexbor::Lib::HtmlTokenT)
         else
@@ -77,18 +79,17 @@ class Lexbor::Tokenizer
         Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, false, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
       end
 
-      tok.on_token(Token.new(tok, token.value))
+      state.on_token(Token.new(state, token.value))
     end
 
     token
   end
 
-  getter tkz, heap
+  getter tkz, mraw, tags
 
   def initialize(state, @skip_whitespace_tokens = false)
     @finalized = false
     @tkz = Lexbor::Lib.html_tokenizer_create
-    @heap = Lexbor::Lib.tag_heap_create
 
     res = Lexbor::Lib.html_tokenizer_init(@tkz)
     unless res == Lexbor::Lib::StatusT::LXB_STATUS_OK
@@ -96,16 +97,17 @@ class Lexbor::Tokenizer
       raise LibError.new("Failed to html_tokenizer_init: #{res}")
     end
 
-    res = Lexbor::Lib.tag_heap_init(@heap, 128)
+    res = Lexbor::Lib.html_tokenizer_tags_make(@tkz, 64)
     unless res == Lexbor::Lib::StatusT::LXB_STATUS_OK
       free
-      raise LibError.new("Failed to init heap: #{res}")
+      raise LibError.new("Failed to create tokenizer tags: #{res}")
     end
-
-    Lexbor::Lib.html_tokenizer_tag_heap_set(@tkz, @heap)
 
     Lexbor::Lib.html_tokenizer_opt_set(@tkz, Lexbor::Lib::HtmlTokenizerOptT::LXB_HTML_TOKENIZER_OPT_WO_COPY)
     Lexbor::Lib.html_tokenizer_callback_token_done_set(@tkz, @skip_whitespace_tokens ? CALLBACK_WO_WHITESPACE_TOKENS : CALLBACK, state.as(Void*))
+
+    @mraw = Lexbor::Lib.html_tokenizer_mraw(@tkz)
+    @tags = Lexbor::Lib.html_tokenizer_tags(@tkz)
   end
 
   def parse(state, str : String)
@@ -142,8 +144,8 @@ class Lexbor::Tokenizer
   def free
     unless @finalized
       @finalized = true
+      Lexbor::Lib.html_tokenizer_tags_destroy(@tkz)
       Lexbor::Lib.html_tokenizer_destroy(@tkz)
-      Lexbor::Lib.tag_heap_destroy(@heap)
     end
   end
 end
