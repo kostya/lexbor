@@ -1,11 +1,11 @@
 module Lexbor
-  VERSION = "2.5.0"
+  VERSION = "2.6.0"
 
   def self.lib_version
   end
 
   def self.version
-    "Lexbor v#{VERSION} (liblexbor v0.4.0-12-gb6c9c73)" # git describe --tags
+    "Lexbor v#{VERSION} (liblexbor v1.0.0 3cf192ff8106a78a942bc0ad8b4d5e9e30a4c0b3)" # git describe --tags
   end
 
   #
