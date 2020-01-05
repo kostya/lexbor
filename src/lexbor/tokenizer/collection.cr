@@ -1,73 +1,73 @@
 require "./token"
+require "../utils/paged_array"
 
 # Helper tokenizer state class which store tokens into array,
 #   provide methods to iterator throuht them.
 class Lexbor::Tokenizer::Collection < Lexbor::Tokenizer::State
-  getter tokens, last_id
+  getter storage
 
   def parse(str, ws = true)
     super(str, ws)
   end
 
-  def initialize
-    @tokens = [] of Lexbor::Lib::HtmlToken
-    @last_id = 0
+  def initialize(page_size = 1000)
+    @storage = Lexbor::Utils::PagedArray(Lexbor::Lib::HtmlToken).new(page_size)
   end
 
   def on_token(token)
-    @tokens << token.raw_token
+    @storage << token.raw_token
   end
 
   def clear
-    @tokens = [] of Lexbor::Lib::HtmlToken
-    @last_id = 0
   end
 
   def size
-    @tokens.size
-  end
-
-  def on_end
-    @last_id = size - 1
-  end
-
-  @[AlwaysInline]
-  def unsafe_token(i)
-    Lexbor::Tokenizer::Token.new(self, (@tokens.to_unsafe + i).value)
-  end
-
-  @[AlwaysInline]
-  protected def unsafe_token_pos(i)
-    TokenPos.new(self, unsafe_token(i), i)
+    @storage.elements_size
   end
 
   def root
     raise Lexbor::EmptyNodeError.new("empty collection") if size == 0
-    TokenPos.new(self, unsafe_token(@last_id), -1)
+    token_pos @storage.first
   end
 
   def first
     raise Lexbor::EmptyNodeError.new("empty collection") if size == 0
-    TokenPos.new(self, unsafe_token(0), 0)
+    token_pos @storage.first
   end
 
   def last
     raise Lexbor::EmptyNodeError.new("empty collection") if size == 0
-    TokenPos.new(self, unsafe_token(@last_id), @last_id)
+    token_pos @storage.last
   end
 
-  record TokenPos, collection : Collection, token : Lexbor::Tokenizer::Token, idx : Int32 do
+  def each
+    @storage.each do |data|
+      yield(token_pos(data))
+    end
+  end
+
+  @[AlwaysInline]
+  private def token(v : Lexbor::Lib::HtmlToken)
+    Lexbor::Tokenizer::Token.new(self, v)
+  end
+
+  @[AlwaysInline]
+  protected def token_pos(v : Lexbor::Utils::PagedArray::Pos(Lexbor::Lib::HtmlToken))
+    TokenPos.new(self, token(v.value), v)
+  end
+
+  record TokenPos, collection : Collection, token : Lexbor::Tokenizer::Token, pos : Lexbor::Utils::PagedArray::Pos(Lexbor::Lib::HtmlToken) do
     forward_missing_to @token
 
     def next
-      if @idx < @collection.last_id
-        @collection.unsafe_token_pos(@idx + 1)
+      if v = @pos.next
+        collection.token_pos v
       end
     end
 
     def prev
-      if @idx > 0
-        @collection.unsafe_token_pos(@idx - 1)
+      if v = @pos.prev
+        collection.token_pos v
       end
     end
 

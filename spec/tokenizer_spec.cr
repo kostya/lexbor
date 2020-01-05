@@ -212,7 +212,14 @@ describe Lexbor::Tokenizer do
 
     it "iterate with right iterator" do
       doc = parse_doc
-      doc.root.right.map(&.token.inspect).to_a.should eq INSPECT_TOKENS
+      doc.root.right.map(&.token.inspect).to_a.should eq INSPECT_TOKENS[1..-1]
+    end
+
+    it "iterate with each iterator, fast than root.right" do
+      doc = parse_doc
+      res = [] of String
+      doc.each { |t| res << t.token.inspect }
+      res.should eq INSPECT_TOKENS
     end
 
     it "iterate with left iterator" do
