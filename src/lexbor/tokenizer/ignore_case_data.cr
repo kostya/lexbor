@@ -24,7 +24,7 @@ record Lexbor::Tokenizer::IgnoreCaseData, name : Bytes do
     end
   end
 
-  def ==(key2)
+  def ==(key2 : IgnoreCaseData)
     key1 = name
     key2 = key2.name
 

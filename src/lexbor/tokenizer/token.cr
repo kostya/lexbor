@@ -171,20 +171,19 @@ struct Lexbor::Tokenizer::Token
     end
   end
 
-  def attribute_by(name : String)
-    icd = IgnoreCaseData.new(name)
+  def attribute_by(name : IgnoreCaseData)
     each_attribute do |k, v|
-      return v if k == icd
+      return v if k == name
     end
     nil
   end
 
+  def attribute_by(name : String)
+    attribute_by IgnoreCaseData.new(name)
+  end
+
   def attribute_by(slice : Slice)
-    icd = IgnoreCaseData.new(slice)
-    each_sliced_attribute do |k, v|
-      return v if k == icd
-    end
-    nil
+    attribute_by IgnoreCaseData.new(slice)
   end
 
   def attribute_by_processed(name : String)
