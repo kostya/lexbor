@@ -118,6 +118,36 @@ def tokenizer_to_html(html)
   ToHtml.new.parse(html).@res
 end
 
+# custom storage
+class Collection2 < Lexbor::Tokenizer::Collection
+  def initialize
+    super
+    @script = 0
+    @style = 0
+  end
+
+  def on_token(t)
+    case t.tag_id
+    when Lexbor::Lib::TagIdT::LXB_TAG__TEXT
+      @storage << t.raw_token if @script == 0 && @style == 0
+    when Lexbor::Lib::TagIdT::LXB_TAG_A
+      @storage << t.raw_token
+    when Lexbor::Lib::TagIdT::LXB_TAG_SCRIPT
+      if t.closed?
+        @script -= 1 if @script > 0
+      else
+        @script += 1 unless t.self_closed?
+      end
+    when Lexbor::Lib::TagIdT::LXB_TAG_STYLE
+      if t.closed?
+        @style -= 1 if @style > 0
+      else
+        @style += 1 unless t.self_closed?
+      end
+    end
+  end
+end
+
 describe Lexbor::Tokenizer do
   context "Basic usage" do
     it "count" do
@@ -264,6 +294,11 @@ describe Lexbor::Tokenizer do
 
         links.should eq ["a:b:c:/1", "d:e:f:/2"]
       end
+    end
+
+    it "custom storage" do
+      col2 = Collection2.new.parse(CONT1)
+      col2.root.right.map(&.token.inspect).to_a.should eq ["Lexbor::Tokenizer::Token(a, {\"href\" => \"/href\"})", "Lexbor::Tokenizer::Token(#text, \"link &amp; lnk\")", "Lexbor::Tokenizer::Token(/a)"]
     end
   end
 
