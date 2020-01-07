@@ -13,13 +13,25 @@ module Lexbor::Utils::HtmlEntities
     decode(s.to_slice)
   end
 
-  def self.decode(slice : Slice)
-    data = slice.to_unsafe
-    _end = data + slice.bytesize
+  def self.decode(s : String)
+    decode(s.to_slice) do |res|
+      yield res
+    end
+  end
 
+  def self.decode(slice : Slice)
+    decode(slice) do |res|
+      String.new(res)
+    end
+  end
+
+  def self.decode(slice : Slice)
     str = uninitialized Lexbor::Lib::Str
     str.data = nil
     str.length = 0
+
+    data = slice.to_unsafe
+    _end = data + slice.bytesize
 
     Lib.str_init(pointerof(str).as(Lib::StrT), MRAW, slice.bytesize)
     if str.data == nil
@@ -48,9 +60,10 @@ module Lexbor::Utils::HtmlEntities
     pc.is_eof = true
     data = pc.state.call(pointerof(pc).as(Lib::HtmlParserCharT), pointerof(str).as(Lib::StrT), tail_p, tail_p + 1)
 
-    res = String.new(str.data, str.length)
-    Lexbor::Lib.str_destroy(pointerof(str).as(Lexbor::Lib::StrT), MRAW, false)
-
-    res
+    begin
+      yield(Slice.new(str.data, str.length))
+    ensure
+      Lexbor::Lib.str_destroy(pointerof(str).as(Lexbor::Lib::StrT), MRAW, false)
+    end
   end
 end
