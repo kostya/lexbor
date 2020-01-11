@@ -15,7 +15,8 @@ describe Lexbor::Utils::PagedArray do
      block_size * 2 + block_size / 2 + 2, rand(1000)].each do |el_count|
       context "#{block_size}:#{el_count}" do
         a = Lexbor::Utils::PagedArray(Int32).new(block_size)
-        el_count.times { |i| a << i }
+        el_count = el_count.round
+        el_count.to_i.times { |i| a << i }
 
         it "each" do
           a.map(&.value).to_a.should eq (0...el_count).to_a
@@ -30,7 +31,7 @@ describe Lexbor::Utils::PagedArray do
         end
 
         it "last" do
-          a.last?.try(&.value).should eq(el_count == 0 ? nil : el_count - 1)
+          a.last?.try(&.value).should eq(el_count == 0 ? nil : el_count.to_i - 1)
         end
 
         it "iterate from first to end" do
