@@ -2,14 +2,14 @@ require "myhtml"
 
 page = File.read("./google.html")
 
-t = Time.now
+t = Time.local
 1000.times do
   myhtml = Myhtml::Parser.new(page)
   myhtml.free
 end
-p Time.now - t
+p Time.local - t
 
-t = Time.now
+t = Time.local
 s = 0
 links = [] of String
 myhtml = Myhtml::Parser.new(page)
@@ -19,4 +19,4 @@ myhtml = Myhtml::Parser.new(page)
 end
 p links.last
 p s
-p Time.now - t
+p Time.local - t

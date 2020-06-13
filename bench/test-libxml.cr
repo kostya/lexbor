@@ -2,13 +2,13 @@ require "crystagiri"
 
 page = File.read("./google.html")
 
-t = Time.now
+t = Time.local
 1000.times do
   Crystagiri::HTML.new page
 end
-p Time.now - t
+p Time.local - t
 
-t = Time.now
+t = Time.local
 s = 0
 links = [] of String
 doc = Crystagiri::HTML.new page
@@ -18,4 +18,4 @@ doc = Crystagiri::HTML.new page
 end
 p links.last
 p s
-p Time.now - t
+p Time.local - t
