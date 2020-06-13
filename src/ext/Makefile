@@ -8,7 +8,7 @@ package: ./lexbor-c/build/liblexbor_static.a
 	cd lexbor-c && git reset --hard $(REV)
 
 ./lexbor-c/build/liblexbor_static.a: ./lexbor-c
-	cd ./lexbor-c && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release && make lexbor_static -j2
+	cd ./lexbor-c && mkdir -p build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release && make lexbor_static -j
 
 .PHONY: clean
 clean:

@@ -13,5 +13,5 @@ dependencies:
     github: kostya/lexbor
 ```
 
-And run `shards install`
+And run `shards install` (Installation require gcc and cmake, make sure it installed)
 
