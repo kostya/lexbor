@@ -291,6 +291,29 @@ describe Lexbor::Node do
     end
   end
 
+  describe "inner_html=" do
+    it "parse" do
+      document = Lexbor::Parser.new("<html><body><div></div></body></html>")
+      div = document.nodes("div").first
+      div.inner_html = "<a HREF=#>bla</a>"
+      document.to_html.should eq "<html><head></head><body><div><a href=\"#\">bla</a></div></body></html>"
+    end
+
+    it "parse template" do
+      document = Lexbor::Parser.new("<html><body><div></div></body></html>")
+      div = document.nodes("div").first
+      div.inner_html = "<TEMPLATE>Test</template>"
+      document.to_html.should eq "<html><head></head><body><div><template>Test</template></div></body></html>"
+    end
+
+    it "create node and add inner html" do
+      doc = Lexbor::Parser.new ""
+      div = doc.create_node(:div)
+      div.inner_html = "<TEMPLATE>Test</template>"
+      div.to_html.should eq "<div><template>Test</template></div>"
+    end
+  end
+
   context "to_html" do
     it "deep" do
       parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div></body></html>")

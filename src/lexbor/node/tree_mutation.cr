@@ -72,4 +72,21 @@ struct Lexbor::Node
     self.append_child(@parser.create_text_node(text))
     text
   end
+
+  #
+  # Parse inner html as node content
+  #
+  # ```crystal
+  # document = Lexbor::Parser.new("<html><body><div></div></body></html>")
+  # div = document.css("div").first
+  # div.inner_html = "<a href=#>bla</a>"
+  #
+  # document.to_html # <html><head></head><body><div>bla</div></body></html>
+  # ```
+  #
+  def inner_html=(html : String)
+    el = Lib.html_element_inner_html_set(@element, html.to_unsafe, html.bytesize)
+    raise LibError.new("Failed to create InnerHTML") if el.null?
+    Node.new(@parser, el)
+  end
 end

@@ -15,6 +15,7 @@ module Lexbor
     fun document_parse_chunk_begin = lxb_html_document_parse_chunk_begin(doc : DocT) : StatusT
     fun document_parse_chunk = lxb_html_document_parse_chunk(doc : DocT, html : UInt8*, size : LibC::SizeT) : StatusT
     fun document_parse_chunk_end = lxb_html_document_parse_chunk_end(doc : DocT) : StatusT
+    fun html_element_inner_html_set = lxb_html_element_inner_html_set(node : DomElementT, html : UInt8*, size : LibC::SizeT) : DomElementT
 
     # Root nodes
     fun tree_get_node_head = lxb_html_document_head_element_noi(doc : DocT) : DomElementT
