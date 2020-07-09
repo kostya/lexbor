@@ -81,7 +81,7 @@ struct Lexbor::Node
   # div = document.css("div").first
   # div.inner_html = "<a href=#>bla</a>"
   #
-  # document.to_html # <html><head></head><body><div>bla</div></body></html>
+  # document.to_html # <html><head></head><body><div><a href=\"#\">bla</a></div></body></html>
   # ```
   #
   def inner_html=(html : String)
