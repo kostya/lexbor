@@ -186,4 +186,14 @@ struct Lexbor::Node
     data.as(IOWrapper).write(Bytes.new(text, length))
     Lib::StatusT::LXB_STATUS_OK
   end
+
+  # helper method, to get inner html of the node
+  def inner_html(io)
+    children.each &.to_html(io)
+  end
+
+  # helper method, to get inner html of the node
+  def inner_html
+    String.build { |buf| inner_html(buf) }
+  end
 end
