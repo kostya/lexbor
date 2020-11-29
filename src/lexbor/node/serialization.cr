@@ -196,4 +196,14 @@ struct Lexbor::Node
   def inner_html
     String.build { |buf| inner_html(buf) }
   end
+
+  # helper method, to get inner html of the node in pretty format
+  def inner_pretty_html(io)
+    children.each &._to_html_nodes(io, 0, false)
+  end
+
+  # helper method, to get inner html of the node in pretty format
+  def inner_pretty_html
+    String.build { |buf| inner_pretty_html(buf) }
+  end
 end

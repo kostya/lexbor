@@ -315,10 +315,25 @@ describe Lexbor::Node do
   end
 
   describe "inner_html" do
-    it "create node and add inner html" do
+    it "render inner_html of the node" do
       doc = Lexbor::Parser.new %q{<div><a href="#">Link</a><p>Read this</p></div>}
       t = doc.nodes(:div).first
       t.inner_html.should eq "<a href=\"#\">Link</a><p>Read this</p>"
+    end
+
+    it "render inner_pretty_html of the node" do
+      t = <<-TEXT
+        <div class="AAA" style="color:red">
+          Haha
+          <span>
+            11
+          </span>
+        </div>
+      TEXT
+
+      doc = Lexbor::Parser.new(t)
+      t = doc.nodes(:div).first
+      t.inner_pretty_html.should eq "\nHaha\n<span>\n  11\n</span>"
     end
   end
 
