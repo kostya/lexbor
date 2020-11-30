@@ -32,16 +32,6 @@ class Lexbor::Tokenizer
     unless ctx.null?
       state = ctx.as(Lexbor::Tokenizer::State)
 
-      if tag_id == Lexbor::Lib::TagIdT::LXB_TAG__UNDEF
-        tokenizer = state.tokenizer!
-        tag_id = Lexbor::Lib.html_token_tag_id_from_data(tokenizer.tags, token, tokenizer.mraw)
-        if tag_id == Lexbor::Lib::TagIdT::LXB_TAG__UNDEF
-          return Pointer(Void).null.as(Lexbor::Lib::HtmlTokenT)
-        else
-          token.value.tag_id = tag_id
-        end
-      end
-
       if (token.value.type_ & CLOSE_FLAG).to_i == 0
         Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, false, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
       end
@@ -65,15 +55,6 @@ class Lexbor::Tokenizer
 
     unless ctx.null?
       state = ctx.as(Lexbor::Tokenizer::State)
-      if tag_id == Lexbor::Lib::TagIdT::LXB_TAG__UNDEF
-        tokenizer = state.tokenizer!
-        tag_id = Lexbor::Lib.html_token_tag_id_from_data(tokenizer.tags, token, tokenizer.mraw)
-        if tag_id == Lexbor::Lib::TagIdT::LXB_TAG__UNDEF
-          return Pointer(Void).null.as(Lexbor::Lib::HtmlTokenT)
-        else
-          token.value.tag_id = tag_id
-        end
-      end
 
       if (token.value.type_ & CLOSE_FLAG).to_i == 0
         Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, false, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
@@ -85,7 +66,7 @@ class Lexbor::Tokenizer
     token
   end
 
-  getter tkz, mraw, tags
+  getter tkz, tags
 
   def initialize(state, @skip_whitespace_tokens = false)
     @finalized = false
@@ -97,16 +78,8 @@ class Lexbor::Tokenizer
       raise LibError.new("Failed to html_tokenizer_init: #{res}")
     end
 
-    res = Lexbor::Lib.html_tokenizer_tags_make(@tkz, 64)
-    unless res == Lexbor::Lib::StatusT::LXB_STATUS_OK
-      free
-      raise LibError.new("Failed to create tokenizer tags: #{res}")
-    end
-
-    Lexbor::Lib.html_tokenizer_opt_set(@tkz, Lexbor::Lib::HtmlTokenizerOptT::LXB_HTML_TOKENIZER_OPT_WO_COPY)
     Lexbor::Lib.html_tokenizer_callback_token_done_set(@tkz, @skip_whitespace_tokens ? CALLBACK_WO_WHITESPACE_TOKENS : CALLBACK, state.as(Void*))
 
-    @mraw = Lexbor::Lib.html_tokenizer_mraw(@tkz)
     @tags = Lexbor::Lib.html_tokenizer_tags(@tkz)
   end
 
@@ -144,7 +117,6 @@ class Lexbor::Tokenizer
   def free
     unless @finalized
       @finalized = true
-      Lexbor::Lib.html_tokenizer_tags_destroy(@tkz)
       Lexbor::Lib.html_tokenizer_destroy(@tkz)
     end
   end

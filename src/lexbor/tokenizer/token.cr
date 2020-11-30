@@ -54,8 +54,8 @@ struct Lexbor::Tokenizer::Token
 
   @[AlwaysInline]
   def tag_text_slice
-    begin_ = @raw_token.begin_
-    Slice.new(begin_, @raw_token.end_ - begin_)
+    text_start = @raw_token.text_start
+    Slice.new(text_start, @raw_token.text_end - text_start)
   end
 
   @[AlwaysInline]
@@ -63,31 +63,31 @@ struct Lexbor::Tokenizer::Token
     String.new(tag_text_slice)
   end
 
-  def processed_tag_text : String # tag_text with replaced entities
-    str = uninitialized Lexbor::Lib::Str
-    str.data = nil
-    str.length = 0
+  # def processed_tag_text : String # tag_text with replaced entities
+  #   str = uninitialized Lexbor::Lib::Str
+  #   str.data = nil
+  #   str.length = 0
 
-    pc = uninitialized Lexbor::Lib::HtmlParserChar
-    pointerof(pc).clear # nullify all fields of pc
+  #   pc = uninitialized Lexbor::Lib::HtmlParserChar
+  #   pointerof(pc).clear # nullify all fields of pc
 
-    pc.state = ->Lexbor::Lib.html_parser_char_ref_data
-    pc.mraw = Lexbor::Lib.html_tokenizer_mraw(tkz)
-    pc.replace_null = true
+  #   pc.state = ->Lexbor::Lib.html_parser_char_ref_data
+  #   pc.mraw = Lexbor::Lib.html_tokenizer_mraw(tkz)
+  #   pc.replace_null = true
 
-    res = Lexbor::Lib.html_parser_char_process(pointerof(pc).as(Lexbor::Lib::HtmlParserCharT),
-      pointerof(str).as(Lexbor::Lib::StrT), @raw_token.in_begin,
-      @raw_token.begin_, @raw_token.end_)
+  #   res = Lexbor::Lib.html_parser_char_process(pointerof(pc).as(Lexbor::Lib::HtmlParserCharT),
+  #     pointerof(str).as(Lexbor::Lib::StrT), @raw_token.in_begin,
+  #     @raw_token.begin_, @raw_token.end_)
 
-    unless res == Lexbor::Lib::StatusT::LXB_STATUS_OK
-      raise Lexbor::LibError.new("Failed to make data from token: #{res}")
-    end
+  #   unless res == Lexbor::Lib::StatusT::LXB_STATUS_OK
+  #     raise Lexbor::LibError.new("Failed to make data from token: #{res}")
+  #   end
 
-    res = String.new(str.data, str.length)
+  #   res = String.new(str.data, str.length)
 
-    Lexbor::Lib.str_destroy(pointerof(str).as(Lexbor::Lib::StrT), pc.mraw, false)
-    res
-  end
+  #   Lexbor::Lib.str_destroy(pointerof(str).as(Lexbor::Lib::StrT), pc.mraw, false)
+  #   res
+  # end
 
   # ========== token attributes ============
 
@@ -99,22 +99,27 @@ struct Lexbor::Tokenizer::Token
 
     while !attr.null?
       yield(attr)
-      attr = attr.value.next
+      # attr = attr.value.next
+      break
     end
 
     self
   end
 
+  # +const lxb_char_t *
+  # +lxb_html_token_attr_name(lxb_html_token_attr_t *attr, size_t *length)
+
   @[AlwaysInline]
   private def raw_key(attr)
-    name_begin = attr.value.name_begin
-    Slice.new(name_begin, attr.value.name_end - name_begin)
+    p = Lib.html_token_attr_name(attr, out length)
+    Slice.new(p, length)
   end
 
   @[AlwaysInline]
   private def raw_value(attr)
-    value_begin = attr.value.value_begin
-    Slice.new(value_begin, attr.value.value_end - value_begin)
+    # p = Lib.html_token_attr_name(attr, out length)
+    # Slice.new(p, length)
+    Slice.new("".to_unsafe, 0)
   end
 
   @[AlwaysInline]
@@ -124,74 +129,73 @@ struct Lexbor::Tokenizer::Token
 
   def each_sliced_attribute
     each_raw_attribute do |attr|
-      yield(IgnoreCaseData.new(raw_key(attr)), raw_value(attr))
+      yield(raw_key(attr), raw_value(attr))
     end
   end
 
   def each_attribute
     each_sliced_attribute do |k, v|
-      yield k, String.new(v)
+      yield String.new(k), String.new(v)
     end
   end
 
-  private def process_attribute_texts(attr)
-    name = uninitialized Lexbor::Lib::Str
-    name.data = nil
-    name.length = 0
+  # private def process_attribute_texts(attr)
+  #   name = uninitialized Lexbor::Lib::Str
+  #   name.data = nil
+  #   name.length = 0
 
-    value = uninitialized Lexbor::Lib::Str
-    value.data = nil
-    value.length = 0
+  #   value = uninitialized Lexbor::Lib::Str
+  #   value.data = nil
+  #   value.length = 0
 
-    pc = uninitialized Lexbor::Lib::HtmlParserChar
-    pointerof(pc).clear # nullify all fields of pc
+  #   pc = uninitialized Lexbor::Lib::HtmlParserChar
+  #   pointerof(pc).clear # nullify all fields of pc
 
-    mraw = Lexbor::Lib.html_tokenizer_mraw(tkz)
+  #   mraw = Lexbor::Lib.html_tokenizer_mraw(tkz)
 
-    res = Lexbor::Lib.html_token_attr_parse(attr, pointerof(pc).as(Lexbor::Lib::HtmlParserCharT),
-      pointerof(name).as(Lexbor::Lib::StrT), pointerof(value).as(Lexbor::Lib::StrT), mraw)
+  #   res = Lexbor::Lib.html_token_attr_parse(attr, pointerof(pc).as(Lexbor::Lib::HtmlParserCharT),
+  #     pointerof(name).as(Lexbor::Lib::StrT), pointerof(value).as(Lexbor::Lib::StrT), mraw)
 
-    unless res == Lexbor::Lib::StatusT::LXB_STATUS_OK
-      raise Lexbor::LibError.new("Failed to parse token attributes: #{res}")
-    end
+  #   unless res == Lexbor::Lib::StatusT::LXB_STATUS_OK
+  #     raise Lexbor::LibError.new("Failed to parse token attributes: #{res}")
+  #   end
 
-    name_s = name.data.null? ? "" : String.new(name.data, name.length)
-    value_s = value.data.null? ? "" : String.new(value.data, value.length)
+  #   name_s = name.data.null? ? "" : String.new(name.data, name.length)
+  #   value_s = value.data.null? ? "" : String.new(value.data, value.length)
 
-    Lexbor::Lib.str_destroy(pointerof(name).as(Lexbor::Lib::StrT), mraw, false)
-    Lexbor::Lib.str_destroy(pointerof(value).as(Lexbor::Lib::StrT), mraw, false)
+  #   Lexbor::Lib.str_destroy(pointerof(name).as(Lexbor::Lib::StrT), mraw, false)
+  #   Lexbor::Lib.str_destroy(pointerof(value).as(Lexbor::Lib::StrT), mraw, false)
 
-    {name_s, value_s}
-  end
+  #   {name_s, value_s}
+  # end
 
-  def each_processed_attribute
-    each_raw_attribute do |attr|
-      k, v = process_attribute_texts(attr)
-      yield k, v
-    end
-  end
+  # def each_processed_attribute
+  #   each_raw_attribute do |attr|
+  #     k, v = process_attribute_texts(attr)
+  #     yield k, v
+  #   end
+  # end
 
-  def attribute_by(name : IgnoreCaseData)
+  def attribute_by(name : String)
     each_attribute do |k, v|
       return v if k == name
     end
     nil
   end
 
-  def attribute_by(name : String)
-    attribute_by IgnoreCaseData.new(name)
-  end
-
   def attribute_by(slice : Slice)
-    attribute_by IgnoreCaseData.new(slice)
-  end
-
-  def attribute_by_processed(name : String)
-    each_processed_attribute do |k, v|
-      return v if k == name
+    each_sliced_attribute do |k, v|
+      return String.new(v) if k == slice
     end
     nil
   end
+
+  # def attribute_by_processed(name : String)
+  #   each_processed_attribute do |k, v|
+  #     return v if k == name
+  #   end
+  #   nil
+  # end
 
   def attributes
     @attributes ||= begin
@@ -203,15 +207,15 @@ struct Lexbor::Tokenizer::Token
     end
   end
 
-  def attributes_processed
-    @attributes ||= begin
-      res = {} of String => String
-      each_processed_attribute do |k, v|
-        res[k.to_s] = v
-      end
-      res
-    end
-  end
+  # def attributes_processed
+  #   @attributes ||= begin
+  #     res = {} of String => String
+  #     each_processed_attribute do |k, v|
+  #       res[k.to_s] = v
+  #     end
+  #     res
+  #   end
+  # end
 
   # =========== token inspect ================
 
@@ -272,7 +276,7 @@ struct Lexbor::Tokenizer::Token
   def to_html(io)
     case tag_id
     when Lib::TagIdT::LXB_TAG__TEXT
-      io << processed_tag_text
+      io << tag_text
     when Lib::TagIdT::LXB_TAG__EM_COMMENT
       if self.closed?
         io << "-->"
@@ -292,7 +296,7 @@ struct Lexbor::Tokenizer::Token
 
         if any_attribute?
           c = 0
-          each_processed_attribute do |k, v|
+          each_attribute do |k, v|
             io << ' '
             io << k
             io << '='

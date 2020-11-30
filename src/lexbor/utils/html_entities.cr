@@ -26,44 +26,45 @@ module Lexbor::Utils::HtmlEntities
   end
 
   def self.decode(slice : Slice)
-    str = uninitialized Lexbor::Lib::Str
-    str.data = nil
-    str.length = 0
+    # str = uninitialized Lexbor::Lib::Str
+    # str.data = nil
+    # str.length = 0
 
-    data = slice.to_unsafe
-    _end = data + slice.bytesize
+    # data = slice.to_unsafe
+    # _end = data + slice.bytesize
 
-    Lib.str_init(pointerof(str).as(Lib::StrT), MRAW, slice.bytesize)
-    if str.data == nil
-      raise LibError.new("Failed to allocate memory")
-    end
+    # Lib.str_init(pointerof(str).as(Lib::StrT), MRAW, slice.bytesize)
+    # if str.data == nil
+    #   raise LibError.new("Failed to allocate memory")
+    # end
 
-    pc = uninitialized Lexbor::Lib::HtmlParserChar
-    pointerof(pc).clear # nullify all fields of pc
+    # pc = uninitialized Lexbor::Lib::HtmlParserChar
+    # pointerof(pc).clear # nullify all fields of pc
 
-    pc.state = ->Lexbor::Lib.html_parser_char_ref_data
-    pc.mraw = MRAW
-    pc.replace_null = true
+    # pc.state = ->Lexbor::Lib.html_parser_char_ref_data
+    # pc.mraw = MRAW
+    # pc.replace_null = true
 
-    while data < _end
-      data = pc.state.call(pointerof(pc).as(Lib::HtmlParserCharT), pointerof(str).as(Lib::StrT), data, _end)
-    end
+    # while data < _end
+    #   data = pc.state.call(pointerof(pc).as(Lib::HtmlParserCharT), pointerof(str).as(Lib::StrT), data, _end)
+    # end
 
-    if pc.status != Lib::StatusT::LXB_STATUS_OK
-      raise LibError.new("Failed to decode entities: #{pc.status}")
-    end
+    # if pc.status != Lib::StatusT::LXB_STATUS_OK
+    #   raise LibError.new("Failed to decode entities: #{pc.status}")
+    # end
 
-    tail = uninitialized UInt8[1]
-    tail[0] = 0
-    tail_p = tail.to_slice.to_unsafe
+    # tail = uninitialized UInt8[1]
+    # tail[0] = 0
+    # tail_p = tail.to_slice.to_unsafe
 
-    pc.is_eof = true
-    data = pc.state.call(pointerof(pc).as(Lib::HtmlParserCharT), pointerof(str).as(Lib::StrT), tail_p, tail_p + 1)
+    # pc.is_eof = true
+    # data = pc.state.call(pointerof(pc).as(Lib::HtmlParserCharT), pointerof(str).as(Lib::StrT), tail_p, tail_p + 1)
 
-    begin
-      yield(Slice.new(str.data, str.length))
-    ensure
-      Lexbor::Lib.str_destroy(pointerof(str).as(Lexbor::Lib::StrT), MRAW, false)
-    end
+    # begin
+    #   yield(Slice.new(str.data, str.length))
+    # ensure
+    #   Lexbor::Lib.str_destroy(pointerof(str).as(Lexbor::Lib::StrT), MRAW, false)
+    # end
+    yield(Slice.new("".to_unsafe, 0))
   end
 end

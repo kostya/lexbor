@@ -23,12 +23,12 @@ class CounterA < Lexbor::Tokenizer::State
       @insp = token.inspect
       @html_token = token.to_html
 
-      token.each_processed_attribute do |key, value|
+      token.each_attribute do |key, value|
         @attrs2[key] = value
       end
     elsif token.tag_sym == :_text && @c > 0
       @text = token.tag_text
-      @pc_text = token.processed_tag_text
+      @pc_text = token.tag_text
     end
   end
 end
@@ -283,7 +283,7 @@ describe Lexbor::Tokenizer do
 
         doc.root.right.nodes(:a).each do |t|
           href = t.attribute_by("href")
-          t.each_processed_attribute { |k, v| v }
+          t.each_attribute { |k, v| v }
 
           inner_text = t.scope.text_nodes.map(&.tag_text).join.strip
           left_text = t.left.text_nodes.first.tag_text.strip
