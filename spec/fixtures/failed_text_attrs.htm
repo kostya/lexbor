@@ -1,0 +1,74 @@
+<body>
+  <!-- Left Panel -->
+  <aside id="left-panel" class="left-panel">
+    <nav class="navbar navbar-expand-sm navbar-default">
+      <div id="main-menu" class="main-menu collapse navbar-collapse"><ul class="nav navbar-nav"><li class=""><a href="/" onclick=""><i class="menu-icon fas fa-2x fa-laptop"></i>Thông tin tổng hợp</a></li><li class="menu-title">Công việc</li><li class=""><a href="/chat" onclick=""><i class="menu-icon fas fa-2x fa-comments"></i>Chat</a></li><li class=""><a href="/todo" onclick=""><i class="menu-icon fas fa-2x fa-list-alt"></i>Việc cần làm</a></li><li class=""><a href="/phone-log" onclick=""><i class="menu-icon fas fa-2x fa-phone-volume"></i>Phone log</a></li><li class="menu-title">Sản phẩm</li><li class=""><a href="/product/employment-contract" onclick=""><i class="menu-icon fas fa-2x fa-file-signature"></i>Hđlđ</a></li><li class=""><a href="/product/vat-invoice" onclick=""><i class="menu-icon fas fa-2x fa-file-invoice-dollar"></i>Hóa đơn</a></li><li class="menu-title">Danh sách</li><li class=""><a href="/company" onclick=""><i class="menu-icon fas fa-2x fa-building"></i>Công ty</a></li><li class=""><a href="/business-field" onclick=""><i class="menu-icon fas fa-2x fa-registered"></i>Ngành nghề kinh doanh</a></li><li class=""><a href="/person" onclick=""><i class="menu-icon fas fa-2x fa-user"></i>Cá nhân</a></li></ul></div>
+    </nav>
+  </aside>
+  <!-- /#left-panel -->
+  <!-- Right Panel -->
+  <div id="right-panel" class="right-panel">
+    <!-- Header-->
+    <header id="header" class="header"><div class="top-left"><div class="navbar-header"><a class="navbar-brand" href="/"><img src="/images/logo.png" alt="Logo"></a><a class="navbar-brand hidden" href="/"><img src="/images/logo.svgz" alt="Logo"></a><a id="menuToggle" class="menutoggle"><i class="fas fa-bars"></i></a></div></div><div class="top-right"><div class="header-menu"><div class="header-left"><button class="search-trigger"><i class="fas fa-search"></i></button><div class="form-inline"><form class="search-form"><input class="form-control mr-sm-2" type="text" placeholder="Search ..." aria-label="Search"><button class="search-close" type="submit"><i class="fas fa-close"></i></button></form></div><div class="dropdown for-notification"><button class="btn btn-secondary dropdown-toggle" type="button" id="notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell"></i><span class="count bg-danger">3</span></button><div class="dropdown-menu" aria-labelledby="notification"><p class="red">You have 3 Notification</p><a class="dropdown-item media" href="#"><i class="fas fa-check"></i><p>Server #1 overloaded.</p></a></div></div><div class="dropdown for-message"><button class="btn btn-secondary dropdown-toggle" type="button" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-envelope"></i><span class="count bg-primary">4</span></button><div class="dropdown-menu" aria-labelledby="message"><p class="red">You have 4 Mails</p><a class="dropdown-item media" href="#"><span class="photo media-left"><img alt="avatar" src="/images/avatar.jpg"></span><div class="message media-body"><span class="name float-left">Cheryl Wheeler</span><span class="time float-right">10 minutes ago</span><p>Hello, this is an example msg</p></div></a><a class="dropdown-item media" href="#"><span class="photo media-left"><img alt="avatar" src="/images/avatar.jpg"></span><div class="message media-body"><span class="name float-left">Rachel Santos</span><span class="time float-right">15 minutes ago</span><p>Lorem ipsum dolor sit amet, consectetur</p></div></a></div></div></div><div class="user-area dropdown float-right"><a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="user-avatar rounded-circle" src="/images/avatar.jpg" alt="admin's avatar"></a><div class="user-menu dropdown-menu"><a class="nav-link" href="/profile"><i class="fas fa-user"></i>My Profile</a><a class="nav-link" href="/notifications"><i class="fas fa-user"></i>Notifications<span class="count">13</span></a><a class="nav-link" href="/settings"><i class="fas fa-cog"></i>Settings</a><a class="nav-link" href="/signout"><i class="fas fa-power-off"></i>Sign out</a></div></div></div></div></header>
+    <!-- /#header -->
+    <!-- Content -->
+    <div id="content-holder"></div>
+    <div id="content-holder-noscript"><noscript>Your browser does not support JavaScript!</noscript></div>
+    <div class="modal" id="loading" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="thecube">
+        <div class="cube c1"></div>
+        <div class="cube c2"></div>
+        <div class="cube c4"></div>
+        <div class="cube c3"></div>
+      </div>
+    </div>
+    <!-- /.content -->
+    <div class="clearfix"></div>
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-inner bg-white">
+        <div class="row">
+          <div class="col-sm-6">
+            Phần mềm quản lý
+          </div>
+          <div class="col-sm-6 text-right">
+            dịch vụ visa
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- /.site-footer -->
+  </div>
+  <div class="floating-chat enter">
+    <i class="fas fa-2x fa-comments" aria-hidden="true"></i>
+    <div class="chat">
+      <div class="header">
+        <span class="title">What's on your mind?</span>
+        <button><i class="fas fa-times" aria-hidden="true"></i></button>
+      </div>
+      <div class="messenger-box">
+        <ul>
+          <li>
+            <div class="msg-received msg-container">
+              <div class="avatar">
+                <img src="/images/avatar.jpg" alt=""/>
+                <div class="send-time">11.11 am</div>
+              </div>
+              <div class="msg-box">
+                <div class="inner-box">
+                  <div class="name">John Doe</div>
+                  <div class="meg">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perspiciatis sunt placeat velit ad reiciendis ipsam
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="msg-sent msg-container">abc</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>

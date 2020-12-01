@@ -575,4 +575,9 @@ describe Lexbor::Node do
     it { Lexbor::Parser.new(%Q[<html><body><hr/></body></html>]).nodes(:hr).first.self_closed?.should eq true }
     it { Lexbor::Parser.new(%Q[<html><body><div></div></body></html>]).nodes(:div).first.self_closed?.should eq false }
   end
+
+  it "attributes not crashed on text nodes, fixed #5" do
+    page = fixture("failed_text_attrs.htm")
+    Lexbor::Parser.new(page).root!.scope.each { |n| n.attributes["checked"]? }
+  end
 end
