@@ -77,7 +77,11 @@ struct Lexbor::Node
   end
 
   protected def each_raw_attribute(&block)
-    return nil if tag_id == Lib::TagIdT::LXB_TAG__TEXT
+    case tag_id
+    when Lib::TagIdT::LXB_TAG__EM_DOCTYPE, Lib::TagIdT::LXB_TAG__TEXT
+      return nil
+    end
+
     attr = Lib.element_first_attribute(@element)
     while !attr.null?
       yield attr

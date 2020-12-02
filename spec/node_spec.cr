@@ -580,4 +580,11 @@ describe Lexbor::Node do
     page = fixture("failed_text_attrs.htm")
     Lexbor::Parser.new(page).root!.scope.each { |n| n.attributes["checked"]? }
   end
+
+  it "attributes not crashed on doctype nodes, fixed #5" do
+    page = <<-PAGE
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+    PAGE
+    Lexbor::Parser.new(page).document!.scope.each { |n| n.attributes["checked"]? }
+  end
 end
