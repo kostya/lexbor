@@ -114,7 +114,7 @@ struct Lexbor::Tokenizer::Token
   @[AlwaysInline]
   private def raw_value(attr)
     value_begin = attr.value.value_begin
-    Slice.new(value_begin, attr.value.value_end - value_begin)
+    value_begin.null? ? nil : Slice.new(value_begin, attr.value.value_end - value_begin)
   end
 
   @[AlwaysInline]
@@ -130,7 +130,7 @@ struct Lexbor::Tokenizer::Token
 
   def each_attribute
     each_sliced_attribute do |k, v|
-      yield k, String.new(v)
+      yield k, v ? String.new(v) : ""
     end
   end
 
@@ -258,7 +258,7 @@ struct Lexbor::Tokenizer::Token
             io << ", " unless c == 0
             Utils::Strip.string_slice_to_io_limited(key_slice.to_s.to_slice, io)
             io << " => "
-            Utils::Strip.string_slice_to_io_limited(value_slice, io)
+            Utils::Strip.string_slice_to_io_limited(value_slice ? value_slice : "".to_slice, io)
             c += 1
           end
         end

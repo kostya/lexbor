@@ -164,7 +164,7 @@ struct Lexbor::Node
             io << ", " unless c == 0
             Utils::Strip.string_slice_to_io_limited(key_slice, io)
             io << " => "
-            Utils::Strip.string_slice_to_io_limited(value_slice, io)
+            Utils::Strip.string_slice_to_io_limited(value_slice || "".to_slice, io)
             c += 1
           end
         end

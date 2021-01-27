@@ -169,7 +169,7 @@ class Lexbor::Parser
   # creates the object that can then be appended or inserted. See
   # `Node#append_child`, `Node#insert_after`, and `Node#insert_before`
   #
-  # ```crystal
+  # ```
   # doc = Lexbor::Parser.new ""
   # div = doc.create_node(:div)
   # a = doc.create_node(:a)
