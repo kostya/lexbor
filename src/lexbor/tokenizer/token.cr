@@ -114,8 +114,8 @@ struct Lexbor::Tokenizer::Token
 
   @[AlwaysInline]
   private def raw_value(attr)
-    value_begin = attr.value.value_begin
-    Slice.new(value_begin, attr.value.value_end - value_begin)
+    value_begin = attr.value.value
+    Slice.new(value_begin, attr.value.value_size)
   end
 
   @[AlwaysInline]

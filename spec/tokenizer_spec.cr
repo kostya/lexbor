@@ -3,7 +3,6 @@ require "./spec_helper"
 class CounterA < Lexbor::Tokenizer::State
   @text : String?
   @attrs = Hash(String, String).new
-  @attrs2 = Hash(String, String).new
   @c = 0
   @tag_name : String?
   @html_token : String?
@@ -21,10 +20,6 @@ class CounterA < Lexbor::Tokenizer::State
 
       @insp = token.inspect
       @html_token = token.to_html
-
-      token.each_attribute do |key, value|
-        @attrs2[key] = value
-      end
     elsif token.tag_sym == :_text && @c > 0
       @text = token.tag_text
     end
@@ -173,12 +168,7 @@ describe Lexbor::Tokenizer do
 
     it "find correct raw attributes" do
       counter = a_counter("<div><span>test</span><a href=bla CLASS='ho&#81' what ho=>bla &amp; ho</a><br/></div>")
-      counter.@attrs.should eq({"href" => "bla", "class" => "ho&#81", "what" => "", "ho" => ""})
-    end
-
-    it "find correct processed attributes" do
-      counter = a_counter("<div><span>test</span><a href=bla CLASS='ho&#81' what ho=>bla &amp; ho</a><br/></div>")
-      counter.@attrs2.should eq({"href" => "bla", "class" => "hoQ", "what" => "", "ho" => ""})
+      counter.@attrs.should eq({"href" => "bla", "class" => "hoQ", "what" => "", "ho" => ""})
     end
 
     it "inspect" do
