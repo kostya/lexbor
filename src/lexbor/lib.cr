@@ -84,7 +84,24 @@ module Lexbor
 
     type StrT = Str*
     type HashT = Void*
-    type TokenAttrT = Void*
+
+    # type TokenAttrT = Void*
+    struct TokenAttr
+      name_begin : UInt8*
+      name_end : UInt8*
+      value_begin : UInt8*
+      value_end : UInt8*
+      name : DomAttrT
+      value : UInt8*
+      value_size : LibC::SizeT
+      in_name : InNodeT
+      in_value : InNodeT
+      next : TokenAttrT
+      prev : TokenAttrT
+      type : HtmlTokenAttrTypeT
+    end
+
+    type TokenAttrT = TokenAttr*
 
     struct HtmlToken
       begin_ : UInt8*
