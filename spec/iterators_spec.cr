@@ -70,8 +70,8 @@ describe "iterators" do
     res.should eq "(Text)|div|span|br|(text)|a|(Bla)|td|td|tr|tbody|table|div|body|head|html|"
   end
 
-  it "left_iterator with another tree_options" do
-    parser = parser()                     # (tree_options: Lexbor::Lib::LexborTreeParseFlags::MyHTML_TREE_PARSE_FLAGS_SKIP_WHITESPACE_TOKEN | Lexbor::Lib::LexborTreeParseFlags::MyHTML_TREE_PARSE_FLAGS_WITHOUT_DOCTYPE_IN_TREE)
+  pending "left_iterator with another tree_options" do
+    parser = parser(tree_options: Lexbor::Lib::LexborTreeParseFlags::MyHTML_TREE_PARSE_FLAGS_SKIP_WHITESPACE_TOKEN | Lexbor::Lib::LexborTreeParseFlags::MyHTML_TREE_PARSE_FLAGS_WITHOUT_DOCTYPE_IN_TREE)
     node = parser.nodes(:_text).to_a.last # text
     res = node.left_iterator.map(&INSPECT_NODE).join
     res.should eq "div|span|br|(text)|a|(Bla)|td|td|tr|tbody|table|div|body|head|html|"
@@ -136,12 +136,12 @@ describe "iterators" do
   #   res.should eq "div|div|"
   # end
 
-  it "collection iterator inspect" do
+  pending "collection iterator inspect" do
     parser.nodes(:div).inspect.should contain "elements: [Lexbor::Node(:div), Lexbor::Node(:div)]>"
   end
 
-  it "collection iterator inspect" do
-    parser # (tree_options: Lexbor::Lib::LexborTreeParseFlags::MyHTML_TREE_PARSE_FLAGS_SKIP_WHITESPACE_TOKEN | Lexbor::Lib::LexborTreeParseFlags::MyHTML_TREE_PARSE_FLAGS_WITHOUT_DOCTYPE_IN_TREE)
+  pending "collection iterator inspect" do
+    parser(tree_options: Lexbor::Lib::LexborTreeParseFlags::MyHTML_TREE_PARSE_FLAGS_SKIP_WHITESPACE_TOKEN | Lexbor::Lib::LexborTreeParseFlags::MyHTML_TREE_PARSE_FLAGS_WITHOUT_DOCTYPE_IN_TREE)
       .nodes(:_text).inspect.should contain "elements: [Lexbor::Node(:_text, \"Bla\"), Lexbor::Node(:_text, \"text\"), ...(1 more)]>"
   end
 

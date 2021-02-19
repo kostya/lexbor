@@ -120,8 +120,8 @@ struct Lexbor::Tokenizer::Token
     # p = Lib.html_token_attr_name(attr, out length)
     # Slice.new(p, length)
     Slice.new("".to_unsafe, 0)
-#    value_begin = attr.value.value_begin
-#    value_begin.null? ? nil : Slice.new(value_begin, attr.value.value_end - value_begin)
+    #    value_begin = attr.value.value_begin
+    #    value_begin.null? ? nil : Slice.new(value_begin, attr.value.value_end - value_begin)
   end
 
   @[AlwaysInline]
@@ -138,7 +138,7 @@ struct Lexbor::Tokenizer::Token
   def each_attribute
     each_sliced_attribute do |k, v|
       yield String.new(k), String.new(v)
-#       yield k, v ? String.new(v) : ""
+      #       yield k, v ? String.new(v) : ""
     end
   end
 
