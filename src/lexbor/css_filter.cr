@@ -7,7 +7,6 @@ class Lexbor::CssFilter
     @finalized = false
 
     # @raw_mycss = LibMyCss.create
-
     # status = LibMyCss.init(@raw_mycss)
     # if status != LibMyCss::MycssStatusT::MyCSS_STATUS_OK
     #   LibMyCss.destroy(@raw_mycss, true)

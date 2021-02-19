@@ -49,7 +49,8 @@ struct Lexbor::Node
       slice = key.to_slice
       each_raw_attribute do |attr|
         if attribute_name(attr) == slice
-          return String.new(attribute_value(attr))
+          v = attribute_value(attr)
+          return v ? String.new(v) : ""
         end
       end
       nil
@@ -64,7 +65,7 @@ struct Lexbor::Node
     @attributes ||= begin
       res = {} of String => String
       each_attribute do |k, v|
-        res[String.new(k)] = String.new(v)
+        res[String.new(k)] = v ? String.new(v) : ""
       end
       res
     end
@@ -77,6 +78,11 @@ struct Lexbor::Node
   end
 
   protected def each_raw_attribute(&block)
+    case tag_id
+    when Lib::TagIdT::LXB_TAG__EM_DOCTYPE, Lib::TagIdT::LXB_TAG__TEXT
+      return nil
+    end
+
     attr = Lib.element_first_attribute(@element)
     while !attr.null?
       yield attr
@@ -99,7 +105,7 @@ struct Lexbor::Node
   @[AlwaysInline]
   private def attribute_value(attr)
     value = Lib.attribute_value(attr, out value_length)
-    Slice(UInt8).new(value, value_length)
+    value.null? ? nil : Slice(UInt8).new(value, value_length)
   end
 
   def attribute_by(slice : Slice(UInt8))

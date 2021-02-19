@@ -2,11 +2,11 @@ require "./spec_helper"
 
 describe Lexbor::Node do
   it "node from root" do
-    parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha</div></body></html>")
+    parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red' chk>Haha</div></body></html>")
 
     node = parser.root!.child!.next!.child!
     node.tag_name.should eq "div"
-    node.attributes.should eq({"class" => "AAA", "style" => "color:red"})
+    node.attributes.should eq({"class" => "AAA", "style" => "color:red", "chk" => ""})
     node.tag_id.should eq Lexbor::Lib::TagIdT::LXB_TAG_DIV
     node.tag_sym.should eq :div
     node.child!.tag_text.should eq "Haha"
@@ -574,5 +574,17 @@ describe Lexbor::Node do
   context "self_closed?" do
     it { Lexbor::Parser.new(%Q[<html><body><hr/></body></html>]).nodes(:hr).first.self_closed?.should eq true }
     it { Lexbor::Parser.new(%Q[<html><body><div></div></body></html>]).nodes(:div).first.self_closed?.should eq false }
+  end
+
+  it "attributes not crashed on text nodes, fixed #5" do
+    page = fixture("failed_text_attrs.htm")
+    Lexbor::Parser.new(page).root!.scope.each { |n| n.attributes["checked"]? }
+  end
+
+  it "attributes not crashed on doctype nodes, fixed #5" do
+    page = <<-PAGE
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+    PAGE
+    Lexbor::Parser.new(page).document!.scope.each { |n| n.attributes["checked"]? }
   end
 end

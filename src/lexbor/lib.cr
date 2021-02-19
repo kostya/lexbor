@@ -53,7 +53,7 @@ module Lexbor
     fun element_set_attribute = lxb_dom_element_set_attribute(element : DomElementT, qualified_name : UInt8*, qn_len : LibC::SizeT, value : UInt8*, value_len : LibC::SizeT) : DomAttrT
 
     # Serialize
-    type SerializeCbT = (UInt8*, LibC::SizeT, Void*) -> StatusT
+    alias SerializeCbT = (UInt8*, LibC::SizeT, Void*) -> StatusT
     fun serialize_cb = lxb_html_serialize_cb(element : DomElementT, cb : SerializeCbT, ctx : Void*) : StatusT
     fun serialize_tree_cb = lxb_html_serialize_tree_cb(element : DomElementT, cb : SerializeCbT, ctx : Void*) : StatusT
     fun serialize_pretty_cb = lxb_html_serialize_pretty_cb(element : DomElementT, opt : SerializeOptT, ident : LibC::SizeT, cb : SerializeCbT, ctx : Void*) : StatusT
@@ -101,7 +101,7 @@ module Lexbor
     end
 
     type HtmlTokenT = HtmlToken*
-    type HtmlTokenizerTokenF = HtmlTokenizerT, HtmlTokenT, Void* -> HtmlTokenT
+    alias HtmlTokenizerTokenF = HtmlTokenizerT, HtmlTokenT, Void* -> HtmlTokenT
 
     fun html_tokenizer_create = lxb_html_tokenizer_create : HtmlTokenizerT
     fun html_tokenizer_init = lxb_html_tokenizer_init(tkz : HtmlTokenizerT) : StatusT
