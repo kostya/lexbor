@@ -2,7 +2,6 @@ require "./spec_helper"
 
 class CounterA < Lexbor::Tokenizer::State
   @text : String?
-  @pc_text : String?
   @attrs = Hash(String, String).new
   @attrs2 = Hash(String, String).new
   @c = 0
@@ -28,7 +27,6 @@ class CounterA < Lexbor::Tokenizer::State
       end
     elsif token.tag_sym == :_text && @c > 0
       @text = token.tag_text
-      @pc_text = token.tag_text
     end
   end
 end
@@ -160,14 +158,9 @@ describe Lexbor::Tokenizer do
       counter.@tag_name.should eq "a"
     end
 
-    it "find correct text" do
-      counter = a_counter("<div><span>test</span><a href=bla>bla &amp; ho</a><br/></div>")
-      counter.@text.should eq "bla &amp; ho"
-    end
-
     it "find correct processed text" do
       counter = a_counter("<div><span>test</span><a href=bla>bla &amp; ho</a><br/></div>")
-      counter.@pc_text.should eq "bla & ho"
+      counter.@text.should eq "bla & ho"
     end
 
     it "use global tags lxb_heap, but not a problem to call many times" do
