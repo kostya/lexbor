@@ -75,11 +75,11 @@ INSPECT_TOKENS = ["Lexbor::Tokenizer::Token(!doctype, {\"html\" => \"\"})",
                   "Lexbor::Tokenizer::Token(!--, \"comment\")", # TODO: better tag name?
                   "Lexbor::Tokenizer::Token(br/)",
                   "Lexbor::Tokenizer::Token(a, {\"href\" => \"/href\"})", # TODO: downcase href?
-                  "Lexbor::Tokenizer::Token(#text, \"link &amp; lnk\")",
+                  "Lexbor::Tokenizer::Token(#text, \"link & lnk\")",
                   "Lexbor::Tokenizer::Token(/a)",
-                  "Lexbor::Tokenizer::Token(style, \"style\")",
+                  "Lexbor::Tokenizer::Token(style, \"\")",
                   "Lexbor::Tokenizer::Token(#text, \"\n" + "          css. red\n" + "        \")",
-                  "Lexbor::Tokenizer::Token(/style, \"style\")",
+                  "Lexbor::Tokenizer::Token(/style, \"\")",
                   "Lexbor::Tokenizer::Token(/div)",
                   "Lexbor::Tokenizer::Token(/body)",
                   "Lexbor::Tokenizer::Token(/html)",
@@ -173,7 +173,7 @@ describe Lexbor::Tokenizer do
 
     it "inspect" do
       counter = a_counter("<div><span>test</span><a href=bla CLASS='ho&#81' what ho=>bla &amp; ho</a><br/></div>")
-      counter.@insp.should eq "Lexbor::Tokenizer::Token(a, {\"href\" => \"bla\", \"class\" => \"ho&#81\", \"what\" => \"\", \"ho\" => \"\"})"
+      counter.@insp.should eq "Lexbor::Tokenizer::Token(a, {\"href\" => \"bla\", \"class\" => \"hoQ\", \"what\" => \"\", \"ho\" => \"\"})"
     end
 
     it "to_html" do
@@ -244,9 +244,9 @@ describe Lexbor::Tokenizer do
       doc = parse_doc
       t = doc.root.right.nodes(:a).first
       t.attribute_by("href").should eq "/href"
-      t.scope.map(&.token.inspect).to_a.should eq ["Lexbor::Tokenizer::Token(#text, \"link &amp; lnk\")"]
+      t.scope.map(&.token.inspect).to_a.should eq ["Lexbor::Tokenizer::Token(#text, \"link & lnk\")"]
 
-      t.scope.text_nodes.map(&.tag_text).join.should eq "link &amp; lnk"
+      t.scope.text_nodes.map(&.tag_text).join.should eq "link & lnk"
     end
 
     it "way to get last node from scope collection" do

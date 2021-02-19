@@ -144,7 +144,4 @@ module Lexbor
     type HtmlTokenAttrTypeT = Int32
     type InNodeT = Void*
   end
-
-  # const lxb_char_t *
-  # lxb_dom_element_tag_name_noi(lxb_dom_element_t *element, size_t *len);
 end

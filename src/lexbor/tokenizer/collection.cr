@@ -88,7 +88,7 @@ class Lexbor::Tokenizer::Collection < Lexbor::Tokenizer::State
     io << "Lexbor::Tokenizer::Collection(0x"
     io << object_id.to_s(16)
     io << ", tokens: "
-    io << @tokens.size
+    io << @storage.elements_size
     io << ')'
   end
 

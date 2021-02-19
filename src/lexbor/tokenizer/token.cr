@@ -27,8 +27,6 @@ struct Lexbor::Tokenizer::Token
     Utils::TagConverter.id_to_sym(tag_id)
   end
 
-  # todo: tag_name
-
   @[AlwaysInline]
   def self_closed?
     (@raw_token.type_ & Lexbor::Lib::HtmlTokenTypeT::LXB_HTML_TOKEN_TYPE_CLOSE_SELF).to_i != 0
@@ -63,32 +61,6 @@ struct Lexbor::Tokenizer::Token
     String.new(tag_text_slice)
   end
 
-  # def processed_tag_text : String # tag_text with replaced entities
-  #   str = uninitialized Lexbor::Lib::Str
-  #   str.data = nil
-  #   str.length = 0
-
-  #   pc = uninitialized Lexbor::Lib::HtmlParserChar
-  #   pointerof(pc).clear # nullify all fields of pc
-
-  #   pc.state = ->Lexbor::Lib.html_parser_char_ref_data
-  #   pc.mraw = Lexbor::Lib.html_tokenizer_mraw(tkz)
-  #   pc.replace_null = true
-
-  #   res = Lexbor::Lib.html_parser_char_process(pointerof(pc).as(Lexbor::Lib::HtmlParserCharT),
-  #     pointerof(str).as(Lexbor::Lib::StrT), @raw_token.in_begin,
-  #     @raw_token.begin_, @raw_token.end_)
-
-  #   unless res == Lexbor::Lib::StatusT::LXB_STATUS_OK
-  #     raise Lexbor::LibError.new("Failed to make data from token: #{res}")
-  #   end
-
-  #   res = String.new(str.data, str.length)
-
-  #   Lexbor::Lib.str_destroy(pointerof(str).as(Lexbor::Lib::StrT), pc.mraw, false)
-  #   res
-  # end
-
   # ========== token attributes ============
 
   # :nodoc:
@@ -100,7 +72,6 @@ struct Lexbor::Tokenizer::Token
     while !attr.null?
       yield(attr)
       attr = attr.value.next
-      # break
     end
 
     self
@@ -201,9 +172,9 @@ struct Lexbor::Tokenizer::Token
         else
           each_sliced_attribute do |key_slice, value_slice|
             io << ", " unless c == 0
-            Utils::Strip.string_slice_to_io_limited(key_slice.to_s.to_slice, io)
+            Utils::Strip.string_slice_to_io_limited(key_slice, io)
             io << " => "
-            Utils::Strip.string_slice_to_io_limited(value_slice ? value_slice : "".to_slice, io)
+            Utils::Strip.string_slice_to_io_limited(value_slice, io)
             c += 1
           end
         end
