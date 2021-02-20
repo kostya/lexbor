@@ -111,36 +111,6 @@ def tokenizer_to_html(html)
   ToHtml.new.parse(html).@res
 end
 
-# custom storage
-class Collection2 < Lexbor::Tokenizer::Collection
-  def initialize
-    super
-    @script = 0
-    @style = 0
-  end
-
-  def on_token(t)
-    case t.tag_id
-    when Lexbor::Lib::TagIdT::LXB_TAG__TEXT
-      @storage << t.raw_token if @script == 0 && @style == 0
-    when Lexbor::Lib::TagIdT::LXB_TAG_A
-      @storage << t.raw_token
-    when Lexbor::Lib::TagIdT::LXB_TAG_SCRIPT
-      if t.closed?
-        @script -= 1 if @script > 0
-      else
-        @script += 1 unless t.self_closed?
-      end
-    when Lexbor::Lib::TagIdT::LXB_TAG_STYLE
-      if t.closed?
-        @style -= 1 if @style > 0
-      else
-        @style += 1 unless t.self_closed?
-      end
-    end
-  end
-end
-
 describe Lexbor::Tokenizer do
   context "Basic usage" do
     it "count" do
@@ -192,96 +162,6 @@ describe Lexbor::Tokenizer do
       counter = Inspecter.new.parse(CONT1, true)
       counter.res.size.should eq 24
       counter.res.should eq INSPECT_TOKENS
-    end
-  end
-
-  context "Collection" do
-    it "create" do
-      doc = parse_doc
-      doc.size.should eq 24
-    end
-
-    it "iterate with next" do
-      doc = parse_doc
-      node = doc.first
-      res = [] of String
-      while node
-        res << node.token.inspect
-        node = node.next
-      end
-      res.should eq INSPECT_TOKENS
-    end
-
-    it "iterate with prev" do
-      doc = parse_doc
-      node = doc.last
-      res = [] of String
-      while node
-        res << node.token.inspect
-        node = node.prev
-      end
-      res.should eq INSPECT_TOKENS.reverse
-    end
-
-    it "iterate with right iterator" do
-      doc = parse_doc
-      doc.root.right.map(&.token.inspect).to_a.should eq INSPECT_TOKENS[1..-1]
-    end
-
-    it "iterate with each iterator, fast than root.right" do
-      doc = parse_doc
-      res = [] of String
-      doc.each { |t| res << t.token.inspect }
-      res.should eq INSPECT_TOKENS
-    end
-
-    it "iterate with left iterator" do
-      doc = parse_doc
-      doc.last.left.map(&.token.inspect).to_a.should eq INSPECT_TOKENS.reverse[1..-1]
-    end
-
-    it "scope and nodes iterator" do
-      doc = parse_doc
-      t = doc.root.right.nodes(:a).first
-      t.attribute_by("href").should eq "/href"
-      t.scope.map(&.token.inspect).to_a.should eq ["Lexbor::Tokenizer::Token(#text, \"link & lnk\")"]
-
-      t.scope.text_nodes.map(&.tag_text).join.should eq "link & lnk"
-    end
-
-    it "way to get last node from scope collection" do
-      doc = parse_doc
-      t = doc.root.right.nodes(:a).first
-      scope = t.scope
-
-      scope.text_nodes.to_a.size.should eq 1
-      scope.current_node.token.inspect.should eq "Lexbor::Tokenizer::Token(/a)"
-    end
-
-    context "integration specs" do
-      it "iterators inside each other" do
-        doc = Lexbor::Tokenizer::Collection.new.parse("<body> <br/> a <a href='/1'>b</a> c <br/> d <a href='/2'>e</a> f <br/> </body>")
-
-        links = [] of String
-
-        doc.root.right.nodes(:a).each do |t|
-          href = t.attribute_by("href")
-          t.each_attribute { |k, v| v }
-
-          inner_text = t.scope.text_nodes.map(&.tag_text).join.strip
-          left_text = t.left.text_nodes.first.tag_text.strip
-          right_text = t.scope.to_a.last.right.text_nodes.first.tag_text.strip
-
-          links << "#{left_text}:#{inner_text}:#{right_text}:#{href}"
-        end
-
-        links.should eq ["a:b:c:/1", "d:e:f:/2"]
-      end
-    end
-
-    it "custom storage" do
-      col2 = Collection2.new.parse(CONT1)
-      col2.root.right.map(&.token.inspect).to_a.should eq ["Lexbor::Tokenizer::Token(a, {\"href\" => \"/href\"})", "Lexbor::Tokenizer::Token(#text, \"link &amp; lnk\")", "Lexbor::Tokenizer::Token(/a)"]
     end
   end
 

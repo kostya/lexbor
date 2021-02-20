@@ -57,45 +57,6 @@ when 1
   end
   p s
   p Time.now - t
-when 2
-  puts "tokens collection"
-  t = Time.now
-  s = 0
-  N.times do |n|
-    doc = Lexbor::Tokenizer::Collection.new(COL_SIZE).parse(str, WS)
-    count = if COUNT
-              x = 0
-              doc.each do |v|
-                token = v.token
-                x += 1 if token.tag_id == Lexbor::Lib::TagIdT::LXB_TAG_A && !token.closed?
-              end
-              x
-            else
-              0
-            end
-    p doc.size if n == 0
-    s += count
-    doc.free
-  end
-  p s
-  p Time.now - t
-when 3
-  puts "tokens collection, new iterator"
-  t = Time.now
-  s = 0
-  N.times do |n|
-    doc = Lexbor::Tokenizer::Collection.new(COL_SIZE).parse(str, WS)
-    count = if COUNT
-              doc.root.right.nodes(:a).count { true }
-            else
-              0
-            end
-    p doc.size if n == 0
-    s += count
-    doc.free
-  end
-  p s
-  p Time.now - t
 else
   puts "unknown test"
 end
