@@ -79,7 +79,7 @@ struct Lexbor::Node
 
   protected def each_raw_attribute(&block)
     case tag_id
-    when Lib::TagIdT::LXB_TAG__EM_DOCTYPE, Lib::TagIdT::LXB_TAG__TEXT
+    when Lib::TagIdT::LXB_TAG__EM_DOCTYPE, Lib::TagIdT::LXB_TAG__TEXT, Lib::TagIdT::LXB_TAG__EM_COMMENT
       return nil
     end
 

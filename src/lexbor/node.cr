@@ -38,7 +38,12 @@ struct Lexbor::Node
   #   node.tag_name => "div"
   #
   def tag_name : String
-    String.new(tag_name_slice)
+    case tag_id
+    when Lib::TagIdT::LXB_TAG__EM_DOCTYPE, Lib::TagIdT::LXB_TAG__TEXT, Lib::TagIdT::LXB_TAG__EM_COMMENT
+      tag_sym.to_s
+    else
+      String.new(tag_name_slice)
+    end
   end
 
   # :nodoc:

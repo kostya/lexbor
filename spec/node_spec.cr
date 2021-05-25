@@ -587,4 +587,20 @@ describe Lexbor::Node do
     PAGE
     Lexbor::Parser.new(page).document!.scope.each { |n| n.attributes["checked"]? }
   end
+
+  it "tag_name of special nodes should be correct" do
+    parser = Lexbor::Parser.new("<!doctype html><html><body><div>bla</div><!--blah--></body></html>")
+
+    text = parser.nodes(:div).first.child!
+    text.tag_sym.should eq :_text
+    text.tag_name.should eq "_text"
+
+    doctype = parser.document!.child!
+    doctype.tag_sym.should eq :_em_doctype
+    doctype.tag_name.should eq "_em_doctype"
+
+    comment = parser.nodes(:_em_comment).first
+    comment.tag_sym.should eq :_em_comment
+    comment.tag_name.should eq "_em_comment"
+  end
 end
