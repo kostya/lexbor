@@ -166,4 +166,16 @@ describe "iterators" do
     res = node.parents.nodes(:div).map(&INSPECT_NODE).join
     res.should eq "div|"
   end
+
+  # it "Collection befave like array, when multiple times call size, empty? and others..." do
+  #   parser = Lexbor::Parser.new(%q{<head><title>Title</title></head>})
+  #   iter = parser.css("title")
+
+  #   iter.size.should eq 1
+  #   iter.empty?.should eq false
+  #   iter.size.should eq 1
+  #   iter.empty?.should eq false
+  #   iter.size.should eq 1
+  #   iter.empty?.should eq false
+  # end
 end
