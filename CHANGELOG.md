@@ -1,3 +1,6 @@
+## 2.6.8
+* fix build on old cmake
+
 ## 1.5.0 (2019-12-26)
 * added Myhtml::SAX parser, see examples/sax_links*.cr
 * updated libmodest to 4c03bfc
