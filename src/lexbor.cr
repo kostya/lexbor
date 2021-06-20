@@ -1,5 +1,5 @@
 module Lexbor
-  VERSION = "2.6.8"
+  VERSION = "2.6.9"
 
   def self.lib_version
   end
