@@ -16,7 +16,9 @@ jobs:
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v1.9
         with:
-          cmake-version: '3.16.x'      
+          cmake-version: '3.16.x'
+      - name: Try install sed for MacOS
+        run: which brew && brew install sed
       - name: Download source
         uses: actions/checkout@v2
       - name: Install Crystal
