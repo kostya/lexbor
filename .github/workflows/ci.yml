@@ -1,0 +1,28 @@
+name: Specs
+on:
+  push:
+  pull_request:
+    branches: [master]
+  schedule:
+    - cron: '0 0 * * 0'
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}  
+    steps:
+      - name: Download source
+        uses: actions/checkout@v2
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1
+      - name: Cache shards
+        uses: actions/cache@v2
+        with:
+          path: ./src/ext/lexbor-c
+          key: ${{ runner.os }}-makefile-${{ hashFiles('./src/ext/Makefile') }}
+      - name: Make
+        run: make package
+      - name: Run tests
+        run: crystal spec

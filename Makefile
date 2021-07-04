@@ -2,7 +2,7 @@ CRYSTAL ?= crystal
 CRYSTALFLAGS ?=
 
 .PHONY: package spec
-ackage: src/ext/lexbor-c/build/liblexbor_static.a
+package: src/ext/lexbor-c/build/liblexbor_static.a
 
 src/ext/lexbor-c/build/liblexbor_static.a:
 	cd src/ext && make package
