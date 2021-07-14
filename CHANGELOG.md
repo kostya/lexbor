@@ -1,3 +1,6 @@
+## 2.6.10
+* fix maxOS build
+
 ## 2.6.9
 * fix build on old cmake
 
