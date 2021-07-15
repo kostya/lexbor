@@ -571,7 +571,7 @@ describe Lexbor::Node do
     end
   end
 
-  context "self_closed?" do
+  pending "self_closed?" do
     it { Lexbor::Parser.new(%Q[<html><body><hr/></body></html>]).nodes(:hr).first.self_closed?.should eq true }
     it { Lexbor::Parser.new(%Q[<html><body><div></div></body></html>]).nodes(:div).first.self_closed?.should eq false }
   end
