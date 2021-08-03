@@ -1,5 +1,5 @@
 name: lexbor
-version: 2.6.5
+version: 2.6.10
 
 authors:
   - Konstantin Makarchev <kostya27@gmail.com>
@@ -7,4 +7,5 @@ authors:
 scripts:
   postinstall: cd src/ext && make package
 
+crystal: ">= 0.35.1, < 2.0.0"
 license: MIT

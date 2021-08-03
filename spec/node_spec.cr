@@ -571,8 +571,8 @@ describe Lexbor::Node do
     end
   end
 
-  context "self_closed?" do
-    pending { Lexbor::Parser.new(%Q[<html><body><hr/></body></html>]).nodes(:hr).first.self_closed?.should eq true }
+  pending "self_closed?" do
+    it { Lexbor::Parser.new(%Q[<html><body><hr/></body></html>]).nodes(:hr).first.self_closed?.should eq true }
     it { Lexbor::Parser.new(%Q[<html><body><div></div></body></html>]).nodes(:div).first.self_closed?.should eq false }
   end
 
@@ -586,5 +586,21 @@ describe Lexbor::Node do
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
     PAGE
     Lexbor::Parser.new(page).document!.scope.each { |n| n.attributes["checked"]? }
+  end
+
+  it "tag_name of special nodes should be correct" do
+    parser = Lexbor::Parser.new("<!doctype html><html><body><div>bla</div><!--blah--></body></html>")
+
+    text = parser.nodes(:div).first.child!
+    text.tag_sym.should eq :_text
+    text.tag_name.should eq "_text"
+
+    doctype = parser.document!.child!
+    doctype.tag_sym.should eq :_em_doctype
+    doctype.tag_name.should eq "_em_doctype"
+
+    comment = parser.nodes(:_em_comment).first
+    comment.tag_sym.should eq :_em_comment
+    comment.tag_name.should eq "_em_comment"
   end
 end
