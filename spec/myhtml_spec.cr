@@ -15,7 +15,7 @@ describe Lexbor do
     v.size.should be > 0
   end
 
-  context "decode_html_entities" do
+  pending "decode_html_entities" do
     it { Lexbor.decode_html_entities("").should eq "" }
     it { Lexbor.decode_html_entities(" ").should eq " " }
     it { Lexbor.decode_html_entities("Chris").should eq "Chris" }

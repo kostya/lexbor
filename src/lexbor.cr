@@ -12,9 +12,9 @@ module Lexbor
   # Decode html entities
   #   Lexbor.decode_html_entities("&#61 &amp; &Auml") # => "= & Ä"
   #
-  def self.decode_html_entities(str)
-    Utils::HtmlEntities.decode(str)
-  end
+  # def self.decode_html_entities(str)
+  #   Utils::HtmlEntities.decode(str)
+  # end
 end
 
 require "./lexbor/lib"
