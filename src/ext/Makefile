@@ -1,4 +1,4 @@
-REV := 5ffe6e63270aa3ff79e5f53506a0ba63a945a3b2
+REV := 353b772429b9ec3ffb3194dedc4ddaecd7f31109
 
 .PHONY: package
 package: ./lexbor-c/build/liblexbor_static.a
