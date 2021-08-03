@@ -1,4 +1,4 @@
-require "./lib/*"
+require "./lib/constants"
 
 module Lexbor
   @[Link(ldflags: "#{__DIR__}/../ext/lexbor-c/build/liblexbor_static.a")]
@@ -27,6 +27,7 @@ module Lexbor
     fun collection_element = lxb_dom_collection_element_noi(col : CollectionT, idx : LibC::SizeT) : DomElementT
     fun collection_length = lxb_dom_collection_length_noi(col : CollectionT) : LibC::SizeT
     fun collection_destroy = lxb_dom_collection_destroy(col : CollectionT, self_destroy : Bool) : CollectionT
+    fun collection_append = lxb_dom_collection_append_noi(col : CollectionT, value : Void*) : StatusT
 
     # Element info methods
     fun element_get_tag_id = lxb_dom_node_tag_id_noi(element : DomElementT) : Lexbor::Lib::TagIdT
@@ -145,3 +146,5 @@ module Lexbor
     type InNodeT = Void*
   end
 end
+
+require "./lib/*"

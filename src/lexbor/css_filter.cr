@@ -1,54 +1,50 @@
 class Lexbor::CssFilter
+  Cbk = ->(node : Lib::DomElementT, spec : Void*, ctx : Void*) do
+    col = ctx.as(Lexbor::Iterator::Collection)
+    col << node
+    Lib::StatusT::LXB_STATUS_OK
+  end
+
   #
   # Css filter
   #   Lexbor::CssFilter.new("div.red").search_from(myhtml.html!) # => Lexbor::Iterator::Collection
   #
-  def initialize(@rule : String, encoding = nil)
+  def initialize(@rule : String)
     @finalized = false
 
-    # @raw_mycss = LibMyCss.create
-    # status = LibMyCss.init(@raw_mycss)
-    # if status != LibMyCss::MycssStatusT::MyCSS_STATUS_OK
-    #   LibMyCss.destroy(@raw_mycss, true)
-    #   raise Lexbor::LibError.new("mycss init error #{status}")
-    # end
+    @parser = parser = Lib.css_parser_create
+    status = Lib.css_parser_init(parser, nil, nil)
+    if status != Lib::StatusT::LXB_STATUS_OK
+      raise LibError.new("Failed to css_parser_init #{status}")
+    end
 
-    # @raw_entry = LibMyCss.entry_create
-    # status = LibMyCss.entry_init(@raw_mycss, @raw_entry)
-    # if status != LibMyCss::MycssStatusT::MyCSS_STATUS_OK
-    #   LibMyCss.entry_destroy(@raw_entry, true)
-    #   LibMyCss.destroy(@raw_mycss, true)
-    #   raise Lexbor::LibError.new("mycss entry_init error #{status}")
-    # end
+    @selectors = selectors = Lib.selectors_create
+    status = Lib.selectors_init(selectors)
+    if status != Lib::StatusT::LXB_STATUS_OK
+      raise LibError.new("Failed to selectors_init #{status}")
+    end
 
-    # @finder = LibModest.finder_create_simple
-    # @selectors = LibMyCss.entry_selectors(@raw_entry)
-    # @list = LibMyCss.selectors_parse(@selectors, encoding || Lexbor::Lib::MyEncodingList::MyENCODING_DEFAULT, rule, rule.bytesize, out status2)
-    # if status2 != LibMyCss::MycssStatusT::MyCSS_STATUS_OK
-    #   free
-    #   raise Lexbor::LibError.new("finder selectors_parse #{status2}")
-    # end
+    @list = list = Lib.css_selectors_parse(parser, rule.to_unsafe, rule.bytesize)
+    # if (parser->status != LXB_STATUS_OK) {
+    #     return EXIT_FAILURE;
+    # }
   end
 
   def search_from(scope_node : Lexbor::Node)
-    # collection = Pointer(Lexbor::Lib::LexborCollectionT).new(0)
-    # LibModest.finder_by_selectors_list(@finder, scope_node.@raw_node, @list, pointerof(collection))
-    # Iterator::Collection.new(scope_node.tree, collection)
-
-    col = Lib.collection_make(scope_node.@parser.@doc, 1)
-    if col.null?
-      raise LibError.new("unable to create collection")
+    collection = scope_node.parser.new_collection(1)
+    status = Lib.selectors_find(@selectors, scope_node.element, @list, Cbk, collection.as(Void*))
+    if status != Lib::StatusT::LXB_STATUS_OK
+      raise LibError.new("Failed to selectors_find #{status}")
     end
-    Iterator::Collection.new(scope_node.@parser, col)
+    collection
   end
 
   def free
     unless @finalized
       @finalized = true
-      # LibMyCss.selectors_list_destroy(@selectors, @list, true)
-      # LibModest.finder_destroy(@finder, true)
-      # LibMyCss.entry_destroy(@raw_entry, true)
-      # LibMyCss.destroy(@raw_mycss, true)
+      Lib.selectors_destroy(@selectors, true)
+      Lib.css_parser_destroy(@parser, true)
+      Lib.css_selector_list_destroy_memory(@list)
     end
   end
 

@@ -24,6 +24,12 @@ class Lexbor::Iterator::Collection
     free
   end
 
+  def <<(element : Lib::DomElementT)
+    res = Lib.collection_append(@col, element.as(Void*))
+    raise LibError.new("Failed to append into collecting: #{element}") unless res == Lib::StatusT::LXB_STATUS_OK
+    @length += 1
+  end
+
   def free
     unless @finalized
       @finalized = true
