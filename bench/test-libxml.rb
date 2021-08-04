@@ -13,7 +13,7 @@ t = Time.now
 s = 0
 links = []
 doc = Nokogiri::HTML(page)
-1000.times do
+5000.times do
   links = doc.css(%Q<div.g a[data-ved][href]:not([href="#"])>).map { |link| link["href"] }
   s += links.size
 end

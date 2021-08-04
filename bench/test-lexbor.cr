@@ -13,7 +13,7 @@ t = Time.local
 s = 0
 links = [] of String
 myhtml = Lexbor::Parser.new(page)
-1000.times do
+5000.times do
   links = myhtml.css(%Q<div.g a[data-ved][href]:not([href="#"])>).map(&.attribute_by("href")).to_a
   s += links.size
 end
