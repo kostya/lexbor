@@ -208,12 +208,12 @@ struct Lexbor::Tokenizer::Token
 
         if any_attribute?
           c = 0
-          each_attribute do |k, v|
+          each_sliced_attribute do |k, v|
             io << ' '
-            io << k
+            io.write k
             io << '='
             io << '"'
-            io << v
+            io.write v
             io << '"'
             c += 1
           end
