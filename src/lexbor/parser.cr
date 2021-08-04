@@ -230,11 +230,4 @@ class Lexbor::Parser
     # TODO: optimize?
     root!.scope.nodes(tag_str)
   end
-
-  # :nodoc:
-  def new_collection(initial_size = 32)
-    col = Lib.collection_make(@doc, initial_size)
-    raise LibError.new("Failed to create collection") if col.null?
-    Lexbor::Iterator::Collection.new(self, col)
-  end
 end
