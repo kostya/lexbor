@@ -457,11 +457,11 @@ describe Lexbor::Node do
     end
 
     it "not damaging html" do
-      myhtml1 = Lexbor::Parser.new(PAGE25) # , encoding: Lexbor::Lib::MyEncodingList::MyENCODING_WINDOWS_1251)
-      s1 = myhtml1.to_pretty_html
+      lxb1 = Lexbor::Parser.new(PAGE25) # , encoding: Lexbor::Lib::MyEncodingList::MyENCODING_WINDOWS_1251)
+      s1 = lxb1.to_pretty_html
 
-      myhtml2 = Lexbor::Parser.new(s1)
-      s2 = myhtml2.to_pretty_html
+      lxb2 = Lexbor::Parser.new(s1)
+      s2 = lxb2.to_pretty_html
 
       File.open("./saved_s1.html", "w") { |f| f.puts s1 }
       File.open("./saved_s2.html", "w") { |f| f.puts s2 }
