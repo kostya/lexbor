@@ -25,9 +25,9 @@ class Lexbor::Parser
   # #
   # # Top level node filter (select all nodes in tree with tag_sym)
   # #   returns Lexbor::Iterator::Collection
-  # #   equal with myhtml.root!.scope.nodes(...)
+  # #   equal with lexbor.root!.scope.nodes(...)
   # #
-  # #   myhtml.nodes(:div).each { |node| ... }
+  # #   lexbor.nodes(:div).each { |node| ... }
   # #
   # delegate :nodes, to: tree
 
@@ -67,7 +67,7 @@ class Lexbor::Parser
       if val = {{ name.id }}
         val
       else
-        raise EmptyNodeError.new("expected `{{name.id}}` to present on myhtml document")
+        raise EmptyNodeError.new("expected `{{name.id}}` to present on lexbor document")
       end
     end
   {% end %}
@@ -198,9 +198,9 @@ class Lexbor::Parser
   #
   # Top level node filter (select all nodes in tree with tag_id)
   #   returns Lexbor::Iterator::Collection
-  #   equal with myhtml.root!.scope.nodes(...)
+  #   equal with lexbor.root!.scope.nodes(...)
   #
-  #   myhtml.nodes(Lexbor::Lib::TagIdT::LXB_TAG_DIV).each { |node| ... }
+  #   lexbor.nodes(Lexbor::Lib::TagIdT::LXB_TAG_DIV).each { |node| ... }
   #
   def nodes(tag_id : Lexbor::Lib::TagIdT)
     # TODO: optimize?
@@ -210,9 +210,9 @@ class Lexbor::Parser
   #
   # Top level node filter (select all nodes in tree with tag_sym)
   #   returns Lexbor::Iterator::Collection
-  #   equal with myhtml.root!.scope.nodes(...)
+  #   equal with lexbor.root!.scope.nodes(...)
   #
-  #   myhtml.nodes(:div).each { |node| ... }
+  #   lexbor.nodes(:div).each { |node| ... }
   #
   def nodes(tag_sym : Symbol)
     # TODO: optimize?
@@ -222,9 +222,9 @@ class Lexbor::Parser
   #
   # Top level node filter (select all nodes in tree with tag_sym)
   #   returns Lexbor::Iterator::Collection
-  #   equal with myhtml.root!.scope.nodes(...)
+  #   equal with lexbor.root!.scope.nodes(...)
   #
-  #   myhtml.nodes("div").each { |node| ... }
+  #   lexbor.nodes("div").each { |node| ... }
   #
   def nodes(tag_str : String)
     # TODO: optimize?
