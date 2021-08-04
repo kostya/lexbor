@@ -25,9 +25,9 @@ class Lexbor::CssFilter
     end
 
     @list = list = Lib.css_selectors_parse(parser, rule.to_unsafe, rule.bytesize)
-    # if (parser->status != LXB_STATUS_OK) {
-    #     return EXIT_FAILURE;
-    # }
+    if list.null?
+      raise LibError.new("Failed to css_selectors_parse for #{rule.inspect}")
+    end
   end
 
   def search_from(scope_node : Lexbor::Node)
