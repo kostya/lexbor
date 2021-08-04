@@ -95,8 +95,6 @@ module Lexbor
       name : DomAttrT
       value : UInt8*
       value_size : LibC::SizeT
-      in_name : InNodeT
-      in_value : InNodeT
       next : TokenAttrT
       prev : TokenAttrT
       type : HtmlTokenAttrTypeT
@@ -109,7 +107,6 @@ module Lexbor
       end_ : UInt8*
       text_start : UInt8*
       text_end : UInt8*
-      in_begin : InModeT
       attr_first : TokenAttrT
       attr_last : TokenAttrT
       base_element : Void*
@@ -143,7 +140,6 @@ module Lexbor
     fun mraw_init = lexbor_mraw_init(mraw : MRawT, size : LibC::SizeT) : StatusT
 
     type HtmlTokenAttrTypeT = Int32
-    type InNodeT = Void*
   end
 end
 
