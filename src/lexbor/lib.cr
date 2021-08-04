@@ -73,9 +73,7 @@ module Lexbor
     # fun elements_by_tag_name = lxb_dom_elements_by_tag_name(root : DomElementT, col : CollectionT, qualified_name : UInt8*, len : LibC::SizeT) : StatusT
 
     # Tokenizer
-    type TagHeapT = Void*
     type HtmlTokenizerT = Void*
-    type InModeT = Void*
     type MRawT = Void*
 
     struct Str
