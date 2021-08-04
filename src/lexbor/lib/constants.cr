@@ -237,23 +237,15 @@ module Lexbor
       LXB_HTML_SERIALIZE_OPT_FULL_DOCTYPE        = 0x40
     end
 
+    # cat src/ext/lexbor-c/source/lexbor/html/tokenizer.c | grep '    LXB_HTML_TOKENIZER_OPT' | ruby -e 'while s = gets; puts s.gsub(",", "").gsub("//", "#"); end;'
     enum HtmlTokenizerOptT
-      LXB_HTML_TOKENIZER_OPT_UNDEF = 0x00
-
-      #
-      # Without copying input buffer.
-      # The user himself monitors the safety of buffers until the end of parsing.
-      #
-      LXB_HTML_TOKENIZER_OPT_WO_COPY = 0x01
-
-      #
-      # During parsing, incoming buffers will not be destroyed.
-      # By default, when the incoming buffer is no longer needed,
-      # it is destroyed.
-      #
-      LXB_HTML_TOKENIZER_OPT_WO_IN_DESTROY = 0x02
+      LXB_HTML_TOKENIZER_OPT_UNDEF           = 0x00
+      LXB_HTML_TOKENIZER_OPT_TAGS_SELF       = 0x01
+      LXB_HTML_TOKENIZER_OPT_ATTRS_SELF      = 0x02
+      LXB_HTML_TOKENIZER_OPT_ATTRS_MRAW_SELF = 0x04
     end
 
+    # cat src/ext/lexbor-c/source/lexbor/html/token.h | grep '    LXB_HTML_TOKEN_TYPE' | ruby -e 'while s = gets; puts s.gsub(",", "").gsub("//", "#"); end;'
     enum HtmlTokenTypeT
       LXB_HTML_TOKEN_TYPE_OPEN         = 0x0000
       LXB_HTML_TOKEN_TYPE_CLOSE        = 0x0001
@@ -262,6 +254,7 @@ module Lexbor
       LXB_HTML_TOKEN_TYPE_DONE         = 0x0008
     end
 
+    # cat src/ext/lexbor-c/source/lexbor/ns/const.h | grep '    LXB_NS' | ruby -e 'while s = gets; puts s.gsub(",", "").gsub("//", "#"); end;'
     enum NsIdT
       LXB_NS__UNDEF      = 0x00
       LXB_NS__ANY        = 0x01
