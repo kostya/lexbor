@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/kostya/lexbor/actions/workflows/ci.yml/badge.svg)](https://github.com/kostya/lexbor/actions/workflows/ci.yml?query=branch%3Amaster+event%3Apush)
 
-Fast HTML5 Parser (based on new lexborisov's HTML5 parser [lexbor](https://github.com/lexbor/lexbor)). This is successor of [myhtml](https://github.com/kostya/myhtml) and expected to be faster and cheaper. 
+Fast HTML5 Parser (based on new lexborisov's HTML5 parser [lexbor](https://github.com/lexbor/lexbor)). This is successor of [myhtml](https://github.com/kostya/myhtml) and expected to be faster and use less memory. Usage is almost equal to myhtml.
 
 ## Installation
 
@@ -75,12 +75,12 @@ html = <<-HTML
   </html>
 HTML
 
-myhtml = Lexbor::Parser.new(html)
+lexbor = Lexbor::Parser.new(html)
 
-p myhtml.css("#t2 tr td:first-child").map(&.inner_text).to_a
+p lexbor.css("#t2 tr td:first-child").map(&.inner_text).to_a
 # => ["123", "foo", "bar", "xyz"]
 
-p myhtml.css("#t2 tr td:first-child").map(&.to_html).to_a
+p lexbor.css("#t2 tr td:first-child").map(&.to_html).to_a
 # => ["<td>123</td>", "<td>foo</td>", "<td>bar</td>", "<td>xyz</td>"]
 ```
 
