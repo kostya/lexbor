@@ -57,6 +57,12 @@ struct Lexbor::Tokenizer::Token
   end
 
   @[AlwaysInline]
+  def tag_text_input_slice
+    text_start = @raw_token.begin_
+    Slice.new(text_start, @raw_token.end_ - text_start)
+  end
+
+  @[AlwaysInline]
   def tag_text
     String.new(tag_text_slice)
   end
