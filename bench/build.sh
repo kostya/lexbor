@@ -1,5 +1,8 @@
-curl -L -s 'https://www.google.ru/search?client=opera&q=html+parsers&sourceid=opera&ie=UTF-8&oe=UTF-8&num=100' -A 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET4.0C)' > google.html
+curl -L -s 'https://www.google.com/search?client=firefox-b-d&q=html+parsers&num=100' -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:79.0) Gecko/20100101 Firefox/79.0' > google.html
 bundle
-shards install
+shards install --ignore-crystal-version
 crystal build test-libxml.cr --release -o bin_test_libxml --no-debug
 crystal build test-myhtml.cr --release -o bin_test_myhtml --no-debug
+crystal build test-lexbor.cr --release -o bin_test_lexbor --no-debug
+#crystal build test-gumbo.cr --release -o bin_test_gumbo --no-debug
+crystal build test-html5.cr --release -o bin_test_html5 --no-debug

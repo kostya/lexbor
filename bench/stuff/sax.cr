@@ -1,4 +1,4 @@
-require "../../src/lexbor"
+require "../../src/myhtml"
 
 str = if filename = ARGV[0]?
         File.read(filename, "UTF-8", invalid: :skip)
@@ -15,13 +15,11 @@ str = if filename = ARGV[0]?
         HTML
       end
 
-N        = (ARGV[1]? || 10).to_i
-TEST     = (ARGV[2]? || 0).to_i
-COUNT    = (ARGV[3]? == "1")
-WS       = ((ARGV[4]? || "1") == "1")
-COL_SIZE = (ARGV[5]? || 1000).to_i
+N     = (ARGV[1]? || 10).to_i
+TEST  = (ARGV[2]? || 0).to_i
+COUNT = (ARGV[3]? == "1")
 
-class Doc < Lexbor::Tokenizer::State
+class Doc < Myhtml::SAX::Tokenizer
   getter counter
 
   def initialize(@counting = false)
@@ -29,7 +27,7 @@ class Doc < Lexbor::Tokenizer::State
   end
 
   def on_token(t)
-    @counter += 1 if @counting && t.tag_id == Lexbor::Lib::TagIdT::LXB_TAG_A && !t.closed?
+    @counter += 1 if @counting && t.tag_id == Myhtml::Lib::MyhtmlTags::MyHTML_TAG_A && !t.closed?
   end
 end
 
@@ -39,7 +37,7 @@ when 0
   t = Time.now
   s = 0
   N.times do
-    parser = Lexbor::Parser.new(str)
+    parser = Myhtml::Parser.new(str, tree_options: Myhtml::Lib::MyhtmlTreeParseFlags::MyHTML_TREE_PARSE_FLAGS_SKIP_WHITESPACE_TOKEN)
     count = COUNT ? parser.nodes(:a).size : 0
     s += count
     parser.free
@@ -51,9 +49,54 @@ when 1
   t = Time.now
   s = 0
   N.times do
-    doc = Doc.new(COUNT).parse(str, WS)
+    doc = Doc.new(COUNT)
+    parser = Myhtml::SAX.new(doc)
+    parser.parse(str)
     s += doc.counter
-    doc.free
+    parser.free
+  end
+  p s
+  p Time.now - t
+when 2
+  puts "tokens collection"
+  t = Time.now
+  s = 0
+  N.times do |n|
+    doc = Myhtml::SAX::TokensCollection.new
+    parser = Myhtml::SAX.new(doc)
+    parser.parse(str)
+    count = if COUNT
+              x = 0
+              doc.tokens.each do |t|
+                token = Myhtml::SAX::Token.new(doc, doc.raw_tree, t)
+                x += 1 if token.tag_id == Myhtml::Lib::MyhtmlTags::MyHTML_TAG_A && !token.closed?
+              end
+              x
+            else
+              0
+            end
+    p doc.tokens.size if n == 0
+    s += count
+    parser.free
+  end
+  p s
+  p Time.now - t
+when 3
+  puts "tokens collection, new iterator"
+  t = Time.now
+  s = 0
+  N.times do |n|
+    doc = Myhtml::SAX::TokensCollection.new
+    parser = Myhtml::SAX.new(doc)
+    parser.parse(str)
+    count = if COUNT
+              doc.root.right.nodes(:a).count { true }
+            else
+              0
+            end
+    p doc.tokens.size if n == 0
+    s += count
+    parser.free
   end
   p s
   p Time.now - t

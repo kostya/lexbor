@@ -2,3 +2,4 @@
 lib
 *.html
 shard.lock
+.bundle

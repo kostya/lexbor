@@ -13,9 +13,9 @@ s = 0
 links = [] of String
 doc = Crystagiri::HTML.new page
 1000.times do
-  doc.css("div.g h3.r a") { |tag| links << tag.node["href"].not_nil! }
+  doc.css(%Q<div.g a[data-ved][href]:not([href="#"])>) { |tag| links << tag.node["href"].not_nil! }
   s += links.size
 end
-p links.last
+p links.last?
 p s
 p Time.local - t

@@ -8,7 +8,16 @@ dependencies:
   myhtml:
     github: kostya/myhtml
     branch: master
+  lexbor:
+    github: kostya/lexbor
+    branch: css
+  gumbo-crystal:
+    github: blocknotes/gumbo-crystal
+    # sudo pacman -S community/gumbo-parser
+    # sudo apt install libgumbo-dev
   crystagiri:
     github: madeindjs/crystagiri
+  html5:
+    github: naqvis/crystal-html5
 
 license: MIT
