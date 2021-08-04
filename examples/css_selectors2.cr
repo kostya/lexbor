@@ -37,7 +37,7 @@ p parser.css(%q{a[href$=".png"]}).map(&.attribute_by("id")).to_a # => ["a2"]
 p parser.css(%q{p[id=p3] > a[href*="html"]}).map(&.attribute_by("id")).to_a # => ["a1"]
 
 # find all a tags inside <p id=p3>, which href contain `html` or ends_with `.png`
-p parser.css(%q{p[id=p3] > a:matches([href *= "html"], [href $= ".png"])}).map(&.attribute_by("id")).to_a # => ["a1", "a2"]
+p parser.css(%q{p[id=p3] > a:is([href *= "html"], [href $= ".png"])}).map(&.attribute_by("id")).to_a # => ["a1", "a2"]
 
 # create filter and use it in many places, this is faster, than create it many times
 filter = Lexbor::CssFilter.new(".jo")
