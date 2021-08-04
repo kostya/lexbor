@@ -31,7 +31,7 @@ class Lexbor::CssFilter
   end
 
   def search_from(scope_node : Lexbor::Node)
-    collection = scope_node.parser.new_collection(1)
+    collection = scope_node.parser.new_collection(32)
     status = Lib.selectors_find(@selectors, scope_node.element, @list, Cbk, collection.as(Void*))
     if status != Lib::StatusT::LXB_STATUS_OK
       raise LibError.new("Failed to selectors_find #{status}")
