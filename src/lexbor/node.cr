@@ -72,11 +72,16 @@ struct Lexbor::Node
   end
 
   # :nodoc:
-  def tag_text_set(text : String, encoding = nil)
-    raise ArgumentError.new("#{self.inspect} not allowed to set text") unless textable?
-    # TODO: encoding?
+  def tag_text_set(text : String)
+    tag_text_set(text.to_slice)
+    text
+  end
 
-    status = Lib.element_text_content_set(@element, text, text.bytesize)
+  # :nodoc:
+  def tag_text_set(text : Bytes)
+    raise ArgumentError.new("#{self.inspect} not allowed to set text") unless textable?
+
+    status = Lib.element_text_content_set(@element, text.to_unsafe, text.bytesize)
     text
   end
 
