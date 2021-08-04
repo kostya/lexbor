@@ -7,7 +7,7 @@ class Lexbor::CssFilter
 
   #
   # Css filter
-  #   Lexbor::CssFilter.new("div.red").search_from(myhtml.html!) # => Lexbor::Iterator::Collection
+  #   Lexbor::CssFilter.new("div.red").search_from(lexbor.body!) # => Lexbor::Iterator::Collection
   #
   def initialize(@rule : String)
     @finalized = false

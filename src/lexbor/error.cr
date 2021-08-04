@@ -10,6 +10,6 @@ end
 class Lexbor::ArgumentError < Lexbor::Error
 end
 
-# Raised when myhtml library return bad status
+# Raised when lexbor library return bad status
 class Lexbor::LibError < Lexbor::Error
 end
