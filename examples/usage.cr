@@ -28,7 +28,7 @@ lexbor.nodes("div")                            # Iterator::Collection(Lexbor::No
 node = lexbor.nodes(:div).first # Lexbor::Node
 
 # methods:
-pp node.tag_id                # => MyHTML_TAG_DIV
+pp node.tag_id                # => LXB_TAG_DIV
 pp node.tag_sym               # => :div
 pp node.tag_name              # => "div"
 pp node.is_tag_div?           # => true
