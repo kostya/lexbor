@@ -96,12 +96,14 @@ describe Lexbor do
     end
   end
 
-  it "should not raise on empty selector" do
+  it "should raise on empty selector" do
     html = "<div><p id=p1><p id=p2 class=jo><p id=p3><a>link</a><span id=bla><p id=p4 class=jo><p id=p5 class=bu><p id=p6 class=jo></span></div>"
 
     parser = Lexbor::Parser.new(html)
-    finder = Lexbor::CssFilter.new("")
-    parser.css(finder).to_a.size.should eq 0
+    expect_raises(Lexbor::LibError, "Failed to css_selectors_parse for") do
+      finder = Lexbor::CssFilter.new("")
+      parser.css(finder).to_a.size.should eq 0
+    end
   end
 
   it "integration test" do
@@ -142,7 +144,7 @@ describe Lexbor do
     parser.css(%q{p[id=p3] > a[href*="html"]}).map(&.attribute_by("id")).to_a.should eq ["a1"]
 
     # find all a tags inside <p id=p3>, which href contain `html` or ends_with `.png`
-    parser.css(%q{p[id=p3] > a:matches([href *= "html"], [href $= ".png"])}).map(&.attribute_by("id")).to_a.should eq ["a1", "a2"]
+    parser.css(%q{p[id=p3] > a:is([href *= "html"], [href $= ".png"])}).map(&.attribute_by("id")).to_a.should eq ["a1", "a2"]
 
     # create finder and use it in many places
     finder = Lexbor::CssFilter.new(".jo")
