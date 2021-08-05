@@ -26,18 +26,18 @@ class Lexbor::Iterator::Collection
 
   def inspect(io)
     io << "#<Lexbor::Iterator::Collection:0x"
-    object_id.to_s(16, io)
+    object_id.to_s(io, 16)
     io << ": elements: "
 
     io << '['
 
     count = {2, size}.min
     count.times do |i|
-      node_by_id(i).inspect(io)
+      unsafe_fetch(i).inspect(io)
       io << ", " unless i == count - 1
     end
 
-    io << ", ...(#{@length - 2} more)" if @length > 2
+    io << ", ...(#{size - 2} more)" if size > 2
     io << ']'
 
     io << '>'

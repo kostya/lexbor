@@ -1,8 +1,7 @@
 struct Lexbor::Node
   # :nodoc:
   def self_closed?
-    # Lib.node_is_close_self(@raw_node)
-    false
+    raise NotImplementedError.new("not implemented")
   end
 
   # :nodoc:

@@ -136,8 +136,8 @@ describe "iterators" do
   #   res.should eq "div|div|"
   # end
 
-  pending "collection iterator inspect" do
-    parser.nodes(:div).inspect.should contain "elements: [Lexbor::Node(:div), Lexbor::Node(:div)]>"
+  it "collection iterator inspect" do
+    parser.css("div").inspect.should contain "elements: [Lexbor::Node(:div), Lexbor::Node(:div)]>"
   end
 
   pending "collection iterator inspect" do
