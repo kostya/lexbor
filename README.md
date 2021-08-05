@@ -101,7 +101,7 @@ crystal spec
 
 Parse google results page(600Kb) 1000 times, and 5000 times css select.
 
-[lexbor-program](https://github.com/kostya/lexbor/tree/master/bench/test-myhtml.cr)
+[lexbor-program](https://github.com/kostya/lexbor/tree/master/bench/test-lexbor.cr)
 [myhtml-program](https://github.com/kostya/lexbor/tree/master/bench/test-myhtml.cr)
 [crystagiri-program](https://github.com/kostya/lexbor/tree/master/bench/test-libxml.cr)
 [nokogiri-program](https://github.com/kostya/lexbor/tree/master/bench/test-libxml.rb)
