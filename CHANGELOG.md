@@ -1,3 +1,6 @@
+## 3.0.1
+* update liblexbor, to fix remove single node attribute, #12
+
 ## 3.0.0
 * update to latest liblexbor
 * added css selectors
