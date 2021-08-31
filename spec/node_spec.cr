@@ -85,6 +85,14 @@ describe Lexbor::Node do
     node.attributes.should eq({"class" => "foo"})
   end
 
+  it "remove single attribue, #12" do
+    html = %Q{<a href="/3">3</a>}
+    parser = Lexbor::Parser.new(html)
+    node = parser.nodes(:a).first
+    node["href"] = ""
+    node.attributes.should eq({"href" => ""})
+  end
+
   it "ignore case attributes" do
     parser = Lexbor::Parser.new("<html><body><div Class=AAA STYLE='color:red'>Haha</div></body></html>")
 
