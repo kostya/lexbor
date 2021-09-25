@@ -218,6 +218,23 @@ describe Lexbor::Node do
     end
   end
 
+  it "remove! bug" do
+    html = <<-HTML
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <title>Example</title>
+        </head>
+        <body><!-- foo --> <!-- bar --> <!-- baz --></body>
+      </html>
+    HTML
+    lexbor = Lexbor::Parser.new html
+    nodes = lexbor.nodes(:_em_comment)
+    nodes.to_a.each &.remove!
+    lexbor.body!.to_html.should eq "<body>  \n  </body>"
+  end
+
   # it "get set data" do
   #   parser = Lexbor::Parser.new("<body><object>bla</object></body>")
   #   node = parser.body!

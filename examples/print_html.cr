@@ -29,7 +29,8 @@ remove_comments = (ARGV[3]? != "0")
 lexbor = Lexbor::Parser.new(str)
 
 if remove_comments
-  lexbor.nodes(:_em_comment).each(&.remove!)
+  nodes = lexbor.nodes(:_em_comment).to_a # important to materialize array with to_a, before removing
+  nodes.each(&.remove!)
 end
 
 if formatting
