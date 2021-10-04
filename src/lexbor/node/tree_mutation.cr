@@ -14,6 +14,7 @@ struct Lexbor::Node
   # ```
   #
   def append_child(child : Node)
+    raise Lexbor::ArgumentError.new("append_child allowed only for node created on the same parser") if @parser != child.@parser
     Lib.insert_child(@element, child.@element)
   end
 
@@ -30,6 +31,7 @@ struct Lexbor::Node
   # ```
   #
   def insert_before(node : Node)
+    raise Lexbor::ArgumentError.new("insert_before allowed only for node created on the same parser") if @parser != node.@parser
     Lib.insert_before(@element, node.@element)
   end
 
@@ -46,6 +48,7 @@ struct Lexbor::Node
   # ```
   #
   def insert_after(node : Node)
+    raise Lexbor::ArgumentError.new("insert_after allowed only for node created on the same parser") if @parser != node.@parser
     Lib.insert_after(@element, node.@element)
   end
 
