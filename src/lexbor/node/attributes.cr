@@ -1,4 +1,9 @@
 struct Lexbor::Node
+  delegate :[], to: attributes
+  delegate :[]?, to: attributes
+  delegate :fetch, to: attributes
+  delegate :has_key?, to: attributes
+
   #
   # Add attribute to node
   #

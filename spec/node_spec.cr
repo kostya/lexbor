@@ -28,7 +28,14 @@ describe Lexbor::Node do
     node = parser.root!.child!.next!.child!
     node.attributes.should eq({"class" => "AAA", "style" => "color:red"})
     node.attribute_by("class").should eq "AAA"
+    node["class"].should eq("AAA")
     node.attribute_by("class".to_slice).should eq "AAA".to_slice
+    node.has_key?("class").should be_true
+    node.has_key?("id").should be_false
+    node["class"]?.should eq("AAA")
+    node["id"]?.should be_nil
+    node.fetch("class", "").should eq("AAA")
+    node.fetch("id", "").should eq("")
   end
 
   it "add attribute" do
