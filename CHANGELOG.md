@@ -1,3 +1,6 @@
+## 3.0.2
+* add node attribute aliases, [], []?, fetch, has_key?
+
 ## 3.0.1
 * update liblexbor, to fix remove single node attribute, #12
 
