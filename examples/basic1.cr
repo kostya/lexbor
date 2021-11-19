@@ -16,10 +16,10 @@ HTML
 lexbor = Lexbor::Parser.new(html)
 
 lexbor.nodes(:div).each do |node|
-  id = node.attribute_by("id")
+  id = node["id"]?
 
   if first_link = node.scope.nodes(:a).first?
-    href = first_link.attribute_by("href")
+    href = first_link["href"]?
     link_text = first_link.inner_text
 
     puts "div with id #{id} have link [#{link_text}](#{href})"
