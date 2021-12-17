@@ -148,6 +148,18 @@ class Collection2 < Lexbor::Tokenizer::Collection
   end
 end
 
+class Hrefs < Lexbor::Tokenizer::State
+  getter hrefs = Array(String).new
+
+  def on_token(token)
+    if token.tag_id == Lexbor::Lib::TagIdT::LXB_TAG_A && !token.closed?
+      if href = token.attribute_by("href")
+        hrefs << href
+      end
+    end
+  end
+end
+
 describe Lexbor::Tokenizer do
   context "Basic usage" do
     it "count" do
@@ -308,5 +320,17 @@ describe Lexbor::Tokenizer do
     it { tokenizer_to_html("<script> document.write('<a>ho</a>'); </script><span></span>").should eq "<script>| document.write('<a>ho</a>'); |</script>|<span>|</span>|" }
     it { tokenizer_to_html("<style> .css res <a></a> </style><span></span>").should eq "<style>| .css res <a></a> |</style>|<span>|</span>|" }
     it { tokenizer_to_html("<textarea> .css res <a></a> </textarea><span></span>").should eq "<textarea>| .css res <a></a> |</textarea>|<span>|</span>|" }
+  end
+
+  context "bug with svg" do
+    it "without ws" do
+      counter = Hrefs.new.parse(PAGE_SVG)
+      counter.hrefs.should eq(["/bla"])
+    end
+
+    it "with ws" do
+      counter = Hrefs.new.parse(PAGE_SVG, true)
+      counter.hrefs.should eq(["/bla"])
+    end
   end
 end
