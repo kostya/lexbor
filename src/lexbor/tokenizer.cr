@@ -7,6 +7,7 @@ class Lexbor::Tokenizer
     def on_end; end
 
     getter tokenizer : Tokenizer?
+    property svg_namespace = false
 
     def parse(str, skip_whitespace_tokens = false)
       @tokenizer = tokenizer = Tokenizer.new(self, skip_whitespace_tokens)
@@ -32,8 +33,17 @@ class Lexbor::Tokenizer
     unless ctx.null?
       state = ctx.as(Lexbor::Tokenizer::State)
 
-      if (token.value.type_ & CLOSE_FLAG).to_i == 0
-        Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, false, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
+      open_flag = (token.value.type_ & CLOSE_FLAG).to_i == 0
+      state.svg_namespace = open_flag if tag_id == Lexbor::Lib::TagIdT::LXB_TAG_SVG
+
+      if open_flag
+        if state.svg_namespace
+          if tag_id != Lexbor::Lib::TagIdT::LXB_TAG__TEXT
+            Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, false, tag_id, Lexbor::Lib::NsIdT::LXB_NS_SVG)
+          end
+        else
+          Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, false, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
+        end
       end
 
       state.on_token(Token.new(state, token.value))
@@ -56,8 +66,17 @@ class Lexbor::Tokenizer
     unless ctx.null?
       state = ctx.as(Lexbor::Tokenizer::State)
 
-      if (token.value.type_ & CLOSE_FLAG).to_i == 0
-        Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, false, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
+      open_flag = (token.value.type_ & CLOSE_FLAG).to_i == 0
+      state.svg_namespace = open_flag if tag_id == Lexbor::Lib::TagIdT::LXB_TAG_SVG
+
+      if open_flag
+        if state.svg_namespace
+          if tag_id != Lexbor::Lib::TagIdT::LXB_TAG__TEXT
+            Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, false, tag_id, Lexbor::Lib::NsIdT::LXB_NS_SVG)
+          end
+        else
+          Lexbor::Lib.html_tokenizer_set_state_by_tag(tkz, false, tag_id, Lexbor::Lib::NsIdT::LXB_NS_HTML)
+        end
       end
 
       state.on_token(Token.new(state, token.value))

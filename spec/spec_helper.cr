@@ -2,9 +2,10 @@ require "spec"
 require "../src/lexbor"
 require "base64"
 
-PAGE1  = File.read("./spec/fixtures/1.htm")
-PAGE2  = File.read("./spec/fixtures/2.htm")
-PAGE25 = File.read("./spec/fixtures/25.htm")
+PAGE1    = File.read("./spec/fixtures/1.htm")
+PAGE2    = File.read("./spec/fixtures/2.htm")
+PAGE25   = File.read("./spec/fixtures/25.htm")
+PAGE_SVG = File.read("./spec/fixtures/svg_bug.htm")
 
 require "digest/md5"
 
