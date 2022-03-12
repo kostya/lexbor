@@ -1,3 +1,6 @@
+## 3.0.3
+* fix processing svg in tokenizer
+
 ## 3.0.2
 * add node attribute aliases, [], []?, fetch, has_key?
 
