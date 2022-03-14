@@ -107,10 +107,19 @@ Parse google results page(600Kb) 1000 times, and 5000 times css select.
 [crystagiri-program](https://github.com/kostya/lexbor/tree/master/bench/test-libxml.cr)
 [nokogiri-program](https://github.com/kostya/lexbor/tree/master/bench/test-libxml.rb)
 
+Running on Ryzen 3800x.
 | Lang     | Lib                 | Parse time, s | Css time, s | Memory, MiB |
 | -------- | ------------------- | ------------- | ----------- | ----------- |
 | Crystal  | lexbor              | 2.48          | 0.48        | 8.8         |
 | Crystal  | myhtml(+modest)     | 3.13          | 0.77        | 11.7        |
 | Ruby 2.7 | Nokogiri(libxml2)   | 9.44          | 54.70       | 148.7       |
 | Crystal  | Crystagiri(libxml2) | 11.90         | -           | 25.1        |
+
+Running on Apple M1.
+| Lang     | Lib                 | Parse time, s | Css time, s | Memory, MiB |
+| -------- | ------------------- | ------------- | ----------- | ----------- |
+| Crystal  | lexbor              | 1.54          | 0.49        | 20.9        |
+| Crystal  | myhtml(+modest)     | 2.24          | 0.67        | 19.8        |
+| Ruby 2.7 | Nokogiri(libxml2)   | 9.87          | 55.72       | 163.8       |
+| Crystal  | Crystagiri(libxml2) | 11.15         | -           | 17.4        |
 
