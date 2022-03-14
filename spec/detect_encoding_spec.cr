@@ -178,7 +178,7 @@ describe Lexbor::Utils::DetectEncoding do
     it { find_encodings_in_meta(fixture("th.htm")).should eq ["tis-620"] }
     it { find_encodings_in_meta(fixture("unk.htm")).should eq ["utf-8"] }
     it { find_encodings_in_meta(fixture("25.htm")).should eq ["windows-1251"] }
-    it { find_encodings_in_meta(fixture("1.png")).should eq ([] of String) }
+    it { find_encodings_in_meta(fixture("1.png")).should eq([] of String) }
     it { find_encodings_in_meta(fixture("1.png.gz")).should eq([] of String) }
   end
 
