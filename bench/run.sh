@@ -9,6 +9,8 @@ echo "Lexbor"
 ./xtime.rb ./bin_test_lexbor
 echo "Html5"
 ./xtime.rb ./bin_test_html5
+echo "Crystal (LibXML)"
+./xtime.rb ./bin_test_crystal
 echo "Nokogiri(LibXML)"
 ./xtime.rb ruby test-libxml.rb
 
