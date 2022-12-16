@@ -2,16 +2,18 @@ GEM
   remote: http://rubygems.org/
   specs:
     mini_portile2 (2.8.0)
-    nokogiri (1.13.4)
+    nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    racc (1.6.0)
+    nokolexbor (0.2.4)
+    racc (1.6.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   nokogiri
+  nokolexbor
 
 BUNDLED WITH
    2.1.4

@@ -10,7 +10,6 @@ dependencies:
     branch: clang13
   lexbor:
     github: kostya/lexbor
-    branch: master
   gumbo-crystal:
     github: blocknotes/gumbo-crystal
     # sudo pacman -S community/gumbo-parser
