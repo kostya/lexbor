@@ -25,4 +25,4 @@ Process.run("cmake", args: cmake_args, chdir: lexbor_build_path.to_s) { |p| prin
 
 # Build the library
 
-Process.run("cmake", args: ["--build", "."], chdir: lexbor_build_path.to_s) { |p| print_stdout_stderr(p) }
+Process.run("cmake", args: ["--build", ".", "--config", "Release", "-j", System.cpu_count.to_s], chdir: lexbor_build_path.to_s) { |p| print_stdout_stderr(p) }
