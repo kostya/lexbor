@@ -15,15 +15,19 @@ current_path = Path[__FILE__]
 lexbor_c_path = (current_path.parent) / "lexbor-c"
 args = ["clone", "https://github.com/lexbor/lexbor.git", lexbor_c_path.to_s]
 
-# TODO: Check if the git clone fails.
-Process.run("git", args: args) { |p| print_stdout_stderr(p) }
+unless File.directory? lexbor_c_path
+  # TODO: Check if the git clone fails.
+  Process.run("git", args: args) { |p| print_stdout_stderr(p) }
+end
 
 # Checkout to the specific SHA
 Process.run("git", args: ["reset", "--hard", REV], chdir: lexbor_c_path.to_s) { |p| print_stdout_stderr(p) }
 
 # Make the build directory
 lexbor_build_path = lexbor_c_path / "build"
-Dir.mkdir(lexbor_build_path)
+unless File.directory? lexbor_build_path
+  Dir.mkdir(lexbor_build_path)
+end
 
 cmake_args = [
   "..",
