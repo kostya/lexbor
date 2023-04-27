@@ -1,11 +1,11 @@
 name: lexbor
-version: 3.0.4
+version: 3.1.0
 
 authors:
   - Konstantin Makarchev <kostya27@gmail.com>
 
 scripts:
-  postinstall: cd src/ext && make package
+  postinstall: crystal src/ext/build_ext.cr
 
 crystal: ">= 0.35.1, < 2.0.0"
 license: MIT

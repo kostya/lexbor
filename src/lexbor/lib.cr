@@ -1,7 +1,12 @@
 require "./lib/constants"
 
 module Lexbor
-  @[Link(ldflags: "#{__DIR__}/../ext/lexbor-c/build/liblexbor_static.a")]
+  {% if flag?(:win32) %}
+    @[Link(ldflags: "#{__DIR__}/../ext/lexbor-c/build/Release/lexbor_static.lib")]
+  {% else %}
+    @[Link(ldflags: "#{__DIR__}/../ext/lexbor-c/build/liblexbor_static.a")]
+  {% end %}
+
   lib Lib
     type DocT = Void*
     type CollectionT = Void*
