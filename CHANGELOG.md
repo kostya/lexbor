@@ -1,3 +1,8 @@
+## 3.1.0
+* remove Makefile dependency
+* add windows support
+* update liblexbor
+
 ## 3.0.3
 * fix processing svg in tokenizer
 
