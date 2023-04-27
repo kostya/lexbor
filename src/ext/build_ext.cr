@@ -1,5 +1,3 @@
-REV = "138f78b29c79807a1be6d87d43998917264f7e63"
-
 def cmd(cmd, args, chdir)
   puts "--- execute '#{cmd} #{args.join(" ")}' (in #{chdir})"
 
@@ -15,12 +13,13 @@ def cmd(cmd, args, chdir)
 end
 
 current_path = Path[__FILE__]
-lexbor_c_path = (current_path.parent) / "lexbor-c"
+current_dir = current_path.parent
+lexbor_c_path = current_dir / "lexbor-c"
 
-cmd("git", ["clone", "https://github.com/lexbor/lexbor.git", lexbor_c_path.to_s], current_path.parent) unless File.directory?(lexbor_c_path)
+cmd("git", ["clone", "https://github.com/lexbor/lexbor.git", lexbor_c_path.to_s], current_dir) unless File.directory?(lexbor_c_path)
 
 # Checkout to the specific SHA
-cmd("git", ["reset", "--hard", REV], lexbor_c_path)
+cmd("git", ["reset", "--hard", File.read(current_dir / "revision")], lexbor_c_path)
 
 # Make the build directory
 lexbor_build_path = lexbor_c_path / "build"

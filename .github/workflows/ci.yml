@@ -26,7 +26,7 @@ jobs:
         with:
           path: ./src/ext/lexbor-c
           key: ${{ runner.os }}-makefile-${{ hashFiles('./src/ext/Makefile') }}
-      - name: Make
-        run: make package
+      - name: Build ext
+        run: crystal src/ext/build_ext.cr
       - name: Run tests
         run: crystal spec

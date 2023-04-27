@@ -2,10 +2,11 @@ module Lexbor
   VERSION = "3.1.0"
 
   def self.lib_version
+    "liblexbor v3.2.0 #{File.read(Path[__FILE__].parent / "ext" / "revision")}"
   end
 
   def self.version
-    "Lexbor v#{VERSION} (liblexbor v1.0.0 3cf192ff8106a78a942bc0ad8b4d5e9e30a4c0b3)" # git describe --tags
+    "Lexbor v#{VERSION} (#{lib_version})"
   end
 
   # Decode html entities
