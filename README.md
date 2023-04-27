@@ -94,7 +94,7 @@ p lexbor.css("#t2 tr td:first-child").map(&.to_html).to_a
 ```shell
 git clone https://github.com/kostya/lexbor.git
 cd lexbor
-make
+crystal src/ext/build_ext.cr
 crystal spec
 ```
 
