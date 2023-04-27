@@ -1,10 +1,7 @@
 def cmd(cmd, args, chdir)
-  puts "--- execute '#{cmd} #{args.join(" ")}' (in #{chdir})"
+  puts "--- '#{cmd} #{args.join(" ")}' (in #{chdir}) ---"
 
-  Process.run(cmd, args: args, chdir: chdir.to_s) do |proc|
-    puts proc.output.gets_to_end
-    puts proc.error.gets_to_end
-  end
+  Process.run(cmd, args: args, chdir: chdir.to_s, input: Process::Redirect::Inherit, output: Process::Redirect::Inherit, error: Process::Redirect::Inherit)
 
   if $?.exit_status != 0
     puts "Failed with status #{$?.exit_status}"
@@ -12,8 +9,7 @@ def cmd(cmd, args, chdir)
   end
 end
 
-current_path = Path[__FILE__]
-current_dir = current_path.parent
+current_dir = Path[__FILE__].parent
 lexbor_c_path = current_dir / "lexbor-c"
 
 cmd("git", ["clone", "https://github.com/lexbor/lexbor.git", lexbor_c_path.to_s], current_dir) unless File.directory?(lexbor_c_path)
