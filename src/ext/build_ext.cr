@@ -27,6 +27,8 @@ cmake_args = [
   "-DLEXBOR_BUILD_TESTS_CPP=OFF",
   "-DLEXBOR_INSTALL_HEADERS=OFF",
   "-DLEXBOR_BUILD_SHARED=OFF",
+  "-G",
+  "Unix Makefiles",
 ]
 
 {% if flag?(:win32) %}
