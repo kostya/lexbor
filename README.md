@@ -15,7 +15,7 @@ dependencies:
     github: kostya/lexbor
 ```
 
-And run `shards install` (Installation require `cmake`, make sure it installed)
+And run `shards install` (Installation require `cmake` and `git`).
 
 
 ## Usage example

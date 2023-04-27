@@ -40,4 +40,4 @@ cmake_args = [
 {% end %}
 
 cmd("cmake", cmake_args, lexbor_build_path)
-cmd("cmake", ["--build", ".", "--config", "Release", "-j", System.cpu_count.to_s], lexbor_build_path)
+cmd("cmake", ["--build", ".", "--config", "Release", "-j", {System.cpu_count, 4}.min.to_s], lexbor_build_path)
