@@ -25,7 +25,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./src/ext/lexbor-c
-          key: ${{ runner.os }}-makefile-${{ hashFiles('./src/ext/Makefile') }}
+          key: ${{ runner.os }}-lexbor-revision-${{ hashFiles('./src/ext/revision') }}
       - name: Build ext
         run: crystal src/ext/build_ext.cr
       - name: Run tests
