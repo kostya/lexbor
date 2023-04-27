@@ -6,6 +6,9 @@ Fast HTML5 Parser with CSS selectors (based on new lexborisov's HTML5 parser [le
 
 ## Installation
 
+Install dependency cmake:
+
+    `sudo apt install cmake`
 
 Add this to your application's `shard.yml`:
 
@@ -15,7 +18,7 @@ dependencies:
     github: kostya/lexbor
 ```
 
-And run `shards install` (Installation require `cmake` and `git`).
+And run `shards install`.
 
 
 ## Usage example
