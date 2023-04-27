@@ -7,7 +7,6 @@ authors:
 dependencies:
   myhtml:
     github: kostya/myhtml
-    branch: clang13
   lexbor:
     github: kostya/lexbor
   gumbo-crystal:

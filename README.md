@@ -100,7 +100,7 @@ crystal spec
 
 ## Benchmark
 
-Parse google results page(800Kb) 1000 times, and 5000 times css select.
+Parse google results page(1.5Mb) 1000 times, and 5000 times css select.
 
 [lexbor-program](https://github.com/kostya/lexbor/tree/master/bench/test-lexbor.cr)
 [myhtml-program](https://github.com/kostya/lexbor/tree/master/bench/test-myhtml.cr)
@@ -110,11 +110,11 @@ Parse google results page(800Kb) 1000 times, and 5000 times css select.
 Running on Ryzen 3800x.
 | Lang     | Lib                 | Parse time, s | Css time, s | Memory, MiB |
 | -------- | ------------------- | ------------- | ----------- | ----------- |
-| Ruby 2.7 | Nokolexbor(lexbor)  | 2.47          | 1.44        | 107.7       |
-| Crystal  | lexbor              | 2.95          | 0.62        | 9.6         |
-| Crystal  | myhtml(+modest)     | 3.75          | 0.96        | 11.4        |
-| Crystal  | Crystagiri(libxml2) | 8.82          | -           | 23.5        |
-| Ruby 2.7 | Nokogiri(libxml2)   | 11.05         | 52.19       | 166.2       |
+| Ruby 2.7 | Nokolexbor(lexbor)  | 4.07          | 1.80        | 112.5       |
+| Crystal  | lexbor              | 4.75          | 0.80        | 12.3        |
+| Crystal  | myhtml(+modest)     | 5.98          | 1.22        | 12.2        |
+| Crystal  | Crystagiri(libxml2) | 14.20         | -           | 31.7        |
+| Ruby 2.7 | Nokogiri(libxml2)   | 18.67         | 92.69       | 398.4       |
 
 Running on Apple M1.
 | Lang     | Lib                 | Parse time, s | Css time, s | Memory, MiB |
