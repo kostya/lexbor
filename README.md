@@ -119,9 +119,7 @@ Running on Ryzen 3800x.
 Running on Apple M1.
 | Lang     | Lib                 | Parse time, s | Css time, s | Memory, MiB |
 | -------- | ------------------- | ------------- | ----------- | ----------- |
-| Crystal  | lexbor              | 1.80          | 0.47        | 24.5        |
-| Ruby 2.7 | Nokolexbor(lexbor)  | 2.27          | 0.97        | 232.6       |
-| Crystal  | myhtml(+modest)     | 2.90          | 0.64        | 20.7        |
-| Ruby 2.7 | Nokogiri(libxml2)   | 11.74         | 50.62       | 207.6       |
-| Crystal  | Crystagiri(libxml2) | 32.77         | -           | 17.4        |
-
+| Crystal  | lexbor              | 2.77          | 0.62        | 26.4        |
+| Ruby 2.7 | Nokolexbor(lexbor)  | 3.41          | 1.11        | 268.8       |
+| Ruby 2.7 | Nokogiri(libxml2)   | 18.22         | 87.21       | 232.8       |
+| Crystal  | Crystagiri(libxml2) | 126.25        | -           | 26.8        |
