@@ -27,13 +27,14 @@ cmake_args = [
   "-DLEXBOR_BUILD_TESTS_CPP=OFF",
   "-DLEXBOR_INSTALL_HEADERS=OFF",
   "-DLEXBOR_BUILD_SHARED=OFF",
-  "-G",
-  "Unix Makefiles",
 ]
 
 {% if flag?(:win32) %}
   cmake_args << "-DCMAKE_POLICY_DEFAULT_CMP0091=NEW"
   cmake_args << "-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded"
+{% else %}
+  cmake_args << "-G"
+  cmake_args << "Unix Makefiles"
 {% end %}
 
 cmd("cmake", cmake_args, lexbor_build_path)
