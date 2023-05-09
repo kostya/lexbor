@@ -1,3 +1,6 @@
+## 3.1.2
+* add windows ci (thanks @etra0)
+
 ## 3.1.1
 * fix windows build
 
