@@ -30,10 +30,8 @@ cmake_args = [
 ]
 
 {% if flag?(:win32) %}
-  cmake_args << "-DCMAKE_SYSTEM_NAME=Windows"
-  cmake_args << "-DWIN32=1"
-  cmake_args << "-G"
-  cmake_args << "MSYS Makefiles"
+  cmake_args << "-DCMAKE_POLICY_DEFAULT_CMP0091=NEW"
+  cmake_args << "-DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded"
 {% else %}
   cmake_args << "-G"
   cmake_args << "Unix Makefiles"
