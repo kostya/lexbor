@@ -1,0 +1,34 @@
+name: Specs (windows)
+on:
+  push:
+  pull_request:
+    branches: [master]
+  schedule:
+    - cron: '0 0 * * 0'
+jobs:
+  x86_64_windows:
+    strategy:
+      fail-fast: false
+
+    runs-on: windows-2022
+    steps:
+      - name: Enable Windows developer prompt
+        uses: ilammy/msvc-dev-cmd@cec98b9d092141f74527d0afa6feb2af698cfe89
+
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.9
+        with:
+          cmake-version: '3.16.x'
+      - name: Download source
+        uses: actions/checkout@v2
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1
+      - name: Cache shards
+        uses: actions/cache@v2
+        with:
+          path: ./src/ext/lexbor-c
+          key: ${{ runner.os }}-lexbor-revision-${{ hashFiles('./src/ext/revision') }}
+      - name: Build ext
+        run: crystal src/ext/build_ext.cr
+      - name: Run tests
+        run: crystal spec
