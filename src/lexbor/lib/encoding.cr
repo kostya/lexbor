@@ -1,5 +1,9 @@
 module Lexbor
-  @[Link(ldflags: "#{__DIR__}/../../ext/lexbor-c/build/liblexbor_static.a")]
+  {% if flag?(:win32) %}
+    @[Link(ldflags: "#{__DIR__}/../../ext/lexbor-c/build/lexbor_static.lib")]
+  {% else %}
+    @[Link(ldflags: "#{__DIR__}/../../ext/lexbor-c/build/liblexbor_static.a")]
+  {% end %}
   lib LibEncoding
     # cat src/ext/lexbor-c/source/lexbor/encoding/const.h | grep '    LXB_ENCODING' | ruby -e 'while s = gets; puts s.gsub(",", "").gsub("//", "#"); end;'
     enum EncodingT : UInt32
