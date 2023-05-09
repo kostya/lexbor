@@ -420,7 +420,7 @@ describe Lexbor::Node do
         </span>
       </div>
       TEXT
-      node.to_pretty_html.should eq t
+      node.to_pretty_html.should eq t.gsub("\r\n", "\n")
     end
 
     it "work, not serialize next node" do
@@ -434,7 +434,7 @@ describe Lexbor::Node do
         </span>
       </div>
       TEXT
-      node.to_pretty_html.should eq t
+      node.to_pretty_html.should eq t.gsub("\r\n", "\n")
     end
 
     it "work" do
@@ -461,7 +461,7 @@ describe Lexbor::Node do
         </div>
       </body>
       TEXT
-      node.to_pretty_html.should eq t
+      node.to_pretty_html.should eq t.gsub("\r\n", "\n")
     end
 
     it "work" do
@@ -485,7 +485,7 @@ describe Lexbor::Node do
         </body>
       </html>
       TEXT
-      parser.to_pretty_html.should eq t
+      parser.to_pretty_html.should eq t.gsub("\r\n", "\n")
     end
 
     it "not damaging html" do
