@@ -159,7 +159,7 @@ struct Lexbor::Node
 
   #
   # Convert end of tag to string
-  #   ex: node.to_html_end # => "</div>"
+  #   ex: node.to_html_end # => "\</div>"
   def to_html_end
     String.build { |io| to_html_end(io) }
   end
