@@ -4,7 +4,7 @@ version: 3.1.2
 authors:
   - Konstantin Makarchev <kostya27@gmail.com>
 
-development_dependencies:
+dependencies:
   msvc_env:
     github: dsisnero/msvc_env
     version: ~> 0.7.1
