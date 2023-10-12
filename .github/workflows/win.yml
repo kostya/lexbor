@@ -12,13 +12,6 @@ jobs:
 
     runs-on: windows-2022
     steps:
-      - name: Enable Windows developer prompt
-        uses: ilammy/msvc-dev-cmd@cec98b9d092141f74527d0afa6feb2af698cfe89
-
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.9
-        with:
-          cmake-version: '3.16.x'
       - name: Download source
         uses: actions/checkout@v2
       - name: Install Crystal
