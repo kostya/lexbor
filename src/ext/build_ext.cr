@@ -39,5 +39,15 @@ cmake_args = [
   cmake_args << "Unix Makefiles"
 {% end %}
 
-cmd("cmake", cmake_args, lexbor_build_path)
-cmd("cmake", ["--build", ".", "--config", "Release", "-j", {System.cpu_count, 4}.min.to_s], lexbor_build_path)
+{% if flag?(:win32) %}
+  require "./vs_env"
+  VS_ENV.with_env do
+  cmd("cmake", cmake_args, lexbor_build_path)
+  cmd("cmake", ["--build", ".", "--config", "Release", "-j", {System.cpu_count, 4}.min.to_s], lexbor_build_path)
+  end
+{% else %}
+  cmd("cmake", cmake_args, lexbor_build_path)
+  cmd("cmake", ["--build", ".", "--config", "Release", "-j", {System.cpu_count, 4}.min.to_s], lexbor_build_path)
+{% end %}
+
+
