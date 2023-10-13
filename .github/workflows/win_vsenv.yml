@@ -1,0 +1,26 @@
+name: Specs (windows)
+on:
+  push:
+    branches: [vs_env]
+  schedule:
+    - cron: '0 0 * * 0'
+jobs:
+  x86_64_windows:
+    strategy:
+      fail-fast: false
+
+    runs-on: windows-2022
+    steps:
+      - name: Download source
+        uses: actions/checkout@v2
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1
+      - name: Cache shards
+        uses: actions/cache@v2
+        with:
+          path: ./src/ext/lexbor-c
+          key: ${{ runner.os }}-lexbor-revision-${{ hashFiles('./src/ext/revision') }}
+      - name: Build ext
+        run: crystal src/ext/build_ext.cr
+      - name: Run tests
+        run: crystal spec
