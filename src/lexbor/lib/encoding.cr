@@ -1,6 +1,8 @@
 module Lexbor
   {% if flag?(:win32) %}
     @[Link(ldflags: "#{__DIR__}/../../ext/lexbor-c/build/lexbor_static.lib")]
+  {% elsif flag?(:interpreted) %}
+    @[Link("lexbor", ldflags: "-L#{__DIR__}/../../ext/lexbor-c/build/")]
   {% else %}
     @[Link(ldflags: "#{__DIR__}/../../ext/lexbor-c/build/liblexbor_static.a")]
   {% end %}

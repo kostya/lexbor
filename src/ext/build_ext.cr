@@ -26,7 +26,7 @@ cmake_args = [
   "-DCMAKE_BUILD_TYPE=Release",
   "-DLEXBOR_BUILD_TESTS_CPP=OFF",
   "-DLEXBOR_INSTALL_HEADERS=OFF",
-  "-DLEXBOR_BUILD_SHARED=OFF",
+  "-DLEXBOR_BUILD_SHARED=ON",
 ]
 
 {% if flag?(:win32) %}
