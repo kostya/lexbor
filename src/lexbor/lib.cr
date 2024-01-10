@@ -88,10 +88,9 @@ module Lexbor
       length : LibC::SizeT
     end
 
-    type StrT = Str*
+    alias StrT = Str*
     type HashT = Void*
 
-    # type TokenAttrT = Void*
     struct TokenAttr
       name_begin : UInt8*
       name_end : UInt8*
@@ -105,7 +104,7 @@ module Lexbor
       type : HtmlTokenAttrTypeT
     end
 
-    type TokenAttrT = TokenAttr*
+    alias TokenAttrT = TokenAttr*
 
     struct HtmlToken
       begin_ : UInt8*
@@ -120,7 +119,7 @@ module Lexbor
       type_ : HtmlTokenTypeT
     end
 
-    type HtmlTokenT = HtmlToken*
+    alias HtmlTokenT = HtmlToken*
     alias HtmlTokenizerTokenF = HtmlTokenizerT, HtmlTokenT, Void* -> HtmlTokenT
 
     fun html_tokenizer_create = lxb_html_tokenizer_create : HtmlTokenizerT
