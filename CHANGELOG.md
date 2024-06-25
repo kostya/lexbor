@@ -1,3 +1,6 @@
+## 3.2.0
+* updat liblexbor to latest
+
 ## 3.1.3
 * fix usage in interpreter
 
