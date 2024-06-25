@@ -1,8 +1,8 @@
 module Lexbor
-  VERSION = "3.1.3"
+  VERSION = "3.2.0"
 
   def self.lib_version
-    "liblexbor v3.2.0 #{File.read(Path[__FILE__].parent / "ext" / "revision")}"
+    "liblexbor v2.4.0 #{File.read(Path[__FILE__].parent / "ext" / "revision")}"
   end
 
   def self.version
