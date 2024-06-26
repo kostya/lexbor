@@ -7,7 +7,7 @@ struct Lexbor::Node
   # ```
   # document = Lexbor::Parser.new("<html><body><p>Hi!</p></body></html>")
   # body = document.body!
-  # span = document.tree.create_node(:span)
+  # span = document.create_node(:span)
   #
   # body.append_child(span)
   # body.to_html # <body><p>Hi!</p><span></span></body>
@@ -24,7 +24,7 @@ struct Lexbor::Node
   # ```
   # document = Lexbor::Parser.new("<html><body><main></main></body></html>")
   # main = document.css("main").first
-  # header = document.tree.create_node(:header)
+  # header = document.create_node(:header)
   #
   # main.insert_before(header)
   # document.body!.to_html # <body><header></header><main></main></body>
@@ -41,7 +41,7 @@ struct Lexbor::Node
   # ```
   # document = Lexbor::Parser.new("<html><body><div></div></body></html>")
   # div = document.css("div").first
-  # img = document.tree.create_node(:img)
+  # img = document.create_node(:img)
   #
   # div.insert_after(img)
   # document.body!.to_html # <body><div></div><img></body>
