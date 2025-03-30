@@ -243,10 +243,4 @@ struct Lexbor::Tokenizer::Token
   private def tkz
     @state.tokenizer.not_nil!.tkz
   end
-
-  # :nodoc:
-  @[AlwaysInline]
-  private def tags
-    @state.tokenizer.not_nil!.tags
-  end
 end

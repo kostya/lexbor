@@ -85,7 +85,7 @@ class Lexbor::Tokenizer
     token
   end
 
-  getter tkz, tags
+  getter tkz
 
   def initialize(state, @skip_whitespace_tokens = false)
     @finalized = false
@@ -98,8 +98,6 @@ class Lexbor::Tokenizer
     end
 
     Lexbor::Lib.html_tokenizer_callback_token_done_set(@tkz, @skip_whitespace_tokens ? CALLBACK_WO_WHITESPACE_TOKENS : CALLBACK, state.as(Void*))
-
-    @tags = Lexbor::Lib.html_tokenizer_tags(@tkz)
   end
 
   def parse(state, str : String)
