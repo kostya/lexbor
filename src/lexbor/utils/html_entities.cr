@@ -1,7 +1,7 @@
 module Lexbor::Utils::HtmlEntities
   # !this object never freed!
   HTML_ENTITIES_NODE = begin
-    doc = Lexbor::Parser.new "<div>a</div>"
+    doc = Lexbor.new "<div>a</div>"
     doc.nodes(:div).first.child!
   end
 

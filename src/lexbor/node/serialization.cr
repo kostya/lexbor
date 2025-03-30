@@ -5,7 +5,7 @@ struct Lexbor::Node
   #
   # Example:
   # ```
-  # parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div></body></html>")
+  # parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div></body></html>")
   # node = parser.nodes(:div).first
   # node.to_html              # => `<div class="AAA" style="color:red">Haha <span>11</span></div>`
   # node.to_html(deep: false) # => `<div class="AAA" style="color:red">`

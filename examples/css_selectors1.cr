@@ -16,7 +16,7 @@ html = <<-HTML
   </html>
 HTML
 
-lexbor = Lexbor::Parser.new(html)
+lexbor = Lexbor.new(html)
 
 p lexbor.css("#t2 tr td:first-child").map(&.inner_text).to_a
 # => ["123", "foo", "bar", "xyz"]

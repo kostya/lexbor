@@ -2,7 +2,7 @@ require "./spec_helper"
 
 describe Lexbor do
   it "parser work" do
-    parser = Lexbor::Parser.new("<html>BLA</html>")
+    parser = Lexbor.new("<html>BLA</html>")
 
     parser.root!.tag_name.should eq "html"
     parser.root!.child!.tag_name.should eq "head"

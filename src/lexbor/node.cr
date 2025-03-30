@@ -109,7 +109,7 @@ struct Lexbor::Node
   #
   # Example:
   # ```
-  # parser = Lexbor::Parser.new("<html><body><div>Haha <!-->WHAT?-->11</div></body></html>")
+  # parser = Lexbor.new("<html><body><div>Haha <!-->WHAT?-->11</div></body></html>")
   # node = parser.nodes(:div).first
   # node.inner_text                 # => `Haha 11`
   # node.inner_text(deep: false)    # => `Haha `

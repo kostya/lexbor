@@ -5,7 +5,7 @@ describe Lexbor do
     html = "<div><p id=p1><p id=p2><p id=p3><a>link</a><p id=p4><p id=p5><p id=p6></div>"
     selector = "div > :nth-child(2n+1):not(:has(a))"
 
-    parser = Lexbor::Parser.new(html)
+    parser = Lexbor.new(html)
     finder = Lexbor::CssFilter.new(selector)
     nodes = finder.search_from(parser.html!).to_a
 
@@ -23,7 +23,7 @@ describe Lexbor do
   it "css for root! node" do
     html = "<div><p id=p1><p id=p2 class=jo><p id=p3><a>link</a><span id=bla><p id=p4 class=jo><p id=p5 class=bu><p id=p6 class=jo></span></div>"
 
-    parser = Lexbor::Parser.new(html)
+    parser = Lexbor.new(html)
     nodes = parser.root!.css("div > :nth-child(2n+1):not(:has(a))").to_a
 
     nodes.size.should eq 2
@@ -40,21 +40,21 @@ describe Lexbor do
   it "another rule" do
     html = "<div><p id=p1><p id=p2 class=jo><p id=p3><a>link</a><span id=bla><p id=p4 class=jo><p id=p5 class=bu><p id=p6 class=jo></span></div>"
 
-    parser = Lexbor::Parser.new(html)
+    parser = Lexbor.new(html)
     parser.root!.css(".jo").to_a.map(&.attribute_by("id")).should eq %w(p2 p4 p6)
   end
 
   it "another rule for parser itself" do
     html = "<div><p id=p1><p id=p2 class=jo><p id=p3><a>link</a><span id=bla><p id=p4 class=jo><p id=p5 class=bu><p id=p6 class=jo></span></div>"
 
-    parser = Lexbor::Parser.new(html)
+    parser = Lexbor.new(html)
     parser.css(".jo").to_a.map(&.attribute_by("id")).should eq %w(p2 p4 p6)
   end
 
   it "work for another scope node" do
     html = "<div><p id=p1><p id=p2 class=jo><p id=p3><a>link</a><div id=bla><p id=p4 class=jo><p id=p5 class=bu><p id=p6 class=jo></div></div>"
 
-    parser = Lexbor::Parser.new(html)
+    parser = Lexbor.new(html)
     parser.nodes(:div).to_a.last.css(".jo").to_a.map(&.attribute_by("id")).should eq %w(p4 p6)
     parser.nodes(:div).to_a.first.css(".jo").to_a.map(&.attribute_by("id")).should eq %w(p2 p4 p6)
   end
@@ -63,7 +63,7 @@ describe Lexbor do
     it "for parser" do
       html = "<div><p id=p1><p id=p2 class=jo><p id=p3><a>link</a><span id=bla><p id=p4 class=jo><p id=p5 class=bu><p id=p6 class=jo></span></div>"
 
-      parser = Lexbor::Parser.new(html)
+      parser = Lexbor.new(html)
       finder = Lexbor::CssFilter.new(".jo")
 
       10.times do
@@ -76,7 +76,7 @@ describe Lexbor do
     it "for parser" do
       html = "<div><p id=p1><p id=p2 class=jo><p id=p3><a>link</a><span id=bla><p id=p4 class=jo><p id=p5 class=bu><p id=p6 class=jo></span></div>"
 
-      parser = Lexbor::Parser.new(html)
+      parser = Lexbor.new(html)
       finder = Lexbor::CssFilter.new(".jo")
 
       10.times do
@@ -87,7 +87,7 @@ describe Lexbor do
     it "for root node" do
       html = "<div><p id=p1><p id=p2 class=jo><p id=p3><a>link</a><span id=bla><p id=p4 class=jo><p id=p5 class=bu><p id=p6 class=jo></span></div>"
 
-      parser = Lexbor::Parser.new(html)
+      parser = Lexbor.new(html)
       finder = Lexbor::CssFilter.new(".jo")
 
       10.times do
@@ -99,7 +99,7 @@ describe Lexbor do
   it "should raise on empty selector" do
     html = "<div><p id=p1><p id=p2 class=jo><p id=p3><a>link</a><span id=bla><p id=p4 class=jo><p id=p5 class=bu><p id=p6 class=jo></span></div>"
 
-    parser = Lexbor::Parser.new(html)
+    parser = Lexbor.new(html)
     expect_raises(Lexbor::LibError, "Failed to css_selectors_parse for") do
       finder = Lexbor::CssFilter.new("")
       parser.css(finder).to_a.size.should eq 0
@@ -122,7 +122,7 @@ describe Lexbor do
       </div>
     PAGE
 
-    parser = Lexbor::Parser.new(html)
+    parser = Lexbor.new(html)
 
     # select all p nodes which id like `*p*`
     parser.css("p[id*=p]").map(&.attribute_by("id")).to_a.should eq ["p1", "p2", "p3", "p4", "p5", "p6"]
@@ -166,7 +166,7 @@ describe Lexbor do
       </body></html>
     PAGE
 
-    parser = Lexbor::Parser.new(html)
+    parser = Lexbor.new(html)
     parser.css("#t2 tr td:first-child").map(&.inner_text).to_a.should eq ["123", "foo", "bar", "xyz"]
     parser.css("#t2 tr td:first-child").map(&.to_html).to_a.should eq ["<td>123</td>", "<td>foo</td>", "<td>bar</td>", "<td>xyz</td>"]
 
@@ -179,7 +179,7 @@ describe Lexbor do
 
   it "not sigfaulting on more than 1024 elements" do
     str = "<html>" + "<div class=A>ooo</div>" * 20000 + "</html>"
-    parser = Lexbor::Parser.new(str)
+    parser = Lexbor.new(str)
 
     c = 0
     x = 0
@@ -192,12 +192,12 @@ describe Lexbor do
   end
 
   it "bug in css" do
-    parser = Lexbor::Parser.new(%q{<div class="asfjjjj">bla</div>})
+    parser = Lexbor.new(%q{<div class="asfjjjj">bla</div>})
     parser.css("div.jjjj").to_a.size.should eq 0
   end
 
   it "css with yield" do
-    parser = Lexbor::Parser.new(%q{<div class="jjjj">bla</div>})
+    parser = Lexbor.new(%q{<div class="jjjj">bla</div>})
     parser.css("div.jjjj") { |col| col.to_a.size }.should eq 1
   end
 end

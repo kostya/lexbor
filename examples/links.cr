@@ -35,7 +35,7 @@ def good_texts_iterator(iterator)
     .reject(&.empty?)
 end
 
-Lexbor::Parser.new(str).nodes(:a).each do |node|
+Lexbor.new(str).nodes(:a).each do |node|
   anchor = node.inner_text(deep: true)
   href = node.attribute_by("href")
   before = good_texts_iterator(node.left_iterator).first?

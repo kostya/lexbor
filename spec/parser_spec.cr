@@ -2,7 +2,7 @@ require "./spec_helper"
 
 describe Lexbor::Node do
   it "select_tags" do
-    parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha</div>
+    parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha</div>
       <div>blah</div>
       </body></html>")
 
@@ -21,7 +21,7 @@ describe Lexbor::Node do
   end
 
   it "each_tag" do
-    parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha</div>
+    parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha</div>
       <div>blah</div>
       </body></html>")
 
@@ -50,7 +50,7 @@ describe Lexbor::Node do
       </body></html>
     HTML
 
-    parser = Lexbor::Parser.new(str)
+    parser = Lexbor.new(str)
     parser.nodes(Lexbor::Lib::TagIdT::LXB_TAG_A).size.should eq 1
     parser.nodes(:a).size.should eq 1
     parser.nodes("a").size.should eq 1
@@ -68,7 +68,7 @@ describe Lexbor::Node do
       str = String.new(bom.shifted(str.to_slice))
     end
 
-    parser = Lexbor::Parser.new(str)
+    parser = Lexbor.new(str)
 
     title = parser.head!.child!
     title.tag_name.should eq "title"
@@ -77,7 +77,7 @@ describe Lexbor::Node do
 
   it "manually call free, to save memory" do
     10000.times do
-      parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha</div>
+      parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha</div>
         <div>blah</div>
         </body></html>")
       parser.free
@@ -85,13 +85,13 @@ describe Lexbor::Node do
   end
 
   it "raise when non supported tag name is given by String" do
-    parser = Lexbor::Parser.new("<html></html>")
+    parser = Lexbor.new("<html></html>")
     expect_raises(Lexbor::Error, /Unknown tag "xxx"/) { parser.nodes("xxx") }
   end
 
   it "not sigfaulting on more than 1024 elements" do
     str = "<html>" + "<div class=A>ooo</div>" * 2000 + "</html>"
-    parser = Lexbor::Parser.new(str)
+    parser = Lexbor.new(str)
 
     c = 0
     parser.nodes(:div).each do |node|
@@ -104,7 +104,7 @@ describe Lexbor::Node do
     str = "<html><body>" + "<div class=A>ooo</div>" * 2000 + "</body></html>"
     io = IO::Memory.new(str)
 
-    parser = Lexbor::Parser.new(io)
+    parser = Lexbor.new(io)
     c = 0
     parser.nodes(:div).each do |node|
       c += 1 if node.attribute_by("class") == "A"
@@ -122,13 +122,13 @@ describe Lexbor::Node do
         <body> </body>
       </html>
     HTML
-    parser = Lexbor::Parser.new(origin)
+    parser = Lexbor.new(origin)
     parser.to_html.should eq "<!DOCTYPE html><html lang=\"en\"><head>\n     <title></title>\n    </head>\n    <body> \n  </body></html>"
   end
 
   describe "#create_node" do
     it "returns a new Lexbor::Node" do
-      tree = Lexbor::Parser.new ""
+      tree = Lexbor.new ""
 
       node = tree.create_node(:a)
 
@@ -137,7 +137,7 @@ describe Lexbor::Node do
     end
 
     it "create node with attributes and text" do
-      tree = Lexbor::Parser.new ""
+      tree = Lexbor.new ""
       node = tree.create_node(:a)
       node.attribute_add("id", "bla")
       node.attribute_add("class", "red")
@@ -150,7 +150,7 @@ describe Lexbor::Node do
   end
 
   it "nodes iterator works with doctype" do
-    parser = Lexbor::Parser.new("<!doctype html><html><body><div class=AAA style='color:red'>Haha</div>
+    parser = Lexbor.new("<!doctype html><html><body><div class=AAA style='color:red'>Haha</div>
       <div>blah</div>
       </body></html>")
 
@@ -161,7 +161,7 @@ describe Lexbor::Node do
 
   describe "root element" do
     it do
-      m = Lexbor::Parser.new(%q{<!DOCTYPE html><html></html>})
+      m = Lexbor.new(%q{<!DOCTYPE html><html></html>})
       m.root!.tag_sym.should eq :html
     end
   end

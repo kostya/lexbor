@@ -13,7 +13,7 @@ html = <<-HTML
   </html>
 HTML
 
-lexbor = Lexbor::Parser.new(html)
+lexbor = Lexbor.new(html)
 
 lexbor.nodes(:div).each do |node|
   id = node["id"]?

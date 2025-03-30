@@ -5,7 +5,7 @@ require "../src/lexbor"
 puts Lexbor.version
 
 page = "<html><div class=aaa>bla</div></html>"
-lexbor = Lexbor::Parser.new(page)
+lexbor = Lexbor.new(page)
 
 # html node
 lexbor.root  # (.html) Lexbor::Node?

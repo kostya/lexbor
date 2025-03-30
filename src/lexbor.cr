@@ -1,5 +1,5 @@
 module Lexbor
-  VERSION = "3.2.0"
+  VERSION = "3.3.0"
 
   def self.lib_version
     "liblexbor v2.4.0 #{File.read(Path[__FILE__].parent / "ext" / "revision")}"
@@ -7,6 +7,11 @@ module Lexbor
 
   def self.version
     "Lexbor v#{VERSION} (#{lib_version})"
+  end
+
+  # alias for parse document
+  def self.new(v)
+    Parser.new(v)
   end
 
   # Decode html entities

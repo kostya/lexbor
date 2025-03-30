@@ -26,7 +26,7 @@ formatting = (ARGV[1]? != "0")
 remove_whitespaces = (ARGV[2]? != "0")
 remove_comments = (ARGV[3]? != "0")
 
-lexbor = Lexbor::Parser.new(str)
+lexbor = Lexbor.new(str)
 
 if remove_comments
   nodes = lexbor.nodes(:_em_comment).to_a # important to materialize array with to_a, before removing

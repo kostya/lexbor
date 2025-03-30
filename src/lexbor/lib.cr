@@ -129,7 +129,7 @@ module Lexbor
     fun html_tokenizer_chunk = lxb_html_tokenizer_chunk(tkz : HtmlTokenizerT, data : UInt8*, size : LibC::SizeT) : StatusT
     fun html_tokenizer_end = lxb_html_tokenizer_end(tkz : HtmlTokenizerT) : StatusT
     fun html_tokenizer_destroy = lxb_html_tokenizer_destroy(tkz : HtmlTokenizerT) : HtmlTokenizerT
-    fun tag_name_by_id = lxb_tag_name_by_id_noi(hash : HashT, tag_id : TagIdT, len : LibC::SizeT*) : UInt8*
+    fun tag_name_by_id = lxb_tag_name_by_id_noi(tag_id : TagIdT, len : LibC::SizeT*) : UInt8*
     fun html_tokenizer_tags_make = lxb_html_tokenizer_tags_make(tkz : HtmlTokenizerT, table_size : LibC::SizeT) : StatusT
     fun html_tokenizer_tags_destroy = lxb_html_tokenizer_tags_destroy(tkz : HtmlTokenizerT)
     fun html_tokenizer_status_set = lxb_html_tokenizer_status_set_noi(tkz : HtmlTokenizerT, status : StatusT)

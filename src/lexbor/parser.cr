@@ -170,7 +170,7 @@ class Lexbor::Parser
   # `Node#append_child`, `Node#insert_after`, and `Node#insert_before`
   #
   # ```
-  # doc = Lexbor::Parser.new ""
+  # doc = Lexbor.new ""
   # div = doc.create_node(:div)
   # a = doc.create_node(:a)
   #

@@ -64,7 +64,7 @@ def parser_links
     </html>
   HTML
 
-  Lexbor::Parser.new(str)
+  Lexbor.new(str)
 end
 
 describe "integration" do

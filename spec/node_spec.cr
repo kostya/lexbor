@@ -2,7 +2,7 @@ require "./spec_helper"
 
 describe Lexbor::Node do
   it "node from root" do
-    parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red' chk>Haha</div></body></html>")
+    parser = Lexbor.new("<html><body><div class=AAA style='color:red' chk>Haha</div></body></html>")
 
     node = parser.root!.child!.next!.child!
     node.tag_name.should eq "div"
@@ -17,13 +17,13 @@ describe Lexbor::Node do
   end
 
   it "raise error when no node" do
-    parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Hahasdfjasdfladshfasldkfhadsfkdashfaklsjdfhalsdfdsafsda</div></body></html>")
+    parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Hahasdfjasdfladshfasldkfhadsfkdashfaklsjdfhalsdfdsafsda</div></body></html>")
     node = parser.root!.child!.next!.child!.child!
     expect_raises(Lexbor::EmptyNodeError, /'child' called from Lexbor::Node/) { node.child! }
   end
 
   it "attributes" do
-    parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha</div></body></html>")
+    parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha</div></body></html>")
 
     node = parser.root!.child!.next!.child!
     node.attributes.should eq({"class" => "AAA", "style" => "color:red"})
@@ -39,7 +39,7 @@ describe Lexbor::Node do
   end
 
   it "add attribute" do
-    parser = Lexbor::Parser.new("<html><body><div class=\"foo\">Haha</div></body></html>")
+    parser = Lexbor.new("<html><body><div class=\"foo\">Haha</div></body></html>")
 
     node = parser.nodes(:div).first
     node.attribute_add("id", "bar")
@@ -49,7 +49,7 @@ describe Lexbor::Node do
   end
 
   it "add attribute if attributes was cached" do
-    parser = Lexbor::Parser.new("<html><body><div class=\"foo\">Haha</div></body></html>")
+    parser = Lexbor.new("<html><body><div class=\"foo\">Haha</div></body></html>")
 
     node = parser.nodes(:div).first
     node.attributes.should eq({"class" => "foo"})
@@ -58,7 +58,7 @@ describe Lexbor::Node do
   end
 
   it "remove attribute" do
-    parser = Lexbor::Parser.new("<html><body><div class=\"foo\" id=\"bar\">Haha</div></body></html>")
+    parser = Lexbor.new("<html><body><div class=\"foo\" id=\"bar\">Haha</div></body></html>")
 
     node = parser.nodes(:div).first
     node.attribute_remove("id")
@@ -69,7 +69,7 @@ describe Lexbor::Node do
   end
 
   it "remove attribute by alias" do
-    parser = Lexbor::Parser.new("<html><body><div class=\"foo\" id=\"bar\">Haha</div></body></html>")
+    parser = Lexbor.new("<html><body><div class=\"foo\" id=\"bar\">Haha</div></body></html>")
 
     node = parser.nodes(:div).first
     node.attribute_remove("id")
@@ -80,7 +80,7 @@ describe Lexbor::Node do
   end
 
   it "remove attribute if attributes was cached" do
-    parser = Lexbor::Parser.new("<html><body><div class=\"foo\" id=\"bar\">Haha</div></body></html>")
+    parser = Lexbor.new("<html><body><div class=\"foo\" id=\"bar\">Haha</div></body></html>")
 
     node = parser.nodes(:div).first
     node.attributes.should eq({"class" => "foo", "id" => "bar"})
@@ -94,14 +94,14 @@ describe Lexbor::Node do
 
   it "remove single attribue, #12" do
     html = %Q{<a href="/3">3</a>}
-    parser = Lexbor::Parser.new(html)
+    parser = Lexbor.new(html)
     node = parser.nodes(:a).first
     node["href"] = ""
     node.attributes.should eq({"href" => ""})
   end
 
   it "ignore case attributes" do
-    parser = Lexbor::Parser.new("<html><body><div Class=AAA STYLE='color:red'>Haha</div></body></html>")
+    parser = Lexbor.new("<html><body><div Class=AAA STYLE='color:red'>Haha</div></body></html>")
 
     node = parser.root!.child!.next!.child!
     node.attributes.should eq({"class" => "AAA", "style" => "color:red"})
@@ -109,7 +109,7 @@ describe Lexbor::Node do
   end
 
   it "children" do
-    parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha</div><span></span></body></html>")
+    parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha</div><span></span></body></html>")
 
     node = parser.root!.child!.next!
     node1, node2 = node.children.to_a
@@ -118,7 +118,7 @@ describe Lexbor::Node do
   end
 
   it "each_child" do
-    parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha</div><span></span></body></html>")
+    parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha</div><span></span></body></html>")
 
     node = parser.root!.child!.next!
     nodes = [] of Lexbor::Node
@@ -129,7 +129,7 @@ describe Lexbor::Node do
   end
 
   it "each_child iterator" do
-    parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha</div><span></span></body></html>")
+    parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha</div><span></span></body></html>")
 
     node = parser.root!.child!.next!
     node1, node2 = node.children.to_a
@@ -138,7 +138,7 @@ describe Lexbor::Node do
   end
 
   it "parents" do
-    parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha</div><span></span></body></html>")
+    parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha</div><span></span></body></html>")
 
     node = parser.root!.right_iterator.to_a.last
     parents = node.parents.to_a
@@ -149,7 +149,7 @@ describe Lexbor::Node do
   end
 
   it "each_parent" do
-    parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha</div><span></span></body></html>")
+    parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha</div><span></span></body></html>")
 
     node = parser.root!.right_iterator.to_a.last
     parents = [] of Lexbor::Node
@@ -161,7 +161,7 @@ describe Lexbor::Node do
   end
 
   it "each_parent iterator" do
-    parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha</div><span></span></body></html>")
+    parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha</div><span></span></body></html>")
 
     node = parser.root!.right_iterator.to_a.last
     parents = node.parents.to_a
@@ -172,19 +172,19 @@ describe Lexbor::Node do
   end
 
   it "visible?" do
-    parser = Lexbor::Parser.new("<body><style>bla</style></body>")
+    parser = Lexbor.new("<body><style>bla</style></body>")
     node = parser.root!.right_iterator.to_a[-2]
     node.tag_name.should eq "style"
     node.visible?.should eq false
 
-    parser = Lexbor::Parser.new("<body><div>bla</div></body>")
+    parser = Lexbor.new("<body><div>bla</div></body>")
     node = parser.root!.right_iterator.to_a[-2]
     node.tag_name.should eq "div"
     node.visible?.should eq true
   end
 
   it "object?" do
-    parser = Lexbor::Parser.new("<body><object>bla</object></body>")
+    parser = Lexbor.new("<body><object>bla</object></body>")
     node = parser.root!.right_iterator.to_a[-2]
     node.tag_name.should eq "object"
     node.object?.should eq true
@@ -192,7 +192,7 @@ describe Lexbor::Node do
   end
 
   it "is_tag_div?" do
-    parser = Lexbor::Parser.new("<div>1</div>")
+    parser = Lexbor.new("<div>1</div>")
     noindex = parser.root!.right_iterator.to_a[-2]
     noindex.tag_name.should eq "div"
     noindex.is_tag_div?.should eq true
@@ -200,13 +200,13 @@ describe Lexbor::Node do
   end
 
   it "is_tag_noindex?" do
-    parser = Lexbor::Parser.new("<noindex>1</noindex>")
+    parser = Lexbor.new("<noindex>1</noindex>")
     noindex = parser.root!.right_iterator.to_a[-2]
     noindex.tag_name.should eq "noindex"
     noindex.is_tag_noindex?.should eq true
     noindex.child!.is_tag_noindex?.should eq false
 
-    parser = Lexbor::Parser.new("<NOINDEX>1</NOINDEX>")
+    parser = Lexbor.new("<NOINDEX>1</NOINDEX>")
     noindex = parser.root!.right_iterator.to_a[-2]
     noindex.tag_name.should eq "noindex"
     noindex.is_tag_noindex?.should eq true
@@ -217,7 +217,7 @@ describe Lexbor::Node do
     html_string = "<html><body><div id='first'>Haha</div><div id='second'>Hehe</div><div id='third'>Hoho</div></body></html>"
     id_array = %w(first second third)
     (0..2).each do |i|
-      parser = Lexbor::Parser.new html_string
+      parser = Lexbor.new html_string
       parser.root!.child!.next!.children.to_a[i].remove!
       parser.root!.child!.next!.children.to_a.map(&.attribute_by("id")).should(
         eq id_array.dup.tap(&.delete_at(i))
@@ -236,14 +236,14 @@ describe Lexbor::Node do
         <body><!-- foo --> <!-- bar --> <!-- baz --></body>
       </html>
     HTML
-    lexbor = Lexbor::Parser.new html
+    lexbor = Lexbor.new html
     nodes = lexbor.nodes(:_em_comment)
     nodes.to_a.each &.remove!
     lexbor.body!.to_html.should eq "<body>  \n  </body>"
   end
 
   # it "get set data" do
-  #   parser = Lexbor::Parser.new("<body><object>bla</object></body>")
+  #   parser = Lexbor.new("<body><object>bla</object></body>")
   #   node = parser.body!
 
   #   str = "bla"
@@ -258,7 +258,7 @@ describe Lexbor::Node do
 
   describe "#append_child" do
     it "adds a node at the end" do
-      tree = Lexbor::Parser.new ""
+      tree = Lexbor.new ""
       parent = tree.create_node(:div)
       child = tree.create_node(:a)
       grandchild = tree.create_node(:span)
@@ -275,7 +275,7 @@ describe Lexbor::Node do
 
   describe "#insert_before" do
     it "adds a node just prior to this node" do
-      document = Lexbor::Parser.new("<html><body><main></main></body></html>")
+      document = Lexbor.new("<html><body><main></main></body></html>")
       main = document.nodes("main").first
       header = document.create_node(:header)
 
@@ -289,7 +289,7 @@ describe Lexbor::Node do
   describe "#insert_after" do
     it "adds a node just following this node" do
       html_string = "<html><body><header></header></body></html>"
-      document = Lexbor::Parser.new(html_string)
+      document = Lexbor.new(html_string)
       header = document.nodes("header").first
       main = document.create_node(:main)
 
@@ -302,21 +302,21 @@ describe Lexbor::Node do
 
   describe "#inner_text=" do
     it "add inner_text" do
-      document = Lexbor::Parser.new("<html><body><div></div></body></html>")
+      document = Lexbor.new("<html><body><div></div></body></html>")
       div = document.nodes("div").first
       div.inner_text = "bla"
       document.to_html.should eq "<html><head></head><body><div>bla</div></body></html>"
     end
 
     it "add inner_text with redefine" do
-      document = Lexbor::Parser.new("<html><body><div>hoho</div></body></html>")
+      document = Lexbor.new("<html><body><div>hoho</div></body></html>")
       div = document.nodes("div").first
       div.inner_text = "bla"
       document.to_html.should eq "<html><head></head><body><div>bla</div></body></html>"
     end
 
     it "add inner_text with redefine inner nodes even" do
-      document = Lexbor::Parser.new("<html><body><div><span>hoho</span></div></body></html>")
+      document = Lexbor.new("<html><body><div><span>hoho</span></div></body></html>")
       div = document.nodes("div").first
       div.inner_text = "bla"
       document.to_html.should eq "<html><head></head><body><div>bla</div></body></html>"
@@ -325,21 +325,21 @@ describe Lexbor::Node do
 
   describe "inner_html=" do
     it "parse" do
-      document = Lexbor::Parser.new("<html><body><div></div></body></html>")
+      document = Lexbor.new("<html><body><div></div></body></html>")
       div = document.nodes("div").first
       div.inner_html = "<a HREF=#>bla</a>"
       document.to_html.should eq "<html><head></head><body><div><a href=\"#\">bla</a></div></body></html>"
     end
 
     it "parse template" do
-      document = Lexbor::Parser.new("<html><body><div></div></body></html>")
+      document = Lexbor.new("<html><body><div></div></body></html>")
       div = document.nodes("div").first
       div.inner_html = "<TEMPLATE>Test</template>"
       document.to_html.should eq "<html><head></head><body><div><template>Test</template></div></body></html>"
     end
 
     it "create node and add inner html" do
-      doc = Lexbor::Parser.new ""
+      doc = Lexbor.new ""
       div = doc.create_node(:div)
       div.inner_html = "<TEMPLATE>Test</template>"
       div.to_html.should eq "<div><template>Test</template></div>"
@@ -348,7 +348,7 @@ describe Lexbor::Node do
 
   describe "inner_html" do
     it "render inner_html of the node" do
-      doc = Lexbor::Parser.new %q{<div><a href="#">Link</a><p>Read this</p></div>}
+      doc = Lexbor.new %q{<div><a href="#">Link</a><p>Read this</p></div>}
       t = doc.nodes(:div).first
       t.inner_html.should eq "<a href=\"#\">Link</a><p>Read this</p>"
     end
@@ -363,7 +363,7 @@ describe Lexbor::Node do
         </div>
       TEXT
 
-      doc = Lexbor::Parser.new(t)
+      doc = Lexbor.new(t)
       t = doc.nodes(:div).first
       t.inner_pretty_html.should eq "\nHaha\n<span>\n  11\n</span>"
     end
@@ -371,19 +371,19 @@ describe Lexbor::Node do
 
   context "to_html" do
     it "deep" do
-      parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div></body></html>")
+      parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div></body></html>")
       node = parser.nodes(:div).first
       node.to_html.should eq %Q[<div class="AAA" style="color:red">Haha <span>11</span></div>]
     end
 
     it "flat" do
-      parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div></body></html>")
+      parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div></body></html>")
       node = parser.nodes(:div).first
       node.to_html(deep: false).should eq %Q[<div class="AAA" style="color:red">]
     end
 
     it "deep io" do
-      parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div></body></html>")
+      parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div></body></html>")
       node = parser.nodes(:div).first
       io = IO::Memory.new
       node.to_html(io)
@@ -392,7 +392,7 @@ describe Lexbor::Node do
     end
 
     it "flat io" do
-      parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div></body></html>")
+      parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div></body></html>")
       node = parser.nodes(:div).first
       io = IO::Memory.new
       node.to_html(io, deep: false)
@@ -402,15 +402,21 @@ describe Lexbor::Node do
     end
 
     it "deep not serialize next node" do
-      parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div><div>Jopa</div></body></html>")
+      parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div><div>Jopa</div></body></html>")
       node = parser.nodes(:div).first
       node.to_html.should eq %Q[<div class="AAA" style="color:red">Haha <span>11</span></div>]
+    end
+
+    it "serialize empty attrs" do
+      parser = Lexbor.new(%Q[<html><body><span><div data-attr><div data-attr2=""></span></body></html>])
+      node = parser.nodes(:span).first
+      node.to_html.should eq %Q[<span><div data-attr><div data-attr2=""></div></div></span>]
     end
   end
 
   context "to_pretty_html" do
     it "work" do
-      parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div></body></html>")
+      parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div></body></html>")
       node = parser.nodes(:div).first
       t = <<-TEXT
       <div class="AAA" style="color:red">
@@ -424,7 +430,7 @@ describe Lexbor::Node do
     end
 
     it "work, not serialize next node" do
-      parser = Lexbor::Parser.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div><div>Jopa</div></body></html>")
+      parser = Lexbor.new("<html><body><div class=AAA style='color:red'>Haha <span>11</span></div><div>Jopa</div></body></html>")
       node = parser.nodes(:div).first
       t = <<-TEXT
       <div class="AAA" style="color:red">
@@ -438,7 +444,7 @@ describe Lexbor::Node do
     end
 
     it "work" do
-      parser = Lexbor::Parser.new(%Q{<html><body><style>color:red;</style><script>\nsome();\n</script><div class=AAA style='color:red'>Haha \nbla<span>11<hr/>   12<img src="bla.png"></span><!--hah--></div></body></html>})
+      parser = Lexbor.new(%Q{<html><body><style>color:red;</style><script>\nsome();\n</script><div class=AAA style='color:red'>Haha \nbla<span>11<hr/>   12<img src="bla.png"></span><!--hah--></div></body></html>})
       node = parser.nodes(:body).first
       t = <<-TEXT
       <body>
@@ -473,7 +479,7 @@ describe Lexbor::Node do
       </html>
       BLA
 
-      parser = Lexbor::Parser.new(text)
+      parser = Lexbor.new(text)
       t = <<-TEXT
       <html>
         <head></head>
@@ -489,10 +495,10 @@ describe Lexbor::Node do
     end
 
     it "not damaging html" do
-      lxb1 = Lexbor::Parser.new(PAGE25) # , encoding: Lexbor::Lib::MyEncodingList::MyENCODING_WINDOWS_1251)
+      lxb1 = Lexbor.new(PAGE25) # , encoding: Lexbor::Lib::MyEncodingList::MyENCODING_WINDOWS_1251)
       s1 = lxb1.to_pretty_html
 
-      lxb2 = Lexbor::Parser.new(s1)
+      lxb2 = Lexbor.new(s1)
       s2 = lxb2.to_pretty_html
 
       File.open("./saved_s1.html", "w") { |f| f.puts s1 }
@@ -513,7 +519,7 @@ describe Lexbor::Node do
       </html>
       BLA
 
-      parser = Lexbor::Parser.new(text)
+      parser = Lexbor.new(text)
       t = "<!DOCTYPE html>\n<html>\n  <head></head>\n  <body>\n    bla\n  </body>\n</html>"
       parser.to_pretty_html.should eq t
     end
@@ -521,50 +527,50 @@ describe Lexbor::Node do
 
   context "inner_text" do
     it do
-      parser = Lexbor::Parser.new("<html><body>1<div class=AAA style='color:red'>Haha<span>11</span>bla</div> 2 </body></html>")
+      parser = Lexbor.new("<html><body>1<div class=AAA style='color:red'>Haha<span>11</span>bla</div> 2 </body></html>")
       parser.body!.inner_text(join_with: ' ').should eq "1 Haha 11 bla 2"
       parser.body!.inner_text(join_with: ' ', deep: false).should eq "1 2"
     end
 
     it do
-      parser = Lexbor::Parser.new("<html><div>bla<b>11</b>12</div></html>")
+      parser = Lexbor.new("<html><div>bla<b>11</b>12</div></html>")
       parser.nodes(:div).first.inner_text(join_with: ' ').should eq "bla 11 12"
     end
 
     it do
-      parser = Lexbor::Parser.new("<html><div>bla<b>11</b>12</div></html>")
+      parser = Lexbor.new("<html><div>bla<b>11</b>12</div></html>")
       parser.nodes(:div).first.inner_text(join_with: '-').should eq "bla-11-12"
     end
 
     it do
-      parser = Lexbor::Parser.new("<html><div>bla<b>11</b>12</div></html>")
+      parser = Lexbor.new("<html><div>bla<b>11</b>12</div></html>")
       parser.nodes(:div).first.inner_text(join_with: "").should eq "bla1112"
     end
 
     it do
-      parser = Lexbor::Parser.new("<html><div>bla<b>11</b>12</div></html>")
+      parser = Lexbor.new("<html><div>bla<b>11</b>12</div></html>")
       parser.nodes(:div).first.inner_text(join_with: "==").should eq "bla==11==12"
     end
 
     it do
-      parser = Lexbor::Parser.new("<html><div><b>11</b> </div></html>")
+      parser = Lexbor.new("<html><div><b>11</b> </div></html>")
       parser.nodes(:div).first.inner_text(join_with: ' ').should eq "11 "
     end
 
     it do
-      parser = Lexbor::Parser.new("<html><body>1<div class=AAA style='color:red'>Haha<span>11</span>bla</div> 2 </body></html>")
+      parser = Lexbor.new("<html><body>1<div class=AAA style='color:red'>Haha<span>11</span>bla</div> 2 </body></html>")
       parser.body!.inner_text(join_with: nil).should eq "1Haha11bla 2 "
       parser.body!.inner_text(join_with: nil, deep: false).should eq "1 2 "
     end
 
     it do
-      parser = Lexbor::Parser.new("<html><body>1<div class=AAA style='color:red'>Haha<span>11</span>bla</div> 2 </body></html>")
+      parser = Lexbor.new("<html><body>1<div class=AAA style='color:red'>Haha<span>11</span>bla</div> 2 </body></html>")
       parser.nodes(:div).first.inner_text.should eq "Haha11bla"
       parser.nodes(:div).first.inner_text(deep: false).should eq "Hahabla"
     end
 
     it do
-      parser = Lexbor::Parser.new("<html><body>1<div class=AAA style='color:red'>Haha<span>11</span>bla</div> 2 </body></html>")
+      parser = Lexbor.new("<html><body>1<div class=AAA style='color:red'>Haha<span>11</span>bla</div> 2 </body></html>")
       parser.nodes(:span).first.inner_text.should eq "11"
       parser.nodes(:span).first.inner_text(deep: false).should eq "11"
     end
@@ -572,7 +578,7 @@ describe Lexbor::Node do
 
   context "inspect" do
     context "work" do
-      parser = Lexbor::Parser.new(%Q[<html><body><div class=AAA style='color:red'>Haha <span>11<a href="#" class="AAA">jopa</a></span></div>
+      parser = Lexbor.new(%Q[<html><body><div class=AAA style='color:red'>Haha <span>11<a href="#" class="AAA">jopa</a></span></div>
         <div>#{"bla" * 30}</div></body></html>])
 
       it do
@@ -604,24 +610,24 @@ describe Lexbor::Node do
   end
 
   pending "self_closed?" do
-    it { Lexbor::Parser.new(%Q[<html><body><hr/></body></html>]).nodes(:hr).first.self_closed?.should eq true }
-    it { Lexbor::Parser.new(%Q[<html><body><div></div></body></html>]).nodes(:div).first.self_closed?.should eq false }
+    it { Lexbor.new(%Q[<html><body><hr/></body></html>]).nodes(:hr).first.self_closed?.should eq true }
+    it { Lexbor.new(%Q[<html><body><div></div></body></html>]).nodes(:div).first.self_closed?.should eq false }
   end
 
   it "attributes not crashed on text nodes, fixed #5" do
     page = fixture("failed_text_attrs.htm")
-    Lexbor::Parser.new(page).root!.scope.each { |n| n.attributes["checked"]? }
+    Lexbor.new(page).root!.scope.each { |n| n.attributes["checked"]? }
   end
 
   it "attributes not crashed on doctype nodes, fixed #5" do
     page = <<-PAGE
     <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
     PAGE
-    Lexbor::Parser.new(page).document!.scope.each { |n| n.attributes["checked"]? }
+    Lexbor.new(page).document!.scope.each { |n| n.attributes["checked"]? }
   end
 
   it "tag_name of special nodes should be correct" do
-    parser = Lexbor::Parser.new("<!doctype html><html><body><div>bla</div><!--blah--></body></html>")
+    parser = Lexbor.new("<!doctype html><html><body><div>bla</div><!--blah--></body></html>")
 
     text = parser.nodes(:div).first.child!
     text.tag_sym.should eq :_text

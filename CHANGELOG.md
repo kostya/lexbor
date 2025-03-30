@@ -1,5 +1,9 @@
+## 3.3.0
+* update liblexbor to latest
+* add usage `Lexbor.new` instead of `Lexbor::Parser.new`
+
 ## 3.2.0
-* updat liblexbor to latest
+* update liblexbor to latest
 
 ## 3.1.3
 * fix usage in interpreter

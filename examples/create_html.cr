@@ -2,7 +2,7 @@
 
 require "../src/lexbor"
 
-doc = Lexbor::Parser.new ""
+doc = Lexbor.new ""
 body = doc.body!
 
 div = doc.create_node(:div)

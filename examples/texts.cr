@@ -30,8 +30,8 @@ struct Lexbor::Node
   end
 end
 
-def words(parser)
-  parser
+def words(doc)
+  doc
     .nodes(:_text)                         # iterate through all TEXT nodes
     .select(&.parents.all?(&.displayble?)) # select only which parents are visible good tag
     .map(&.tag_text)                       # mapping node text
@@ -39,8 +39,7 @@ def words(parser)
     .map(&.strip.gsub(/\s{2,}/, " "))      # remove extra spaces
 end
 
-parser = Lexbor::Parser.new(str)
-puts words(parser).join(" | ")
+puts words(Lexbor.new(str)).join(" | ")
 
 # Output:
 #   Название: | Что я сделал? | Ответил: | Чудище-Змей | на | 21 Октябрь 2005, 18:11 |

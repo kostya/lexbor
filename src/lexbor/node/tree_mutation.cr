@@ -5,7 +5,7 @@ struct Lexbor::Node
   # This inserts the child node at the end of parent node's children
   #
   # ```
-  # document = Lexbor::Parser.new("<html><body><p>Hi!</p></body></html>")
+  # document = Lexbor.new("<html><body><p>Hi!</p></body></html>")
   # body = document.body!
   # span = document.create_node(:span)
   #
@@ -22,7 +22,7 @@ struct Lexbor::Node
   # Add a sibling node before this node
   #
   # ```
-  # document = Lexbor::Parser.new("<html><body><main></main></body></html>")
+  # document = Lexbor.new("<html><body><main></main></body></html>")
   # main = document.css("main").first
   # header = document.create_node(:header)
   #
@@ -39,7 +39,7 @@ struct Lexbor::Node
   # Add a sibling node after this node
   #
   # ```
-  # document = Lexbor::Parser.new("<html><body><div></div></body></html>")
+  # document = Lexbor.new("<html><body><div></div></body></html>")
   # div = document.css("div").first
   # img = document.create_node(:img)
   #
@@ -63,7 +63,7 @@ struct Lexbor::Node
   # Helper method to add inner text to node
   #
   # ```
-  # document = Lexbor::Parser.new("<html><body><div></div></body></html>")
+  # document = Lexbor.new("<html><body><div></div></body></html>")
   # div = document.css("div").first
   # div.inner_text = "bla"
   #
@@ -80,7 +80,7 @@ struct Lexbor::Node
   # Parse inner html as node content
   #
   # ```
-  # document = Lexbor::Parser.new("<html><body><div></div></body></html>")
+  # document = Lexbor.new("<html><body><div></div></body></html>")
   # div = document.css("div").first
   # div.inner_html = "<a href=#>bla</a>"
   #

@@ -39,7 +39,7 @@ struct Lexbor::Tokenizer::Token
 
   @[AlwaysInline]
   def tag_name_slice
-    buf = Lexbor::Lib.tag_name_by_id(tags, tag_id, out len)
+    buf = Lexbor::Lib.tag_name_by_id(tag_id, out len)
     Slice.new(buf, len)
   end
 

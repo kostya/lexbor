@@ -21,7 +21,7 @@ def parser(**args)
     </html>
   HTML
 
-  parser = Lexbor::Parser.new(str, **args)
+  parser = Lexbor.new(str, **args)
   parser
 end
 
@@ -168,7 +168,7 @@ describe "iterators" do
   end
 
   # it "Collection befave like array, when multiple times call size, empty? and others..." do
-  #   parser = Lexbor::Parser.new(%q{<head><title>Title</title></head>})
+  #   parser = Lexbor.new(%q{<head><title>Title</title></head>})
   #   iter = parser.css("title")
 
   #   iter.size.should eq 1

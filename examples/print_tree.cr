@@ -13,8 +13,7 @@ str = if filename = ARGV[0]?
         "<html><Div><span class='test'>HTML</span></div></html>"
       end
 
-parser = Lexbor::Parser.new(str)
-walk(parser.root!)
+walk(Lexbor.new(str).root!)
 
 # Output:
 # Lexbor::Node(:html)
