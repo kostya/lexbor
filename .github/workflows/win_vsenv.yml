@@ -1,8 +1,7 @@
 name: Specs (windows)
 on:
   push:
-  pull_request:
-    branches: [master]
+    branches: [vs_env]
   schedule:
     - cron: '0 0 * * 0'
 jobs:
