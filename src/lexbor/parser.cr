@@ -117,9 +117,13 @@ class Lexbor::Parser
   protected def parse_stream(io : IO)
     parse_stream_start
 
-    buffer = Bytes.new(BUFFER_SIZE)
+    buffer_pos = 0
+    buffer1 = uninitialized UInt8[BUFFER_SIZE]
+    buffer2 = uninitialized UInt8[BUFFER_SIZE]
+    buffers = [buffer1.to_slice, buffer2.to_slice]
 
     loop do
+      buffer = buffers[buffer_pos ^= 1]
       read_size = io.read(buffer)
       break if read_size == 0
       parse_stream_load_slice(Slice.new(buffer.to_unsafe, read_size))
