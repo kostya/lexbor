@@ -111,18 +111,25 @@ class Lexbor::Parser
   end
 
   # :nodoc:
-  BUFFER_SIZE = 8192
+  MAX_READ = 4096
+
+  # :nodoc:
+  BUFFER_SIZE = 8096
 
   # :nodoc:
   protected def parse_stream(io : IO)
     parse_stream_start
 
-    buffer = Bytes.new(BUFFER_SIZE)
+    alloc_buffer = uninitialized UInt8[BUFFER_SIZE]
+    buffer = alloc_buffer.to_slice
 
     loop do
-      read_size = io.read(buffer)
+      read_size = io.read(buffer.size > MAX_READ ? buffer[0, MAX_READ] : buffer)
       break if read_size == 0
       parse_stream_load_slice(Slice.new(buffer.to_unsafe, read_size))
+
+      buffer += read_size
+      buffer = alloc_buffer.to_slice if buffer.empty?
     end
 
     parse_stream_finish
