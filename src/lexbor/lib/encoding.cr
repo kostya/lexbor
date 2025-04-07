@@ -76,7 +76,7 @@ module Lexbor
     fun encode_buf_used_set = lxb_encoding_encode_buf_used_set_noi(encode : EncodeT, used : LibC::SizeT)
 
     fun data_call_encode = lxb_encoding_data_call_encode_noi(data : DataT, ctx : EncodeT, cp : CodepointT**, end : CodepointT*) : Lib::StatusT
-    fun data_call_decode = lxb_encoding_data_call_decode_noi(data : DataT, ctx : DecodeT, data : UInt8**, end : UInt8*) : Lib::StatusT
+    fun data_call_decode = lxb_encoding_data_call_decode_noi(data : DataT, ctx : DecodeT, data2 : UInt8**, end : UInt8*) : Lib::StatusT
 
     fun encode_t_sizeof = lxb_encoding_encode_t_sizeof : LibC::SizeT
     fun decode_t_sizeof = lxb_encoding_decode_t_sizeof : LibC::SizeT
