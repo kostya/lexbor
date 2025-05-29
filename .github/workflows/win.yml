@@ -20,11 +20,11 @@ jobs:
         with:
           cmake-version: '3.16.x'
       - name: Download source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Install Crystal
         uses: crystal-lang/install-crystal@v1
       - name: Cache shards
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ./src/ext/lexbor-c
           key: ${{ runner.os }}-lexbor-revision-${{ hashFiles('./src/ext/revision') }}
