@@ -3,9 +3,9 @@ def cmd(cmd, args, chdir)
 
   Process.run(cmd, args: args, chdir: chdir.to_s, input: Process::Redirect::Inherit, output: Process::Redirect::Inherit, error: Process::Redirect::Inherit)
 
-  if $?.exit_status != 0
-    puts "Failed with status #{$?.exit_status}"
-    exit $?.exit_status
+  if $?.exit_code != 0
+    puts "Failed with status #{$?.exit_code}"
+    exit $?.exit_code
   end
 end
 
