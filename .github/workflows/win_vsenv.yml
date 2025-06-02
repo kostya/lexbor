@@ -1,8 +1,7 @@
 name: Specs (windows)
 on:
   push:
-  pull_request:
-    branches: [master]
+    branches: [vs_env]
   schedule:
     - cron: '0 0 * * 0'
 jobs:
@@ -13,11 +12,11 @@ jobs:
     runs-on: windows-2022
     steps:
       - name: Download source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
       - name: Install Crystal
         uses: crystal-lang/install-crystal@v1
       - name: Cache shards
-        uses: actions/cache@v4
+        uses: actions/cache@v2
         with:
           path: ./src/ext/lexbor-c
           key: ${{ runner.os }}-lexbor-revision-${{ hashFiles('./src/ext/revision') }}
