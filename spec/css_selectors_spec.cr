@@ -200,4 +200,26 @@ describe Lexbor do
     parser = Lexbor.new(%q{<div class="jjjj">bla</div>})
     parser.css("div.jjjj") { |col| col.to_a.size }.should eq 1
   end
+
+  it "fix #48" do
+    html = %(
+<div id="foo">
+  <div>
+    <h3 class="bar"></h3>
+    <div>
+      <a href="https://example.com/">
+        <p>
+          <img id="abc_123" alt="" />
+        </p>
+      </a>
+    </div>
+  </div>
+</div>
+)
+
+    parser = Lexbor.new(html)
+    parser.css("#foo div:has(h3.bar)").size.should eq 1
+    parser.css("#foo div:has(h3.bar)").try &.[0].css("a > p > img[id^=abc_][alt]").size.should eq 1
+    parser.css("#foo div:has(h3.bar) a > p > img[id^=abc_][alt]").size.should eq 1
+  end
 end

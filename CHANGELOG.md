@@ -1,3 +1,6 @@
+## 3.4.0
+* update liblexbor with css selector fix for :has, #48
+
 ## 3.3.2
 * update liblexbor to latest
 * add usage `Lexbor.new` instead of `Lexbor::Parser.new`
