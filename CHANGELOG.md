@@ -1,3 +1,6 @@
+## 3.4.1
+* Node#css change usage with block given, now it iterate all nodes `doc.css { |node| ... }`
+
 ## 3.4.0
 * update liblexbor with css selector fix for :has, #48
 
