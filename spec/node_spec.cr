@@ -523,6 +523,11 @@ describe Lexbor::Node do
       t = "<!DOCTYPE html>\n<html>\n  <head></head>\n  <body>\n    bla\n  </body>\n</html>"
       parser.to_pretty_html.should eq t
     end
+
+    it "bug with &amp" do
+      Lexbor.new("<div>blah &amp</div>").nodes(:div).first.to_pretty_html.should eq "<div>\n" + "  blah &\n" + "</div>"
+      Lexbor.new("<div>&amp</div>").nodes(:div).first.to_pretty_html.should eq "<div>\n" + "  &\n" + "</div>"
+    end
   end
 
   context "inner_text" do

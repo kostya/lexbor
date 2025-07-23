@@ -130,7 +130,7 @@ struct Lexbor::Node
       j = i + 1
     end
 
-    if j < buf.bytesize - 1
+    if j <= buf.bytesize - 1
       slice = buf[j, buf.bytesize - j]
       if _write_formatted_slice(io, slice, level, start_new_line)
         writed = true
