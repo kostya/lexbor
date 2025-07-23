@@ -21,5 +21,20 @@ lexbor = Lexbor.new(html)
 p lexbor.css("#t2 tr td:first-child").map(&.inner_text).to_a
 # => ["123", "foo", "bar", "xyz"]
 
-p lexbor.css("#t2 tr td:first-child").map(&.to_html).to_a
-# => ["<td>123</td>", "<td>foo</td>", "<td>bar</td>", "<td>xyz</td>"]
+lexbor.css("#t2 tr td:first-child") do |node|
+  puts node.to_html
+end
+# => <td>123</td>
+# => <td>foo</td>
+# => <td>bar</td>
+# => <td>xyz</td>
+
+lexbor.css("#t2 tr") do |node|
+  node.css("td:first-child") do |node2|
+    puts node2.to_html
+  end
+end
+# => <td>123</td>
+# => <td>foo</td>
+# => <td>bar</td>
+# => <td>xyz</td>

@@ -197,8 +197,10 @@ describe Lexbor do
   end
 
   it "css with yield" do
-    parser = Lexbor.new(%q{<div class="jjjj">bla</div>})
-    parser.css("div.jjjj") { |col| col.to_a.size }.should eq 1
+    parser = Lexbor.new(%q{<div class="jjjj">bla</div><span><2222/span><div class="jjjj2">bla</div>})
+    count = 0
+    parser.css("div") { |node| count += 1 }
+    count.should eq 2
   end
 
   it "fix #48" do

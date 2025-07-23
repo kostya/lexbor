@@ -26,15 +26,17 @@ struct Lexbor::Node
   end
 
   #
-  # Css select which yielding collection
+  # Css select which yielding nodes
   #   this allows to free collection after block call and not waiting for GC
   #
   # Example:
-  #   some_node.css("div.red") { |collection| collection.each { |node| p node } }
+  #   some_node.css("div.red") { |node| p node }
   #
   def css(arg)
     collection = css(arg)
-    yield collection
+    collection.each do |node|
+      yield node
+    end
   ensure
     collection.try &.free
   end
