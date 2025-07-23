@@ -4,7 +4,7 @@ require "../src/lexbor"
 
 def walk(node, level = 0)
   puts "#{" " * level * 2}#{node.inspect}"
-  node.children.each { |child| walk(child, level + 1) }
+  node.children { |child| walk(child, level + 1) }
 end
 
 str = if filename = ARGV[0]?

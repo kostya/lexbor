@@ -47,10 +47,23 @@ describe "iterators" do
     res.should eq "head|body|div|table|tbody|tr|td|td|(Bla)|a|(text)|br|span|div|(Text)|"
   end
 
+  it "scope with yield" do
+    s = ""
+    parser.root!.scope { |n| s += INSPECT_NODE.call(n) }
+    s.should eq "head|body|div|table|tbody|tr|td|td|(Bla)|a|(text)|br|span|div|(Text)|"
+  end
+
   it "right_iterator from middle" do
     node = parser.nodes(:td).first # td
     res = node.right_iterator.map(&INSPECT_NODE).join
     res.should eq "td|(Bla)|a|(text)|br|span|div|(Text)|"
+  end
+
+  it "right_iterator from middle with yield" do
+    node = parser.nodes(:td).first # td
+    s = ""
+    node.right_iterator { |n| s += INSPECT_NODE.call(n) }
+    s.should eq "td|(Bla)|a|(text)|br|span|div|(Text)|"
   end
 
   it "right_iterator from last" do
@@ -70,11 +83,18 @@ describe "iterators" do
     res.should eq "(Text)|div|span|br|(text)|a|(Bla)|td|td|tr|tbody|table|div|body|head|html|"
   end
 
+  it "left_iterator with yield" do
+    node = parser.nodes(:_text).to_a.last # text
+    res = node.left_iterator.map(&INSPECT_NODE).join
+    res.should eq "(Text)|div|span|br|(text)|a|(Bla)|td|td|tr|tbody|table|div|body|head|html|"
+  end
+
   pending "left_iterator with another tree_options" do
     parser = parser()                     # (tree_options: Lexbor::Lib::LexborTreeParseFlags::MyHTML_TREE_PARSE_FLAGS_SKIP_WHITESPACE_TOKEN | Lexbor::Lib::LexborTreeParseFlags::MyHTML_TREE_PARSE_FLAGS_WITHOUT_DOCTYPE_IN_TREE)
     node = parser.nodes(:_text).to_a.last # text
-    res = node.left_iterator.map(&INSPECT_NODE).join
-    res.should eq "div|span|br|(text)|a|(Bla)|td|td|tr|tbody|table|div|body|head|html|"
+    s = ""
+    node.left_iterator { |n| s += INSPECT_NODE.call(n) }
+    s.should eq "div|span|br|(text)|a|(Bla)|td|td|tr|tbody|table|div|body|head|html|"
   end
 
   it "left_iterator from middle" do
@@ -155,6 +175,12 @@ describe "iterators" do
     res.should eq "div|"
   end
 
+  it "children iterator with yield" do
+    s = ""
+    parser.body!.children { |n| s += INSPECT_NODE.call(n) }
+    s.should eq "div|br|span|"
+  end
+
   it "parents iterator" do
     node = parser.nodes(:_text).find { |n| n.tag_text == "Bla" }.not_nil!
     res = node.parents.map(&INSPECT_NODE).join
@@ -165,6 +191,37 @@ describe "iterators" do
     node = parser.nodes(:_text).find { |n| n.tag_text == "Bla" }.not_nil!
     res = node.parents.nodes(:div).map(&INSPECT_NODE).join
     res.should eq "div|"
+  end
+
+  it "parents iterator with yield" do
+    node = parser.nodes(:_text).find { |n| n.tag_text == "Bla" }.not_nil!
+    s = ""
+    node.parents { |n| s += INSPECT_NODE.call(n) }
+    s.should eq "td|tr|tbody|table|div|body|html|"
+  end
+
+  it "nodes call with block" do
+    texts = [] of String
+    parser.nodes(:div) do |node|
+      texts << node.inner_text.strip
+    end
+    texts.should eq ["Bla\n" + "        \n" + "      \n" + "      text", "Text"]
+  end
+
+  it "nodes call with block from node" do
+    texts = [] of String
+    parser.nodes(:span).first.nodes(:div) do |node|
+      texts << node.inner_text.strip
+    end
+    texts.should eq ["Text"]
+  end
+
+  it "nodes call with block from node" do
+    texts = [] of String
+    parser.nodes(:span).first.scope.nodes(:div) do |node|
+      texts << node.inner_text.strip
+    end
+    texts.should eq ["Text"]
   end
 
   # it "Collection befave like array, when multiple times call size, empty? and others..." do

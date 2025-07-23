@@ -31,6 +31,16 @@ module Lexbor::Iterator
     def nodes(tag_str : String)
       nodes(Utils::TagConverter.string_to_id(tag_str))
     end
+
+    #
+    # Node filter with yield
+    #   iterator.nodes("div") { |node| ... }
+    #
+    def nodes(filter)
+      nodes(filter).each do |node|
+        yield node
+      end
+    end
   end
 end
 

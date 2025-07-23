@@ -36,10 +36,10 @@ HTML
 
 lexbor = Lexbor.new(html)
 
-lexbor.nodes(:div).each do |node|
+lexbor.nodes(:div) do |node|
   id = node["id"]?
 
-  if first_link = node.scope.nodes(:a).first?
+  if first_link = node.nodes(:a).first?
     href = first_link["href"]?
     link_text = first_link.inner_text
 

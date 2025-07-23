@@ -230,4 +230,13 @@ class Lexbor::Parser
     # TODO: optimize?
     root!.scope.nodes(tag_str)
   end
+
+  #
+  # Top level node filter with yield
+  #
+  #   lexbor.nodes("div") { |node| ... }
+  #
+  def nodes(filter)
+    nodes(filter).each { |node| yield node }
+  end
 end

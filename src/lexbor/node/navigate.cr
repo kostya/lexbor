@@ -55,4 +55,6 @@ struct Lexbor::Node
   def flat_right
     self.next || next_parent
   end
+
+  delegate :nodes, to: scope
 end
