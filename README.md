@@ -10,6 +10,10 @@ Install dependency cmake:
 
     sudo apt install cmake
 
+Install dependency build-essential:
+
+    sudo apt install build-essential
+
 Add this to your application's `shard.yml`:
 
 ```yaml
