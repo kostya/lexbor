@@ -1,3 +1,7 @@
+## 3.6.3
+* build_ext.cr check checksum for lxb.c, thanks: @philipp-classen
+* build_ext.cr use Http::Client, thanks: @philipp-classen
+
 ## 3.6.2
 * update liblexbor v3.0.0
 
