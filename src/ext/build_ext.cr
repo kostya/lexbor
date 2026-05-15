@@ -70,7 +70,6 @@ def compile_windows(source_path, output_path)
 
   puts "--- Removing temporary files ---"
   File.delete("#{output_path}/lxb.obj") if File.exists?("#{output_path}/lxb.obj")
-  File.delete(source_path) if File.exists?(source_path)
 
   puts "--- Static library created: #{output_path}/lexbor_static.lib ---"
   puts "--- Dynamic library created: #{output_path}/lxb.dll ---"
@@ -128,7 +127,6 @@ def compile_unix(source_path, output_path)
 
   puts "--- Removing temporary files ---"
   File.delete("#{output_path}/lxb.o") if File.exists?("#{output_path}/lxb.o")
-  File.delete(source_path) if File.exists?(source_path)
 
   puts "--- Static library created: #{output_path}/liblxb.a ---"
   {% if flag?(:darwin) %}
@@ -143,8 +141,10 @@ ext_dir = current_dir / "lxb"
 
 Dir.mkdir(ext_dir) unless File.directory?(ext_dir)
 
-amalgamation_file = ext_dir / "lxb.c"
-download_file(URL, SHA256, save_to: amalgamation_file)
+amalgamation_file = current_dir / "lexbor.c"
+unless File.exists?(amalgamation_file)
+  download_file(URL, SHA256, save_to: amalgamation_file)
+end
 
 {% if flag?(:win32) %}
   compile_windows(amalgamation_file, ext_dir)
