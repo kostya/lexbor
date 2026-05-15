@@ -1,3 +1,6 @@
+## 3.6.4
+* put lexbor.c into the rep, to avoid downloading
+
 ## 3.6.3
 * build_ext.cr check checksum for lxb.c, thanks: @philipp-classen
 * build_ext.cr use Http::Client, thanks: @philipp-classen
