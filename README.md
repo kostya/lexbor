@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/kostya/lexbor/actions/workflows/ci.yml/badge.svg)](https://github.com/kostya/lexbor/actions/workflows/ci.yml?query=branch%3Amaster+event%3Apush)
 
-Fast HTML5 Parser with CSS selectors (based on lexborisov's HTML5 parser [lexbor](https://github.com/lexbor/lexbor)). This is successor of [myhtml](https://github.com/kostya/myhtml) and expected to be faster and use less memory. Usage is almost equal to myhtml.
+Crystal lang wrapper for the C library [lexbor/lexbor](https://github.com/lexbor/lexbor) — a fast HTML5 parser with CSS selectors.
 
 Add this to your application's `shard.yml`:
 
