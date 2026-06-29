@@ -4,6 +4,10 @@
 
 Crystal lang wrapper for the C library [lexbor/lexbor](https://github.com/lexbor/lexbor) — a fast HTML5 parser with CSS selectors.
 
+Install dependency build-essential:
+
+    sudo apt install build-essential
+
 Add this to your application's `shard.yml`:
 
 ```yaml
